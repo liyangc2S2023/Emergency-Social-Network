@@ -30,3 +30,4 @@ Semantic UI is a development framework for building user interfaces that provide
 ## Database
 ### MongoDB: https://www.mongodb.com/
 MongoDB is a popular NoSQL database management system. It is designed to store and manage large amounts of semi-structured and unstructured data, making it a good choice for modern web applications. MongoDB uses a document-oriented data model, which allows you to store complex data structures as documents within a collection. MongoDB is highly scalable and flexible, allowing you to easily add or remove nodes from your database cluster as your needs change. MongoDB provides a rich query language that allows you to easily retrieve, manipulate, and update data stored in your database.
+
