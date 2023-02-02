@@ -3,7 +3,7 @@ YOU ARE *NOT* PERMITTED TO SHARE THIS REPO OUTSIDE THIS GITHUB ORG. YOU ARE *NOT
 
 # Technology Decisions
 ## Back-end 
-Node.js: https://nodejs.org/
+### Node.js: https://nodejs.org/
 Node.js is a great choice for building fast, scalable, and efficient web applications that are easy to learn and compatible with multiple platforms.
 
 Express.js: https://expressjs.com/
@@ -13,7 +13,7 @@ socket.io: https://socket.io/
 Socket.io enables real-time communication between the client and server, making it possible to build applications with real-time updates and notifications. Socket.io is designed to work with a variety of browsers and platforms, making it a versatile choice for building cross-browser compatible applications.
 
 
-## Front-end
+### Front-end
 Pug: https://pugjs.org/
 Pug has a clean and readable syntax, which makes it easy to write and maintain complex templates. Pug enables dynamic HTML generation, making it easy to build templates that can be customized and reused for different pages or components. Pug is optimized for performance, making it a fast and efficient choice for building complex HTML templates.
 
@@ -27,6 +27,6 @@ Semantic UI: https://semantic-ui.com/
 Semantic UI is a development framework for building user interfaces that provides responsive design, customizable themes, built-in UI elements, user-friendly documentation, and a large community.
 
 
-## Database
+### Database
 MongoDB: https://www.mongodb.com/
 MongoDB is a popular NoSQL database management system. It is designed to store and manage large amounts of semi-structured and unstructured data, making it a good choice for modern web applications. MongoDB uses a document-oriented data model, which allows you to store complex data structures as documents within a collection. MongoDB is highly scalable and flexible, allowing you to easily add or remove nodes from your database cluster as your needs change. MongoDB provides a rich query language that allows you to easily retrieve, manipulate, and update data stored in your database.
