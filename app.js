@@ -1,5 +1,5 @@
-const express = require('express')
-const app = express()
+const express = require('express');
+const app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
 
@@ -8,7 +8,10 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const port = 3000
+const User = require('./models/user');
+require('./database');
+
+const port = 3000;
 
 
 app.set('view engine', 'pug');
@@ -18,7 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 // app.use(session({ secret: "acdc" }));
-app.use(express.static('public'))
+app.use(express.static('public'));
 
 
 const loginRouter = require("./routes/login");
