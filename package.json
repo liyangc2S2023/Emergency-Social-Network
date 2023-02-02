@@ -1,0 +1,35 @@
+{
+  "name": "citizen_app",
+  "version": "1.0.0",
+  "description": "citizen app, a FSE project",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.20.1",
+    "cookie-parser": "~1.4.4",
+    "debug": "~2.6.9",
+    "express": "~4.16.1",
+    "express-session": "^1.17.3",
+    "http-errors": "~1.6.3",
+    "jade": "~1.11.0",
+    "moment": "^2.29.4",
+    "mongoose": "^6.8.3",
+    "morgan": "~1.9.1",
+    "multer": "^1.4.5-lts.1",
+    "nodemon": "^2.0.20",
+    "pug": "^3.0.2",
+    "socket.io": "^4.5.4"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cmusv-fse/s23-ESN-SB5.git"
+  },
+  "author": "esn-sb5",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/cmusv-fse/s23-ESN-SB5/issues"
+  },
+  "homepage": "https://github.com/cmusv-fse/s23-ESN-SB5#readme"
+}
