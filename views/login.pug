@@ -1,0 +1,29 @@
+doctype html
+html
+html
+    head
+        title Login Page
+        link(rel="stylesheet" type="text/css" href="/css/style.css")
+
+    body
+        div.row
+            div.col-3.col-s-3
+            div.col-6.col-s-6
+                div.login-line
+                    h1.login-title FSE Chat Room
+                //- h4 #{message}
+                form(action = "/login", method = "POST")
+                    div
+                        label(for = "Username") Username
+                        br
+                        input.login-input(name = "id" type = "text" required  value = "")
+                    br
+                    div
+                        label(for = "password") Password
+                        br
+                        input.login-input(name = "password" type = "password" value = "")
+                    br
+                    button.login-button#lb-left(type = "submit") Login
+                    button.login-button#lb-right 
+                        a(href="/signup") Register
+            div.col-3.col-s-3
