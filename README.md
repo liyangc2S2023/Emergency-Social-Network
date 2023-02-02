@@ -39,4 +39,5 @@ MongoDB is a popular NoSQL database management system. It is designed to store a
     $ npm app.js
 
 if you wish to auto-reload the page, then run:
+
     $ npx nodemon app.js
