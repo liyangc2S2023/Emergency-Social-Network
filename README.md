@@ -41,3 +41,6 @@ MongoDB is a popular NoSQL database management system. It is designed to store a
 if you wish to auto-reload the page, then run:
 
     $ npx nodemon app.js
+
+### Run unit test
+    $ npm test
