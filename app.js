@@ -31,6 +31,26 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 })
 
-console.log("Server started listening at port: ", port)
+// page not found
+app.use(function(req,res,next){
+    next(createError(404,"page not found"));
+})
+
+/* error handling
+* use next(createError(status_code,msg)) to throw error
+* or directly use: 
+* ```
+*    var newError=new Error("msg")
+*    newError.status=xxx
+*    throw newError
+* ``` 
+*/
+app.use(function(err,req,res,next){
+    res.status(err.status || 500);
+    // err.name: err.message
+    res.render("error",{message:err.toString()})
+})
+
+console.log("Server started at: http://localhost:"+port)
 
 app.listen(port);
