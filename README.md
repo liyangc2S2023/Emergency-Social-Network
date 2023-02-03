@@ -13,6 +13,11 @@ Express.js is a minimal and flexible framework that provides fast performance an
 ### socket.io: https://socket.io/
 Socket.io enables real-time communication between the client and server, making it possible to build applications with real-time updates and notifications. Socket.io is designed to work with a variety of browsers and platforms, making it a versatile choice for building cross-browser compatible applications.
 
+### CryptoJS
+CryptoJS is a growing library of standard and secure cryptographic algorithms implemented in JavaScript using best practices and patterns. They are fast and have a consistent and simple interface. We will use it as our library to encrypt and decrypt
+
+### Jest
+Jest is a delightful JavaScript Testing Framework with a focus on simplicity. It is fast, safe and has great exceptions. It can easily implement mocking and support code coverage with no additional setup.
 
 ## Front-end
 ### Pug: https://pugjs.org/
@@ -42,5 +47,5 @@ if you wish to auto-reload the page, then run:
 
     $ npx nodemon app.js
 
-### Run unit test
+### How to run unit test
     $ npm test
