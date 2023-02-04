@@ -1,0 +1,46 @@
+doctype html
+html
+    head
+        title Join Community
+        link(rel="stylesheet", type="text/css", href="semantic/dist/semantic.min.css")
+        link(rel='stylesheet' href='/css/style.css')
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+    body
+        div(class='container')
+            h1(class='h1') Join Community
+            form(class='register-form' method='post')
+                input(type='text' name='username', placeholder="username", required)
+                input(type='password' name='password', placeholder="password", required)
+                button(class='btn-next' type='submit') NEXT
+                div.ui.error.message
+        script.
+            $('register-form')
+                .form({
+                    fields: {
+                    username: {
+                        identifier: 'username',
+                        rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter a username'
+                        }
+                        ]
+                    },
+                    password: {
+                        identifier: 'password',
+                        rules: [
+                        {
+                            type   : 'empty',
+                            prompt : 'Please enter a password'
+                        },
+                        {
+                            type   : 'minLength[6]',
+                            prompt : 'Your password must be at least {ruleValue} characters'
+                        }
+                        ]
+                    }
+                    }
+                })
+                ;
+        script(src="https://code.jquery.com/jquery-3.1.1.min.js", integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=", crossorigin="anonymous")
+        script(src="semantic/dist/semantic.min.js")
