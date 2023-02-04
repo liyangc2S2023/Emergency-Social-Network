@@ -1,10 +1,10 @@
 const e = require('express');
 const express = require('express');
 const router = express.Router();
-// required for user model
-const User = require('../models/user');
 // required for database connection
 require('../database');
+// required for user model
+const User = require('../models/user');
 
 router.get('/', function (req, res) {
     res.render('login');
