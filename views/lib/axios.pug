@@ -1,0 +1,11 @@
+//- see usage example here https://axios-http.com/docs/example
+script(src="https://unpkg.com/axios/dist/axios.min.js")
+include cookie.pug
+script.
+    console.log(document.cookie)
+    console.log(Cookies.get('user_token'))
+    var axios=axios.create({
+        baseURL:'/',
+        timeout: 1000,
+        headers:{'Authorization':Cookies.get('user_token')}
+    })

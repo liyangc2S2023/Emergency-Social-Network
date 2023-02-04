@@ -22,8 +22,7 @@ app.set('views', './views');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-// app.use(session({ secret: "acdc" }));
-app.use(express.static('public'));
+app.use(express.static('dist'));;
 
 
 const loginRouter = require("./routes/login");
@@ -33,7 +32,7 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 })
 
-// Json Web Token(JWT)
+// Middleware: JWT(Json Web Token) Authentication
 app.use(function(req,res,next){
     const token = req.body.token || req.query.token || req.headers.authorization
     if(!token){

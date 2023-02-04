@@ -38,12 +38,19 @@ router.post('/', function (req, res) {
             time:Date(),
             username:username
         },
-        config.JWT_KEY, {expiresIn:'1s'})
+        config.JWT_KEY, {expiresIn:'1d'})
         res.status(200)
         res.cookie('user_token',token)
         // todo: render next page
         res.render('login',{result: new Result(false,'username error',{prompt:2})})
     }
 });
+
+// for test only
+router.get('/test', function (req, res) {
+    res.status(200)
+    res.send({result:new Result(true,'',{prompt:0})});
+});
+
 
 module.exports = router;

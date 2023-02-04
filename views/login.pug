@@ -4,6 +4,21 @@ html
     head
         title Login Page
         link(rel="stylesheet" type="text/css" href="/css/style.css")
+        include lib/axios.pug
+        script.
+            axios.get('/login/tttt')
+            //- axios.get('/login/test')
+                .then(function(res){
+                    // handle success
+                    console.log(res)
+                })
+                .catch(function(err){
+                    // handle error
+                    console.log(err)
+                })
+                .then(function(){
+                    // always executed
+                })
 
     body
         div.row
@@ -11,7 +26,7 @@ html
             div.col-6.col-s-6
                 div.login-line
                     h1.login-title FSE Chat Room
-                h4 #{result}
+                h4 #{result.success}
                 form(action = "/login", method = "POST")
                     div
                         label(for = "Username") Username
