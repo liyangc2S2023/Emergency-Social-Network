@@ -7,4 +7,6 @@ html
     body
         h1 Oops! Error occurs
         br
-        h3 #{message}
+        h3 #{error.status} #{error.name}
+        h4 #{error.message}
+        p #{error.stack}

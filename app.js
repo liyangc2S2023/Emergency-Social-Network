@@ -2,6 +2,8 @@ const express = require('express');
 const app = express();
 var bodyParser = require('body-parser');
 var session = require('express-session');
+const jwt = require("jsonwebtoken");
+const config = require('./config')
 
 const http = require('http');
 const server = http.createServer(app);
@@ -31,6 +33,23 @@ app.get('/', (req, res) => {
     res.redirect('/login');
 })
 
+// Json Web Token(JWT)
+app.use(function(req,res,next){
+    const token = req.body.token || req.query.token || req.headers.authorization
+    if(!token){
+        next(createError(401,"token required"))
+    }
+    else{
+        try{
+            const decoded=jwt.verify(token,config.JWT_KEY)
+            req.username=decoded.username
+            next()
+        } catch(err){
+            next(createError(401,"token invalid"+err.toString()))        
+        }
+    }
+})
+
 // page not found
 app.use(function(req,res,next){
     next(createError(404,"page not found"));
@@ -47,8 +66,7 @@ app.use(function(req,res,next){
 */
 app.use(function(err,req,res,next){
     res.status(err.status || 500);
-    // err.name: err.message
-    res.render("error",{message:err.toString()})
+    res.render("error",{error:err})
 })
 
 console.log("Server started at: http://localhost:"+port)
