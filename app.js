@@ -12,7 +12,6 @@ const io = new Server(server);
 
 const port = 3000;
 
-
 app.set('view engine', 'pug');
 app.set('views', './views');
 
