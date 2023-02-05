@@ -6,6 +6,7 @@ test('validate username',()=>{
     expect(authentication.validateUsername("aa")).toBe(false)
     expect(authentication.validateUsername("")).toBe(false)
     expect(authentication.validateUsername()).toBe(false)
+    // banned name
     expect(authentication.validateUsername("about")).toBe(false)
 })
 

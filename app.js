@@ -1,7 +1,7 @@
-const express = require('express');
-const app = express();
-var bodyParser = require('body-parser');
-var session = require('express-session');
+const express = require('express')
+const app = express()
+const bodyParser = require('body-parser');
+const createError = require('http-errors');
 const jwt = require("jsonwebtoken");
 const config = require('./config')
 
@@ -22,7 +22,6 @@ app.set('views', './views');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
-app.use(express.static('dist'));;
 
 
 const loginRouter = require("./routes/login");
