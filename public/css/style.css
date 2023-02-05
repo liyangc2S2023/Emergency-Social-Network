@@ -47,8 +47,7 @@
     align-items: center;
 }
 
-input[type='text'],
-input[type='password'] {
+.field {
     margin-bottom: 20px;
     width: 100%;
     padding: 15px;
@@ -114,4 +113,13 @@ input[type='password'] {
 .btn-container {
     display: flex;
     flex-direction: row;
+}
+
+.error-message {
+    display: "none";
+    color: #CA0202;
+}
+
+.invalid {
+    border: 2px solid #CA0202;
 }
