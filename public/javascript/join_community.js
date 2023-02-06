@@ -40,4 +40,7 @@ form.addEventListener("submit", (event) => {
         errorMessage.style.display = "block";
         errorMessage.innerHTML = errorMessageString + '<br>';
     }
+
+    //let user = {usernameInput, passwordInput};
+	//socket.emit("userLoginInfo", user);
 });
