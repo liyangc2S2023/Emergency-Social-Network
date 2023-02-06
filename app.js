@@ -10,11 +10,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-const User = require('./models/user');
-require('./database');
-
 const port = 3000;
-
 
 app.set('view engine', 'pug');
 app.set('views', './views');
@@ -25,11 +21,49 @@ app.use(express.static('public'));
 
 
 const loginRouter = require("./routes/login");
+const joinRouter = require("./routes/join");
+const welcomeRouter = require("./routes/welcome");
 app.use("/login", loginRouter);
+app.use("/join", joinRouter);
+app.use("/welcome", welcomeRouter);
 
-app.get('/', (req, res) => {
-    res.redirect('/login');
+// app.get('/', (req, res) => {
+//   res.redirect('/login');
+// })
+// app.get('/', (req, res) => {
+//   res.redirect('/join');
+// })
+// app.get('/', (req, res) => {
+//   res.redirect('/welcome');
+// })
+
+app.get('/join_community', (req, res) => {
+  res.render('join_community');
 })
+
+app.post('/new_user_create', (req, res) => {
+  res.render('new_user_create');
+})
+
+app.get('/new_user_create', (req, res) => {
+  res.render('new_user_create');
+})
+app.get('/welcome_rules', (req, res) => {
+  res.render('welcome_rules');
+})
+
+// TODO: move to a router
+app.get('/register1', (req, res) => {
+  res.render('join_community');
+});
+
+app.get('/register2', (req, res) => {
+  res.render('new_user_create');
+});
+
+app.get('/register3', (req, res) => {
+  res.render('welcome_rules');
+});
 
 // Middleware: JWT(Json Web Token) Authentication
 app.use(function(req,res,next){
