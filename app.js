@@ -46,7 +46,7 @@ app.use(function(req,res,next){
     }
 })
 
-app.use("/rules", require("./routes/rulesRouter"));
+app.use("/rules", require("./routes/welcomeRulesRouter"));
 
 // page not found
 app.use(function(req,res,next){

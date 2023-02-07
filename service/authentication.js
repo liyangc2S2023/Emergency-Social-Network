@@ -1,6 +1,6 @@
 const cryptoJS = require('crypto-js')
 const bannedName=require('../public/username_exclude.json').name
-const User=require('./user')
+const User=require('../model/user')
 
 class authentication{
     /**
