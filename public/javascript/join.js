@@ -3,6 +3,9 @@ window.onload=function(){
     form.addEventListener("submit", (event) => {
         event.preventDefault();
     });
+    
+    $('.ui.basic.modal').modal('show')
+
 }
 
 function confirmClicked(){
@@ -21,19 +24,6 @@ function confirmClicked(){
         $("#username").addClass("invalid");
         $("#error-message-3").show()
     }
-    // // todo: banned name    
-    // let bannedName = false
-    // if(bannedName && bannedName.indexOf(username)!=-1){
-    //     $("#username").addClass("invalid");
-    //     $("#error-message-2").show()
-    //     isValid=false
-    // }
-    // todo: username exists
-    // if(usernameExist){
-    //     isValid=false
-    //     $("#username").addClass("invalid");
-    //     $("#error-message-1").show()
-    // }
 
     // todo: fix problem
     if(isValid){
@@ -50,5 +40,12 @@ function confirmClicked(){
 }
 
 function nextBtnClicked(){
-    $('.ui.basic.modal').modal('show')
+    axios.post('/join',{
+        username:username,
+        password:password
+    }).then(function(res){
+        location.href='/rules'
+    }).catch(function(err){
+        console.log(err)
+    })
 }

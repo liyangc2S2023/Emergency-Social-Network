@@ -6,13 +6,29 @@ const router = express.Router();
 
 
 router.get('/', function (req, res) {
-    res.render('join', {result: new Result(true,'abc',{prompt:0})});
+    res.render('join');
 });
 
-router.post('/', async function (req, res, next) {
+router.post('/', function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    await joinService.join(res,username,password,next)
+    successflag, joinErr = joinService.join(username,password)
+    console.log("backend result ->")
+    console.log(successflag, joinErr)
+    if (successflag) {
+        res.status(200)
+        res.render('join', {joinComfirm:true})
+    } else {
+        res.status(400)
+        res.render('join', {joinErr:joinErr})
+    }
+
+});
+
+router.post('/comfirm', async function (req, res, next) {
+    var username = req.body.username;
+    var password = req.body.password;
+    await joinService.comfirmJoin(res,username,password,next)
 
 });
 

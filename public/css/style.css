@@ -122,7 +122,7 @@
 }
 
 .error-message {
-    display: none;
+    /* display: none; */
     color: #CA0202;
 }
 
