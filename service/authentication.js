@@ -1,7 +1,6 @@
-const { response } = require('express');
-
 const cryptoJS = require('crypto-js')
 const bannedName=require('../public/username_exclude.json').name
+const User=require('../model/user')
 
 class authentication{
     /**
@@ -12,13 +11,20 @@ class authentication{
      *          if username is banned, return false
      *          else return true
      */
-    static validateUsername(username){
+    static async validateUsername(username){
         if(!username || username.length<3) return false
         username=username.toLowerCase()
         // banned name
         if(bannedName.indexOf(username)!=-1) return false;
-        // checkDuplicate(username)
-        return true
+        // check duplicate username
+        // todo: learn more about promise
+        var user = await User.findOne({username:username}).exec()
+        if(user){
+            return false
+        }
+        else {
+            return true
+        }
     }
 
     /**

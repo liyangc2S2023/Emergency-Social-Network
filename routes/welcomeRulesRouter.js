@@ -3,5 +3,8 @@ const router = express.Router();
 
 
 router.get('/', function (req, res) {
-    res.render('welcome_rules');
+    res.render('welcomeRules');
 });
+
+
+module.exports = router;

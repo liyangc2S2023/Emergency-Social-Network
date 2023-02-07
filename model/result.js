@@ -1,4 +1,4 @@
-class result{
+class Result{
     /**
      * result for all http request
      * @param {boolean} success is request succeed
@@ -30,4 +30,4 @@ class result{
     }
 }
 
-module.exports=result
+module.exports=Result
