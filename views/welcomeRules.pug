@@ -4,10 +4,30 @@ html
         title Welcome &amp; Rules
         link(rel='stylesheet' href='/css/style.css')
         meta(name='viewport' content='width=device-width, initial-scale=1')
+        include lib/semantic.pug
     body
         div.container
             h1.h1 Welcome &amp; Rules
-            p.p Some welcome message &amp; usage guide
+            div.p_container
+                p.p Welcome to our community!
+                p.p You can select a status and share the status to everyone:
+                table.ui.celled.table
+                    tbody
+                        tr
+                            td
+                                h3(style='color: #16593d;') OK
+                                img(src='/icons/okIcon.png')
+                            td I am OK: I do not need help.
+                        tr
+                            td 
+                                h3(style='color: #f8e039;') Help
+                                img(src='/icons/helpIcon.png')
+                            td I need help, but this is not a life threatening emergency.
+                        tr
+                            td 
+                                h3(style='color: #cc362f;') Emergency
+                                img(src='/icons/emergencyIcon.png')
+                            td I need help now: this is a life threatening emergency!
             div.btn-container
-                //- button.btn-back' onclick="window.history.back()") BACK
+                //- button.btn-back(onclick="window.history.back()") BACK
                 button.btn-confirm(onclick="location.href='/welcome'") I UNDERSTAND
