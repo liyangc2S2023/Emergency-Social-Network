@@ -40,6 +40,9 @@ function confirmClicked(){
 }
 
 function nextBtnClicked(){
+    const username = $("#username").val();
+    const password = $("#password").val();
+    
     axios.post('/join',{
         username:username,
         password:password

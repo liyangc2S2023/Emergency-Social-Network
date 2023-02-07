@@ -6,12 +6,15 @@ const router = express.Router();
 
 
 router.get('/', function (req, res) {
-    res.render('join');
+    res.render('join', {joinComfirm:true});
 });
 
 router.post('/', function (req, res, next) {
+    console.log('hitting join router post')
     var username = req.body.username;
     var password = req.body.password;
+    console.log("checking:", username, " ", password)
+
     successflag, joinErr = joinService.join(username,password)
     console.log("backend result ->")
     console.log(successflag, joinErr)
@@ -28,7 +31,8 @@ router.post('/', function (req, res, next) {
 router.post('/comfirm', async function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    await joinService.comfirmJoin(res,username,password,next)
+    successflag, joinErr = await joinService.comfirmJoin(res,username,password,next)
+
 
 });
 
