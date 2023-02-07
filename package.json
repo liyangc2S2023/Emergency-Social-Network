@@ -25,7 +25,7 @@
   },
   "scripts": {
     "test": "jest",
-    "dev": "node app"
+    "dev": "npx nodemon app.js"
   },
   "repository": {
     "type": "git",

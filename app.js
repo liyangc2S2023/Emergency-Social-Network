@@ -4,11 +4,12 @@ const bodyParser = require('body-parser');
 const createError = require('http-errors');
 const jwt = require("jsonwebtoken");
 const config = require('./config')
-
+require('./database')
 const http = require('http');
 const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
+const cookieParser = require('cookie-parser')
 
 const port = 3000;
 
@@ -18,56 +19,19 @@ app.set('views', './views');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
+app.use(cookieParser())
 
-
-const loginRouter = require("./routes/login");
-const joinRouter = require("./routes/join");
-const welcomeRouter = require("./routes/welcome");
-app.use("/login", loginRouter);
-app.use("/join", joinRouter);
-app.use("/welcome", welcomeRouter);
-
-// app.get('/', (req, res) => {
-//   res.redirect('/login');
-// })
-// app.get('/', (req, res) => {
-//   res.redirect('/join');
-// })
-// app.get('/', (req, res) => {
-//   res.redirect('/welcome');
-// })
-
-app.get('/join_community', (req, res) => {
-  res.render('join_community');
+app.get('/', (req, res) => {
+    res.redirect('/welcome');
 })
 
-app.post('/new_user_create', (req, res) => {
-  res.render('new_user_create');
-})
-
-app.get('/new_user_create', (req, res) => {
-  res.render('new_user_create');
-})
-app.get('/welcome_rules', (req, res) => {
-  res.render('welcome_rules');
-})
-
-// TODO: move to a router
-app.get('/register1', (req, res) => {
-  res.render('join_community');
-});
-
-app.get('/register2', (req, res) => {
-  res.render('new_user_create');
-});
-
-app.get('/register3', (req, res) => {
-  res.render('welcome_rules');
-});
+// app.use("/login", require("./routes/login"));
+app.use("/join", require("./routes/joinRouter"));
+app.use("/welcome", require("./routes/welcomeRouter"));
 
 // Middleware: JWT(Json Web Token) Authentication
 app.use(function(req,res,next){
-    const token = req.body.token || req.query.token || req.headers.authorization
+    const token = req.body.token || req.query.token || req.headers.authorization || req.cookies['user_token']
     if(!token){
         next(createError(401,"token required"))
     }
@@ -81,6 +45,8 @@ app.use(function(req,res,next){
         }
     }
 })
+
+app.use("/rules", require("./routes/rulesRouter"));
 
 // page not found
 app.use(function(req,res,next){
