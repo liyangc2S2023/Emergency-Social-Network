@@ -5,28 +5,24 @@ html
         link(rel='stylesheet' href='/css/style.css')
         meta(name='viewport' content='width=device-width, initial-scale=1')
         include lib/semantic.pug
-        script(src='/javascript/join.js')
         include lib/axios.pug
+        script(src='/javascript/join.js')
     body
-        div(class="ui basic modal")
-            div(class="content")
-                p A new user will be created
-            div(class="actions")
-                div(class="ui red basic cancel inverted button")
-                    i(class="remove icon") No
-                div(class="ui green ok inverted button")
-                    i(class="checkmark icon" onclick="confirmClicked()") Yes
-        div(class='container')
-            h1(class='h1') Join Community
-            form(id='registration-form' action='/join' method='post')
-                input(class='field' type='text' name='username' id='username' placeholder='username' required)
-                input(class='field' type='password' name='password' id='password' placeholder='password' required)
-                div(class='error-message' id='error-message-1') • Please re-enter the username and/or password.
-                    br
-                div(class='error-message' id='error-message-2') • Please provide a different username.
-                    br
-                div(class='error-message' id='error-message-3') • Password must be at least 4 characters long.
-                    br
-                div(class='error-message' id='error-message-4') • Username must be at least 3 characters long.
-                    br
-                button(class='btn-next' onclick="nextBtnClicked()") NEXT
+        div.container
+            if joinComfirm
+                div.ui.basic.modal
+                    div.content
+                        p A new user will be created
+                    div.actions
+                        div.ui.red.basic.cancel.inverted.button
+                            i.remove.icon No
+                        div.ui.green.ok.inverted.button
+                            i.checkmark.icon(onclick="confirmClicked()") Yes
+            h1.h1 Join Community
+            form#registration-form(action='/join' method='post')
+                input.field#username(type='text' name='username'  placeholder='username' required value=username)
+                input.field#password(type='password' name='password'  placeholder='password' required value=password)
+                if joinErr
+                    each err in joinErr
+                        div.error-message#error-message-2 • #{err}
+                button.btn-next(onclick="nextBtnClicked()") NEXT
