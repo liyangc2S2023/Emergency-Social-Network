@@ -33,11 +33,13 @@
     color: #000000;
 }
 
-.p {
+.p_container {
     width: 100%;
     margin-top: 50px;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
+}
 
+.p {
     text-align: left;
     font-family: 'Comfortaa';
     font-style: normal;
@@ -196,4 +198,8 @@
 .welcome-body {
     background: var(--backgroud-color-a);
     margin: 20px;
+}
+
+.ui.celled.table{
+    background-color: whitesmoke;
 }
