@@ -4,6 +4,7 @@ const config = require('../config')
 const Authentication = require("./authentication")
 const Result=require('../model/result')
 const { validateUsername } = require("./authentication")
+var bannedName = require('../public/username_exclude.json').name
 
 class JoinService{
     
@@ -36,11 +37,11 @@ class JoinService{
     }
 
     static nameRuleCheck(username, password) {
-        joinErr = []
-        successflag = true
+        var joinErr = []
+        var successflag = true
         console.log("checking2:", username, " ", password)
-        successflag = successflag && validatePassword(password, joinErr)
-        successflag = successflag && validateUsername(username, joinErr)
+        successflag = successflag && this.validatePassword(password, joinErr)
+        successflag = successflag && this.validateUsername(username, joinErr)
 
         return successflag, joinErr
     }

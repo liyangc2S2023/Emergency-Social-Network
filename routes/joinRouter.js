@@ -15,7 +15,7 @@ router.post('/', function (req, res, next) {
     var password = req.body.password;
     console.log("checking:", username, " ", password)
 
-    successflag, joinErr = joinService.join(username,password)
+    var successflag, joinErr = joinService.join(username,password)
     console.log("backend result ->")
     console.log(successflag, joinErr)
     if (successflag) {
