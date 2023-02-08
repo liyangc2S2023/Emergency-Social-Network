@@ -34,6 +34,7 @@ class JoinService{
             joinErr.push("Current username is banned.")
             return false
         }
+        return true
     }
 
     static nameRuleCheck(username, password) {
@@ -43,7 +44,7 @@ class JoinService{
         successflag = this.validatePassword(password, joinErr) && successflag 
         successflag = this.validateUsername(username, joinErr) && successflag 
 
-        return successflag, joinErr
+        return {successflag, joinErr}
     }
 
     
@@ -51,12 +52,11 @@ class JoinService{
         // apply basic rule check when people hit join button.
         console.log("checking:", username, " ", password)
         return JoinService.nameRuleCheck(username, password)
-        
     }
 
-    async comfirmJoin(res,username,password){
+    async confirmJoin(res,username,password){
         // apply full (with DB check) checks when people comfirm join
-        successflag, joinErr = nameRuleCheck(username, password)
+        var {successflag, joinErr} = JoinService.nameRuleCheck(username, password)
 
         if (successflag) {
             // will try to store/read in DB if basic check passed.
@@ -71,16 +71,10 @@ class JoinService{
                 },config.JWT_KEY, {expiresIn:'1d'})
                 // todo: learn more about promise
                 await User.create({"username":username,"password":Authentication.encrypt(password)})
-                res.status(200)
                 res.cookie('user_token',token)
-                res.render('welcomeRules');
             }
-
         }
-        
-        res.status(400)
-        res.render('join', {joinErr:joinErr})
-        
+        return {successflag,joinErr}   
     }
 }
 

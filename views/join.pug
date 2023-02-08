@@ -20,8 +20,8 @@ html
                             i.checkmark.icon(onclick="confirmClicked()") Yes
             h1.h1 Join Community
             form#registration-form(action='/join' method='post')
-                input.field#username(type='text' name='username'  placeholder='username' required)
-                input.field#password(type='password' name='password'  placeholder='password' required)
+                input.field#username(type='text' name='username'  placeholder='username' required value=username)
+                input.field#password(type='password' name='password'  placeholder='password' required value=password)
                 if joinErr
                     each err in joinErr
                         div.error-message#error-message-2 • #{err}
