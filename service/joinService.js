@@ -40,8 +40,8 @@ class JoinService{
         var joinErr = []
         var successflag = true
         console.log("checking2:", username, " ", password)
-        successflag = successflag && this.validatePassword(password, joinErr)
-        successflag = successflag && this.validateUsername(username, joinErr)
+        successflag = this.validatePassword(password, joinErr) && successflag 
+        successflag = this.validateUsername(username, joinErr) && successflag 
 
         return successflag, joinErr
     }

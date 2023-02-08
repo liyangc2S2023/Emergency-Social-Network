@@ -11,7 +11,6 @@ window.onload=function(){
 function confirmClicked(){
     console.log('confirmClicked')
     var isValid=true;
-    const form = $("#registration-form");
     const username = $("#username").val();
     const password = $("#password").val();
     if(password.length<4){
@@ -27,7 +26,6 @@ function confirmClicked(){
 
     // todo: fix problem
     if(isValid){
-        // form.submit()
         axios.post('/join',{
             username:username,
             password:password
@@ -42,13 +40,15 @@ function confirmClicked(){
 function nextBtnClicked(){
     const username = $("#username").val();
     const password = $("#password").val();
+    const form = $("#registration-form");
+    form.submit()
     
-    axios.post('/join',{
-        username:username,
-        password:password
-    }).then(function(res){
-        location.href='/rules'
-    }).catch(function(err){
-        console.log(err)
-    })
+    // axios.post('/join',{
+    //     username:username,
+    //     password:password
+    // }).then(function(res){
+    //     location.href='/rules'
+    // }).catch(function(err){
+    //     console.log(err)
+    // })
 }
