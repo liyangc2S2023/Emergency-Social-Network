@@ -19,13 +19,4 @@ function confirmClicked(){
 function nextBtnClicked(){
     const form = $("#registration-form");
     form.submit()
-    
-    // axios.post('/join',{
-    //     username:username,
-    //     password:password
-    // }).then(function(res){
-    //     location.href='/rules'
-    // }).catch(function(err){
-    //     console.log(err)
-    // })
 }

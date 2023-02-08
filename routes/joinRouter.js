@@ -10,14 +10,10 @@ router.get('/', function (req, res) {
 });
 
 router.post('/', function (req, res, next) {
-    console.log('hitting join router post')
     var username = req.body.username;
     var password = req.body.password;
-    console.log("checking:", username, " ", password)
 
     var {successflag, joinErr} = joinService.join(username,password)
-    console.log("backend result ->")
-    console.log(successflag, joinErr)
     if (successflag) {
         res.status(200)
         res.render('join', {joinComfirm:true,username:username,password:password})

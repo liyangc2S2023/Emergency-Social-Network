@@ -40,7 +40,6 @@ class JoinService{
     static nameRuleCheck(username, password) {
         var joinErr = []
         var successflag = true
-        console.log("checking2:", username, " ", password)
         successflag = this.validatePassword(password, joinErr) && successflag 
         successflag = this.validateUsername(username, joinErr) && successflag 
 
@@ -50,7 +49,6 @@ class JoinService{
     
     join(username, password) {
         // apply basic rule check when people hit join button.
-        console.log("checking:", username, " ", password)
         return JoinService.nameRuleCheck(username, password)
     }
 
