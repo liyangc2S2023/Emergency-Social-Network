@@ -1,10 +1,10 @@
 const User = require("../model/user")
 
-class JoinService{
+class JoinController{
  
-    join(username, password) {
+    async join(username, password) {
         // apply basic rule check when people hit join button.
-        return User.nameRuleCheck(username, password)
+        return User.nameRuleCheck(username, password) && User.usernameExists(username)
     }
 
     async confirmJoin(res,username,password){
@@ -12,6 +12,6 @@ class JoinService{
     }
 }
 
-const joinService=new JoinService()
+const joinController=new JoinController()
 
-module.exports=joinService
+module.exports=joinController

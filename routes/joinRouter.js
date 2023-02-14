@@ -1,7 +1,5 @@
 const express = require('express');
-const joinService = require('../service/joinService');
-const Authentication = require('../service/authentication');
-const Result = require('../model/result');
+const joinController = require('../controller/JoinController');
 const router = express.Router();
 
 
@@ -13,7 +11,7 @@ router.post('/', function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
 
-    var {successflag, joinErr} = joinService.join(username,password)
+    var {successflag, joinErr} = joinController.join(username,password)
     if (successflag) {
         res.status(200)
         res.render('join', {joinComfirm:true,username:username,password:password})
@@ -27,7 +25,7 @@ router.post('/', function (req, res, next) {
 router.post('/confirm', async function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    var {successflag,userToken, joinErr} = await joinService.confirmJoin(res,username,password,next)
+    var {successflag,userToken, joinErr} = await joinController.confirmJoin(res,username,password,next)
     console.log(successflag, joinErr)
     if (successflag) {
         res.status(200)

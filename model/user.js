@@ -40,17 +40,7 @@ function encrypt(password,crypto='SHA256'){
 }
 
 
-async function usernameExists(username) {
-  // check duplicate username
-  // todo: learn more about promise
-  var user = await UserTable.findOne({username:username}).exec()
-  if(user){
-      return false
-  }
-  else {
-      return true
-  }
-}
+
 
 class User{
 
@@ -61,6 +51,18 @@ class User{
       successflag = validateUsername(username, joinErr) && successflag 
 
       return {successflag, joinErr}
+  }
+
+  static async usernameExists(username) {
+    // check duplicate username
+    // todo: learn more about promise
+    var user = await UserTable.findOne({username:username}).exec()
+    if(user){
+        return false
+    }
+    else {
+        return true
+    }
   }
 
   static async confirmJoin(username,password){
