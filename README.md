@@ -88,3 +88,8 @@ var newError=new Error("msg")
 newError.status=400
 throw newError
 ```
+
+# Docs
+## API Doc
+
+The api doc can be found in [this link](https://docs.google.com/spreadsheets/d/1uA0CPb3yRkZHYWAdCfnWtrLeLiTVSnYCXtt_-ttvRq0/edit?usp=sharing).
