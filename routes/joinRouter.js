@@ -27,9 +27,11 @@ router.post('/', function (req, res, next) {
 router.post('/confirm', async function (req, res, next) {
     var username = req.body.username;
     var password = req.body.password;
-    var {successflag, joinErr} = await joinService.confirmJoin(res,username,password,next)
+    var {successflag,userToken, joinErr} = await joinService.confirmJoin(res,username,password,next)
+    console.log(successflag, joinErr)
     if (successflag) {
         res.status(200)
+        res.cookie('user_token',userToken)
         res.render('welcomeRules');
     } else {
         res.status(400)
