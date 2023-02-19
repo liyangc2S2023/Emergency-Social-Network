@@ -25,11 +25,18 @@ class JoinController{
  
     async join(username, password) {
         // apply basic rule check when people hit join button.
-        return User.nameRuleCheck(username, password) && User.usernameExists(username)
+        var {successflag, joinErr} = User.nameRuleCheck(username, password)
+        var usernameExistsCheck = await User.usernameExists(username)
+        successflag = successflag && usernameExistsCheck.successFlag
+        if(usernameExistsCheck.err) joinErr.push(usernameExistsCheck.err)
+        return {successflag, joinErr}
     }
 
-    async confirmJoin(res,username,password){
-        return User.confirmJoin(username, password)  
+    async confirmJoin(username, password,next){
+        var {successflag, joinErr} = await this.join(username,password)
+        return {successflag:successflag, 
+                token:await User.confirmJoin(username, password),
+                err: joinErr}
     }
 }
 

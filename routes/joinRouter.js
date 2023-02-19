@@ -1,5 +1,5 @@
 const express = require('express');
-const joinController = require('../controller/JoinController');
+const joinController = require('../controller/joinController');
 const router = express.Router();
 
 
@@ -7,11 +7,10 @@ router.get('/', function (req, res) {
     res.render('join');
 });
 
-router.post('/', function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
-
-    var {successflag, joinErr} = joinController.join(username,password)
+router.post('/', async function (req, res, next) {
+    var username = req.body.username.toLowerCase();
+    var password = req.body.password.toLowerCase();
+    var {successflag, joinErr} = await joinController.join(username,password)
 
     // scene 1: user pass not fit rule
     if (successflag) {
@@ -33,17 +32,16 @@ router.post('/', function (req, res, next) {
 });
 
 router.post('/confirm', async function (req, res, next) {
-    var username = req.body.username;
-    var password = req.body.password;
-    var {successflag,userToken, joinErr} = await joinController.confirmJoin(res,username,password,next)
-    console.log(successflag, joinErr)
-    if (successflag) {
+    var username = req.body.username.toLowerCase();
+    var password = req.body.password.toLowerCase();
+    var confirmResult = await joinController.confirmJoin(username,password,next)
+    if (confirmResult.successflag) {
         res.status(200)
-        res.cookie('user_token',userToken)
+        res.cookie('user_token',confirmResult.token)
         res.render('welcomeRules');
     } else {
         res.status(400)
-        res.render('join', {joinErr:joinErr,username:username,password:password})
+        res.render('join', {joinErr:confirmResult.err,username:username,password:password})
     }
 });
 

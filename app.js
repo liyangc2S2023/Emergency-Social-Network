@@ -48,6 +48,9 @@ app.use(function(req,res,next){
 
 app.use("/rules", require("./routes/welcomeRulesRouter"));
 
+// rest APIs
+app.use("/api/v1",require("./routes/apiV1Routes"))
+
 // page not found
 app.use(function(req,res,next){
     next(createError(404,"page not found"));
