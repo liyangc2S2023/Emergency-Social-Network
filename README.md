@@ -56,6 +56,20 @@ if you wish to auto-reload the page, then run:
 ### How to run unit test
     $ npm test
 
+### How to expose port temporarily on the internet 
+Visit https://ngrok.com/ and log in, download and unzip ngrok:
+
+    $ unzip /path/to/ngrok.zip
+
+Add your authtoken to the default ngrok.yml configuration file:
+
+    $ ngrok config add-authtoken YOUR_TOKEN
+    or $ ./ngrok config add-authtoken YOUR_TOKEN
+
+Start a HTTP tunnel forwarding to local port:
+
+    $ ngrok http 3000
+
 # Data Format
 ### Result
 Path: *./model/result.js*
