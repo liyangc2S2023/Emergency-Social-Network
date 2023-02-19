@@ -17,30 +17,36 @@ var newMsg=function(msg,isSender){
 }
 
 function sendClick(){
-    console.log("clicked")
-    var message = {
-        "sender":$('#username').val(),
-        "reciver":"",
-        "status":$('#status').val(),
-        "timestamp":new Date(),
-        "content":$("#inputText").val()
+    if($("#inputText").val()=="" || 
+        $('#username').val()=="" || 
+        $('#status').val()==""){
+        return
     }
-    axios.post('/api/v1/messages',message).then(function(res){
-        // if(!post) return;
-        // socket.emit('post',message);
-        $("#inputText").val("")
-        // $("#dialog").append(newMsg(msg,false))
-    })
-
+    else{
+        var message = {
+            "sender":$('#username').val(),
+            "reciver":"",
+            "status":$('#status').val(),
+            "timestamp":new Date(),
+            "content":$("#inputText").val()
+        }
+        axios.post('/api/v1/messages',message).then(function(res){
+            // if(!post) return;
+            // socket.emit('post',message);
+            $("#inputText").val("")
+            // $("#dialog").append(newMsg(msg,false))
+        })
+    }
 }
 
 $(document).ready(function(){
-    axios.get('api/v1/currentUser').then(function(res){
-        console.log(res)
-        var username = res.data.data.username
-        var status = res.data.data.status
-        $('#username').val(username)
-        $('#status').val(status)
+    axios.get('api/v1/users/current').then(function(res){
+        if(res.success){
+            var username = res.data.data.username
+            var status = res.data.data.status
+            $('#username').val(username)
+            $('#status').val(status)
+        }
     }).then(function(){
         axios.get('/api/v1/messages').then(function(res){
             result=res.data
@@ -50,5 +56,7 @@ $(document).ready(function(){
                 }
             }
         })
+    }).catch(function(err){
+        alert(err)
     })
 })

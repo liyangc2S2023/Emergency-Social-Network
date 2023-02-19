@@ -37,7 +37,7 @@ router.post('/confirm', async function (req, res, next) {
     var confirmResult = await joinController.confirmJoin(username,password,next)
     if (confirmResult.successflag) {
         res.status(200)
-        res.cookie('user_token',confirmResult.token)
+        res.cookie('user_token',confirmResult.token,{maxAge:24*60*60*1000})
         res.render('welcomeRules');
     } else {
         res.status(400)

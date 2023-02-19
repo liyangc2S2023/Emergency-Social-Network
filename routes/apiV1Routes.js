@@ -18,7 +18,7 @@ router.post('/users',async function(req,res,next){
     return res.send(Result.success(await userController.addUser(req.body.username,req.body.password)))
 })
 
-router.get('/currentUser', async function(req,res,next){
+router.get('/users/current', async function(req,res,next){
     token=req.headers.authorization
     var username = ""
     try{
@@ -29,7 +29,12 @@ router.get('/currentUser', async function(req,res,next){
     }
     var user = await userController.getOne(username)
     // todo: user status haven't added
-    return res.send(Result.success({"username":username,"status":user.status}))
+    if(user){
+        return res.send(Result.success({"username":username,"status":user.status}))
+    }
+    else{
+        return res.status(400).send(Result.fail(username,""))
+    }
 })
 
 router.get('/messages',async function(req,res,next){
