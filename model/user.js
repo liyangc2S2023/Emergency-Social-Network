@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
 
 const UserTable = mongoose.model('User', userSchema);
 
-
 function validatePassword(password, joinErr){
   if(!password || password.length<4) {
       joinErr.push("Password must be at least 4 characters long.")
@@ -40,8 +39,6 @@ function encrypt(password,crypto='SHA256'){
 }
 
 
-
-
 class User{
 
   static nameRuleCheck(username, password) {
@@ -58,33 +55,34 @@ class User{
     // todo: learn more about promise
     var user = await UserTable.findOne({username:username}).exec()
     if(user){
-        return false
+      return {successFlag:false,err:"Username Already Exists."}
     }
     else {
-        return true
+      return {successFlag:true,err:undefined}
     }
   }
 
   static async confirmJoin(username,password){
     // apply full (with DB check) checks when people comfirm join
-    var {successflag, joinErr} = User.nameRuleCheck(username, password)
-    var token = ""
-    if (successflag) {
-        // will try to store/read in DB if basic check passed.
-        successflag = successflag && await usernameExists(username)
+    var token=jwt.sign({
+        time:Date(),
+        username:username
+    },config.JWT_KEY, {expiresIn:'1d'})
+    // todo: learn more about promise
+    await UserTable.create({"username":username,"password":encrypt(password)})
+    return token
+  }
 
-        if (!successflag) {
-            joinErr.push("Username Already Exists.")
-        } else {
-            token=jwt.sign({
-                time:Date(),
-                username:username
-            },config.JWT_KEY, {expiresIn:'1d'})
-            // todo: learn more about promise
-            await UserTable.create({"username":username,"password":encrypt(password)})
-        }
-    }
-    return {successflag,token,joinErr}  
+  static async getAll(){
+    return await UserTable.find()
+  }
+
+  static async getOne(username){
+    return await UserTable.findOne({"username":username})
+  }
+
+  static async addUser(username,password){
+    return await UserTable.create({"username":username,"password":encrypt(password)})
   }
 }
 

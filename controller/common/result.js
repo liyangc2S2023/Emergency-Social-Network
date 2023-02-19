@@ -10,6 +10,11 @@ class Result{
         this.message=message
         this.data=data
     }
+
+    static success(data){
+        return new Result(true,"",data)
+    }
+
     getSuccess(){
         return this.success
     }
