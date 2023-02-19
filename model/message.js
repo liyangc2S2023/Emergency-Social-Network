@@ -16,17 +16,17 @@ class Message{
         return await MessageTable.find()
     }
 
-    static async getBySender(senderName){
-        return await MessageTable.find({"sender":senderName})
+    static async getBySender(sender){
+        return await MessageTable.find({"sender":sender})
     }
 
     static async getByReciver(){
-        return await MessageTable.find({"reciver":reciverName})
+        return await MessageTable.find({"reciver":reciver})
     }
 
-    static async addMessage(senderName,reciverName,status,content){
+    static async addMessage(sender,reciver,status,content){
         return await MessageTable.create(
-            {"sender":senderName,"reciver":reciverName,
+            {"sender":sender,"reciver":reciver,
             "status":status,
             "content":content})
     }

@@ -6,12 +6,12 @@ class MessageController{
         return await Message.getAll()
     }
 
-    async getBySender(senderName){
-        return await Message.getBySender(senderName)
+    async getBySender(sender){
+        return await Message.getBySender(sender)
     }
 
-    async addMessage(senderName,reciverName,status,content){
-        return await Message.addMessage(senderName,reciverName,status,content)
+    async addMessage(sender,reciver,status,content){
+        return await Message.addMessage(sender,reciver,status,content)
     }
 }
 

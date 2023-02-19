@@ -50,6 +50,8 @@ app.use(function(req,res,next){
 
 app.use("/rules", require("./routes/welcomeRulesRouter"));
 
+app.use("/chat", require("./routes/chatRouter"));
+
 // rest APIs
 app.use("/api/v1",require("./routes/apiV1Routes"))
 

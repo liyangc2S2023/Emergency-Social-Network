@@ -46,8 +46,7 @@ MongoDB is a popular NoSQL database management system. It is designed to store a
 
 ### How to run this project code
     $ npm install
-    $ node app.js
-    or $ npm run dev (recommanded, see config in package.json)
+    $ npm run dev (recommanded, see config in package.json)
 
 if you wish to auto-reload the page, then run:
 
