@@ -3,86 +3,128 @@ const mongoose = require('mongoose');
 const config = require('../config')
 const jwt = require('jsonwebtoken')
 
-const bannedName=require('../public/username_exclude.json').name
+const bannedName = require('../public/username_exclude.json').name
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }
+  password: { type: String, required: true },
+  online: { type: Boolean, default: false }
 });
 
 const UserTable = mongoose.model('User', userSchema);
 
-function validatePassword(password, joinErr){
-  if(!password || password.length<4) {
-      joinErr.push("Password must be at least 4 characters long.")
-      return false
+function validatePassword(password, joinErr) {
+  if (!password || password.length < 4) {
+    joinErr.push("Password must be at least 4 characters long.")
+    return false
   }
   return true
 }
 
-function validateUsername(username, joinErr){
-    if(!username || username.length<3) { 
-        joinErr.push("Username must be at least 3 characters long.")
-        return false
-    }
-    username=username.toLowerCase()
-    // banned name
-    if(bannedName.indexOf(username)!=-1) {
-        joinErr.push("Current username is banned.")
-        return false
-    }
-    return true
+function validateUsername(username, joinErr) {
+  if (!username || username.length < 3) {
+    joinErr.push("Username must be at least 3 characters long.")
+    return false
+  }
+  username = username.toLowerCase()
+  // banned name
+  if (bannedName.indexOf(username) != -1) {
+    joinErr.push("Current username is banned.")
+    return false
+  }
+  return true
 }
 
-function encrypt(password,crypto='SHA256'){
-  return cryptoJS[crypto](password)
+function encrypt(password, crypto = 'SHA256') {
+  return cryptoJS[crypto](password).toString()
 }
 
 
-class User{
+class User {
 
   static nameRuleCheck(username, password) {
-      var joinErr = []
-      var successflag = true
-      successflag = validatePassword(password, joinErr) && successflag 
-      successflag = validateUsername(username, joinErr) && successflag 
+    var joinErr = []
+    var successflag = true
+    successflag = validatePassword(password, joinErr) && successflag
+    successflag = validateUsername(username, joinErr) && successflag
 
-      return {successflag, joinErr}
+    return { successflag, joinErr }
   }
 
   static async usernameExists(username) {
     // check duplicate username
     // todo: learn more about promise
-    var user = await UserTable.findOne({username:username}).exec()
-    if(user){
-      return {successFlag:false,err:"Username Already Exists."}
+    var user = await UserTable.findOne({ username: username }).exec()
+    if (user) {
+      return { successFlag: false, err: "Username Already Exists." }
     }
     else {
-      return {successFlag:true,err:undefined}
+      return { successFlag: true, err: undefined }
     }
   }
 
-  static async confirmJoin(username,password){
+  static async confirmJoin(username, password) {
     // apply full (with DB check) checks when people comfirm join
-    var token=jwt.sign({
-        time:Date(),
-        username:username
-    },config.JWT_KEY, {expiresIn:'1d'})
+    var token = jwt.sign({
+      time: Date(),
+      username: username
+    }, config.JWT_KEY, { expiresIn: '1d' })
     // todo: learn more about promise
-    await UserTable.create({"username":username,"password":encrypt(password)})
+    await UserTable.create({ "username": username, "password": encrypt(password) })
     return token
   }
 
-  static async getAll(){
-    return await UserTable.find()
+  static async checkPassword(username, password) {
+    var user = await UserTable.findOne({ username: username }).exec()
+    if (user) {
+      if (encrypt(password) === user.password) return true
+    }
+    return false
   }
 
-  static async getOne(username){
-    return await UserTable.findOne({"username":username})
+  // static async confirmJoin(username, password) {
+  //   // apply full (with DB check) checks when people comfirm join
+  //   var token = jwt.sign({
+  //     time: Date(),
+  //     username: username
+  //   }, config.JWT_KEY, { expiresIn: '1d' })
+  //   // todo: learn more about promise
+  //   await UserTable.create({ "username": username, "password": encrypt(password) })
+  //   return token
+  // }
+
+  static async createUser(username, password) {
+    return await UserTable.create({ "username": username, "password": encrypt(password) })
   }
 
-  static async addUser(username,password){
-    return await UserTable.create({"username":username,"password":encrypt(password)})
+  static async login(username) {
+    // return a token after login
+    var token = jwt.sign({
+      time: Date(),
+      username: username
+    }, config.JWT_KEY, { expiresIn: '1d' })
+    // update user status to online
+    await UserTable.updateOne({ username: username }, { $set: { online: true } })
+    return token
+  }
+
+  static async logout(username) {
+    // update user status to offline
+    return await UserTable.updateOne({ username: username }, { $set: { online: false } })
+  }
+
+  static async getAll() {
+    // return await UserTable.find();
+    return await UserTable.find({}).sort({ online: -1, username: 1 });
+    //.sort({online: -1, username: 1}).toArray()
+  }
+
+  static async getOne(username) {
+    return await UserTable.findOne({ "username": username }, { "online": true })
+  }
+
+  static async addUser(username, password) {
+    return await UserTable.create({ "username": username, "password": encrypt(password) })
   }
 }
 
