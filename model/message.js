@@ -31,6 +31,18 @@ class Message{
             "content":content})
     }
 
+    static async getByReciver(){
+        return await MessageTable.find({"reciver":reciverName})
+    }
+
+    static async formatNotice(text) {
+        return{
+            sender:"Notice",
+            text,
+            time: moment().format("MM.DD.YYYY HH:mmA")
+    
+        }
+    }
 }
 
 module.exports = Message
