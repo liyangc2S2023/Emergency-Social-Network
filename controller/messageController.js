@@ -13,6 +13,10 @@ class MessageController{
     async addMessage(senderName,reciverName,status,content){
         return await Message.addMessage(senderName,reciverName,status,content)
     }
+
+    async formatNotice(text){
+        return Message.formatNotice(text)
+    }
 }
 
 const messageController=new MessageController()

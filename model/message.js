@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
 
 const messageSchema = new mongoose.Schema({
   content: {type: String, required: true},
@@ -35,12 +36,11 @@ class Message{
         return await MessageTable.find({"reciver":reciverName})
     }
 
-    static async formatNotice(text) {
-        return{
+    static formatNotice(text) {
+        return {
             sender:"Notice",
             text,
             time: moment().format("MM.DD.YYYY HH:mmA")
-    
         }
     }
 }

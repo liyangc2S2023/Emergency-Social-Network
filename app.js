@@ -10,6 +10,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const cookieParser = require('cookie-parser')
+const setupSocket = require('./sockets');
 
 const port = 3000;
 
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookieParser())
+
 
 app.get('/', (req, res) => {
     res.redirect('/welcome');
@@ -51,6 +53,8 @@ app.use("/rules", require("./routes/welcomeRulesRouter"));
 // rest APIs
 app.use("/api/v1",require("./routes/apiV1Routes"))
 
+
+
 // page not found
 app.use(function(req,res,next){
     next(createError(404,"page not found"));
@@ -69,6 +73,8 @@ app.use(function(err,req,res,next){
     res.status(err.status || 500);
     res.render("error",{error:err})
 })
+
+setupSocket(server);
 
 console.log("Server started at: http://localhost:"+port)
 
