@@ -13,3 +13,5 @@ router.post('/', async function (req, res) {
     // render welcome
     res.render('welcome')
 });
+
+module.exports = router;
