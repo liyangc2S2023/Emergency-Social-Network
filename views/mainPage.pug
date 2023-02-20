@@ -8,33 +8,9 @@ html
         include lib/axios.pug
         script(src='/javascript/join.js')
     body
-        //header region
+        // header
         include header.pug
         // page content
-        .content
-            .ui.container
-                .ui.relaxed.divided.items 
-                    .item 
-                        .ui.small.image 
-                            img(src="/icons/cloud-off.svg")
-                        .content 
-                            a.header Lisa 
-                            .meta online 
-                            .description Lisa's last message
-                    .item 
-                        .ui.small.image 
-                            img(src="/icons/cloud-off.svg")
-                        .content 
-                            a.header Lisa 
-                            .meta
-                                .online online 
-                            .description Lisa's last message
-                    .item 
-                        .ui.small.image 
-                            img(src="/icons/cloud-off.svg")
-                        .content 
-                            a.header Lisa 
-                            .meta offline 
-                            .description Lisa's last message
-        //
+        include directory.pug 
+        // footer
         include footer.pug
