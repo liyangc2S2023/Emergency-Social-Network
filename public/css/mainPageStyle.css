@@ -1,5 +1,4 @@
-.content {
-    /* flex: 1; */
+.main-page-content {
     padding-top: 6.5em;
     padding-bottom: 4em;
 }
@@ -42,22 +41,15 @@
 #title {
     color:whitesmoke;
     padding-left: 1em;
+    min-width: 6em;
 }
 
 .main-page-name {
     margin-left: 0.5em;
 }
 
-.ui.items>.item>.content {
-    padding-left: 2em;
-}
-
 #logout {
     color:beige;
-}
-
-.online {
-    color:green;
 }
 
 .main-footer {

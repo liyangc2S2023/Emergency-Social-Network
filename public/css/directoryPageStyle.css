@@ -1,0 +1,7 @@
+.ui.items>.item>.content {
+    padding-left: 2em;
+}
+
+.online {
+    color:green;
+}
