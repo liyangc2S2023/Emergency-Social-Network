@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
   sender : {type:String, required: true},
   reciver: {type:String, 
               default:"", require:true},
-  status:{type:String, require:true},
+  status:{type:String, require:true, default:""},
   timestamp: {type:Date, default:Date.now, require: true}
 });
 
@@ -16,19 +16,23 @@ class Message{
         return await MessageTable.find()
     }
 
-    static async getBySender(senderName){
-        return await MessageTable.find({"sender":senderName})
+    static async getBySender(sender){
+        return await MessageTable.find({"sender":sender})
+    }
+
+    static async getByReciver(){
+        return await MessageTable.find({"reciver":reciver})
+    }
+
+    static async addMessage(sender,reciver,status,content){
+        return await MessageTable.create(
+            {"sender":sender,"reciver":reciver,
+            "status":status,
+            "content":content})
     }
 
     static async getByReciver(){
         return await MessageTable.find({"reciver":reciverName})
-    }
-
-    static async addMessage(senderName,reciverName,status,content){
-        return await MessageTable.create(
-            {"sender":senderName,"reciver":reciverName,
-            "status":status,
-            "content":content})
     }
 
 }

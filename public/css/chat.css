@@ -1,0 +1,19 @@
+#chat{
+    padding-top: 50px;
+    padding-bottom: 80px;
+}
+#dialog{
+    background-color: antiquewhite;
+}
+#inputBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    bottom: 50px;
+}
+
+.status{
+    width: 10px;
+    height: 10px;
+}

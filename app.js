@@ -7,9 +7,8 @@ const config = require('./config')
 require('./database')
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
 const cookieParser = require('cookie-parser')
+const setupSocket = require('./socket');
 
 const port = 3000;
 
@@ -20,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookieParser())
+
 
 app.get('/', (req, res) => {
     res.redirect('/welcome');
@@ -48,6 +48,8 @@ app.use(function(req,res,next){
 
 app.use("/rules", require("./routes/welcomeRulesRouter"));
 
+app.use("/chat", require("./routes/chatRouter"));
+
 // rest APIs
 app.use("/api/v1",require("./routes/apiV1Routes"))
 
@@ -70,6 +72,8 @@ app.use(function(err,req,res,next){
     res.render("error",{error:err})
 })
 
+setupSocket(server);
+
 console.log("Server started at: http://localhost:"+port)
 
-app.listen(port);
+server.listen(port);

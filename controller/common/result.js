@@ -15,6 +15,10 @@ class Result{
         return new Result(true,"",data)
     }
 
+    static fail(msg,data){
+        return new Result(false,msg,data)
+    }
+
     getSuccess(){
         return this.success
     }
