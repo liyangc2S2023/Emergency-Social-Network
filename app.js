@@ -7,8 +7,6 @@ const config = require('./config')
 require('./database')
 const http = require('http');
 const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
 const cookieParser = require('cookie-parser')
 const setupSocket = require('./socket');
 
@@ -55,8 +53,6 @@ app.use("/chat", require("./routes/chatRouter"));
 // rest APIs
 app.use("/api/v1",require("./routes/apiV1Routes"))
 
-
-
 // page not found
 app.use(function(req,res,next){
     next(createError(404,"page not found"));
@@ -80,4 +76,4 @@ setupSocket(server);
 
 console.log("Server started at: http://localhost:"+port)
 
-app.listen(port);
+server.listen(port);

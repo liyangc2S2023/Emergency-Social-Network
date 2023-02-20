@@ -4,19 +4,11 @@ const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
-const config = require('../config')
+const config = require('../config');
 
 router.get('/users', async function (req, res, next) {
     return res.send(Result.success(await userController.getAll()))
 });
-
-router.get('/users/:userId',async function(req,res,next){
-    return res.send(Result.success(await userController.getOne(req.params.userId)))
-})
-
-router.post('/users',async function(req,res,next){
-    return res.send(Result.success(await userController.addUser(req.body.username,req.body.password)))
-})
 
 router.get('/users/current', async function(req,res,next){
     token=req.headers.authorization
@@ -35,6 +27,14 @@ router.get('/users/current', async function(req,res,next){
     else{
         return res.status(400).send(Result.fail(username,""))
     }
+})
+
+router.get('/users/:userId',async function(req,res,next){
+    return res.send(Result.success(await userController.getOne(req.params.userId)))
+})
+
+router.post('/users',async function(req,res,next){
+    return res.send(Result.success(await userController.addUser(req.body.username,req.body.password)))
 })
 
 router.get('/messages',async function(req,res,next){

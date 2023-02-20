@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema({
   sender : {type:String, required: true},
   reciver: {type:String, 
               default:"", require:true},
-  status:{type:String, require:true},
+  status:{type:String, require:true, default:""},
   timestamp: {type:Date, default:Date.now, require: true}
 });
 

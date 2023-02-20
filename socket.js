@@ -50,7 +50,7 @@ function setupSocket(server) {
 
     socket.on('newMessage', async (msg) => {
       try {
-
+        console.log(msg)
         io.emit('newMessage', msg);
         
       } catch (error) {
