@@ -1,7 +1,7 @@
 doctype html
 html
     head 
-        title ESNetwork - Main Page
+        title ESNetwork - Directory Page
         link(rel='stylesheet' href='/css/mainPageStyle.css')
         meta(name='viewport' content='width=device-width, initial-scale=1')
         include lib/semantic.pug
@@ -12,18 +12,29 @@ html
         include header.pug
         // page content
         .content
-            div.ui.container
-                .ui.segments
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
-                        .ui.segment content
+            .ui.container
+                .ui.relaxed.divided.items 
+                    .item 
+                        .ui.small.image 
+                            img(src="/icons/cloud-off.svg")
+                        .content 
+                            a.header Lisa 
+                            .meta online 
+                            .description Lisa's last message
+                    .item 
+                        .ui.small.image 
+                            img(src="/icons/cloud-off.svg")
+                        .content 
+                            a.header Lisa 
+                            .meta
+                                .online online 
+                            .description Lisa's last message
+                    .item 
+                        .ui.small.image 
+                            img(src="/icons/cloud-off.svg")
+                        .content 
+                            a.header Lisa 
+                            .meta offline 
+                            .description Lisa's last message
         //
         include footer.pug

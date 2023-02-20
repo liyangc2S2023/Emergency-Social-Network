@@ -4,13 +4,29 @@
     padding-bottom: 4em;
 }
 
-.main-header {
-    /* position: fixed; */
+#main-header {
     background-color: rgb(184,62,41);
-    padding-top: 2em;
-    padding-bottom: 1em;
-    /* width: 100%; */
-    /* z-index: 100; */
+}
+
+.ui.item.menu .item{
+    background-color: rgb(184,62,41);
+    color:whitesmoke;
+}
+
+.ui.item.menu .item.active{
+    background-color: rgb(154, 53, 35);
+    color:beige;
+}
+
+
+.ui.item.menu .item:hover{
+    background-color: rgb(213, 83, 60);
+    color:whitesmoke;
+}
+
+.ui.item.menu .item.active:hover{
+    background-color: rgb(213, 83, 60);
+    color:beige;
 }
 
 #back-btn {
@@ -20,10 +36,20 @@
 
 #main-page-back {
     color: ghostwhite;
+    line-height: 1.7em;
 }
 
 #title {
     color:whitesmoke;
+    padding-left: 1em;
+}
+
+#logout {
+    color:beige;
+}
+
+.online {
+    color:green;
 }
 
 .main-footer {
