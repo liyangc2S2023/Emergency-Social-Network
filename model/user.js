@@ -8,7 +8,8 @@ const bannedName = require('../public/username_exclude.json').name
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  online: { type: Boolean, default: false }
+  online: { type: Boolean, default: false },
+  status: {type: String, default: 'undefined'}
 });
 
 const UserTable = mongoose.model('User', userSchema);
@@ -82,17 +83,6 @@ class User {
     return false
   }
 
-  // static async confirmJoin(username, password) {
-  //   // apply full (with DB check) checks when people comfirm join
-  //   var token = jwt.sign({
-  //     time: Date(),
-  //     username: username
-  //   }, config.JWT_KEY, { expiresIn: '1d' })
-  //   // todo: learn more about promise
-  //   await UserTable.create({ "username": username, "password": encrypt(password) })
-  //   return token
-  // }
-
   static async createUser(username, password) {
     return await UserTable.create({ "username": username, "password": encrypt(password) })
   }
@@ -114,9 +104,8 @@ class User {
   }
 
   static async getAll() {
-    // return await UserTable.find();
+    // return all users sorted by online status and username in alphabetical order
     return await UserTable.find({}).sort({ online: -1, username: 1 });
-    //.sort({online: -1, username: 1}).toArray()
   }
 
   static async getOne(username) {
