@@ -27,26 +27,38 @@ function setupSocket(server) {
         socket.emit('historyMessage', messageController.getAll());  
 
         //welcome
-        socket.emit('notice', formatNotice('Notice',`${username} has joined`));
+        socket.emit('notice', formatNotice(`${username} has joined`));
 
         //Broadcast wehen a user connects
-        socket.broadcast.emit('notice',formatNotice('Notice',`${username} has joined`))
+        socket.broadcast.emit('notice',formatNotice(`${username} has joined`))
     });
     
 
-    socket.on('newMessage', async (data) => {
+    // socket.on('newMessage', async (data) => {
+    //   try {
+
+    //     //new message
+    //     const newMessage = await messageController.addMessage(data.senderName, data.reciverName, data.status, data.content);
+        
+    //     io.emit('newMessage', newMessage);
+        
+    //   } catch (error) {
+        
+    //     console.log(error);
+    //   }
+    // });
+
+    socket.on('newMessage', async (msg) => {
       try {
 
-        //new message
-        const newMessage = await messageController.addMessage(data.senderName, data.reciverName, data.status, data.content);
-        
-        io.emit('newMessage', newMessage);
+        io.emit('newMessage', msg);
         
       } catch (error) {
         
         console.log(error);
       }
     });
+
 
 
     //Broadcast when a user disconnects
