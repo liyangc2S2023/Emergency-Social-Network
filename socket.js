@@ -1,4 +1,13 @@
-const messageController = require('../controller/messageController');
+const messageController = require('./controller/messageController');
+
+function formatNotice(text) {
+    return {
+        sender:"Notice",
+        receiver:"all",
+        text,
+        time: Date.now
+    }
+}
 
 function setupSocket(server) {
   const io = require('socket.io')(server);
@@ -10,8 +19,6 @@ function setupSocket(server) {
 
         console.log("connect .....")
         
-        //fetch username
-        const user = username;
 
         //socket.join('$room');
         socket.join('');
@@ -20,20 +27,15 @@ function setupSocket(server) {
         socket.emit('historyMessage', messageController.getAll());  
 
         //welcome
-        socket.emit('notice', formatNotice('Notice',`${user.username} has joined`));
+        socket.emit('notice', formatNotice('Notice',`${username} has joined`));
 
         //Broadcast wehen a user connects
-        socket.broadcast.emit('notice',formatNotice('Notice',`${user.username} has joined`))
+        socket.broadcast.emit('notice',formatNotice('Notice',`${username} has joined`))
     });
     
 
     socket.on('newMessage', async (data) => {
       try {
-
-        //uncertain: get username from cookie
-        var cookies = cookie.parse(socket.handshake.headers.cookie);
-
-        const username = cookies.userName;
 
         //new message
         const newMessage = await messageController.addMessage(data.senderName, data.reciverName, data.status, data.content);
@@ -48,11 +50,10 @@ function setupSocket(server) {
 
 
     //Broadcast when a user disconnects
-    socket.on('disconnect', async () => {
-        const user = userLeave(socket.id);
+    socket.on('disconnect', async (username) => {
 
-        if(user) {
-            io.emit('notice',messageController.formatNotice(`${user.username} has left`));
+        if(username) {
+            io.emit('notice',formatNotice(`${username} has left`));
         }
 
     })

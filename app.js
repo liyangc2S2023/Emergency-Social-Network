@@ -10,7 +10,7 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 const cookieParser = require('cookie-parser')
-const setupSocket = require('./sockets');
+const setupSocket = require('./socket');
 
 const port = 3000;
 
