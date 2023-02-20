@@ -44,6 +44,14 @@
     padding-left: 1em;
 }
 
+.main-page-name {
+    margin-left: 0.5em;
+}
+
+.ui.items>.item>.content {
+    padding-left: 2em;
+}
+
 #logout {
     color:beige;
 }
