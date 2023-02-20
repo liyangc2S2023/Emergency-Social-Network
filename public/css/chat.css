@@ -1,37 +1,19 @@
+#chat{
+    padding-top: 50px;
+    padding-bottom: 80px;
+}
 #dialog{
-    background-color: beige;
+    background-color: antiquewhite;
+}
+#inputBox{
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    padding-bottom: 45px;
-    padding-top: 45px;
-}
-
-/* .sendMsg{
-
-}
-
-.msg-top{
-
-}
-
-.name{
-
+    flex-direction: row;
+    justify-content: center;
+    position: fixed;
+    bottom: 50px;
 }
 
 .status{
-
+    width: 10px;
+    height: 10px;
 }
-
-.msg-content{
-
-}
-
-.msg{
-
-}
-
-.time{
-
-} */

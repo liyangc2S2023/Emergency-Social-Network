@@ -1,9 +1,29 @@
 var newMsg=function(msg,isSender){
     if(isSender){
-        return $(`<div class='sendMsg'><div class='msg-top'><div class='name'>${msg.sender}</div><div class='status'>${msg.status}</div></div><div class='msg-content'><div class='msg'>${msg.content}</div><div class='time'>${msg.timestamp}</div></div></div>`)
+        return $(`<div class='comment sendMsg'>
+                    <a class='avatar'><img src="https://semantic-ui.com/images/avatar/small/matt.jpg"></a>
+                    <div class='content msg-top'>
+                        <a class='author name'>${msg.sender}</a>
+                        <div class='metadata'>
+                            <img class="status" src="/icons/okIcon.png" alt="${msg.status}"/>
+                            <div class='time'>${msg.timestamp}</div>
+                        </div>
+                        <div class='text'>${msg.content}</div>
+                    </div>
+                </div>`)
     }
     else{
-        return $(`<div class='receiveMsg'><div class='msg-top'><div class='name'>${msg.sender}</div><div class='status'>${msg.status}</div></div><div class='msg-content'><div class='msg'>${msg.content}</div><div class='time'>${msg.timestamp}</div></div></div>`)
+        return $(`<div class='comment receiveMsg'>
+                    <a class='avatar'><img src="https://semantic-ui.com/images/avatar/small/elliot.jpg"></a>
+                    <div class='content msg-top'>
+                        <a class='author name'>${msg.sender}</a>
+                        <div class='metadata'>
+                            <img class="status" src="/icons/okIcon.png" alt="${msg.status}"/>
+                            <div class='time'>${msg.timestamp}</div>
+                        </div>
+                        <div class='text'>${msg.content}</div>
+                    </div>
+                </div>`)
     }
 }
 
@@ -17,6 +37,7 @@ socket.on('newMessage',function(msg){
 })
 
 function sendClick(){
+    // todo: finish status
     // if($("#inputText").val()=="" || 
     //     $('#username').val()=="" || 
     //     $('#status').val()==""){

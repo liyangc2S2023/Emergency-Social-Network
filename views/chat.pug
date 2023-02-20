@@ -2,7 +2,7 @@ doctype html
 html
     head
         title Chat
-        link(rel='stylesheet' href='/css/style.css')
+        link(rel='stylesheet' href='/css/chat.css')
         meta(name='viewport' content='width=device-width, initial-scale=1')
         include lib/semantic.pug
         include lib/axios.pug
@@ -11,8 +11,9 @@ html
     body
         div#username(hidden)
         div#status(hidden)
-        h1 Chat
-        div#dialog
-        div#inputBox
-            input#inputText(type="text")
-            input#sendBtn(type="button", value="Send", onclick="sendClick()")
+        div.ui.container#chat
+            h1 Chat
+            div#dialog.ui.comments
+            div#inputBox.ui.action.input
+                input#inputText(type="text",placeholder="Message...")
+                button#sendBtn.ui.button(onclick="sendClick()") Send
