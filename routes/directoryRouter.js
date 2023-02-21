@@ -1,11 +1,11 @@
 const express = require('express');
-const User = require('../model/user');
+const userController = require('../controller/userController');
 const router = express.Router();
 
 
 router.get('/', async function (req, res) {
-    var userList = User.getAll();
-    res.render('mainPage', userList)
+    var userList = await userController.getAll();
+    res.render('mainPage', {pageView:"Directory", users:userList})
 });
 
 module.exports = router;

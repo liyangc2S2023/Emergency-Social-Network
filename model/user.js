@@ -1,6 +1,5 @@
 const cryptoJS = require('crypto-js')
 const mongoose = require('mongoose')
-const Result = require('../controller/common/result')
 const config = require('../config')
 const jwt = require('jsonwebtoken')
 
