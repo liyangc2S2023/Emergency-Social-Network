@@ -1,19 +1,9 @@
-doctype html
-html
-    head
-        title Chat
-        link(rel='stylesheet' href='/css/chat.css')
-        meta(name='viewport' content='width=device-width, initial-scale=1')
-        include lib/semantic.pug
-        include lib/axios.pug
-        include lib/socketio.pug
-        script(src='/javascript/chat.js')
-    body
-        div#username(hidden)
-        div#status(hidden)
-        div.ui.container#chat
-            h1 Chat
-            div#dialog.ui.comments
-            div#inputBox.ui.action.input
-                input#inputText(type="text",placeholder="Message...")
-                button#sendBtn.ui.button(onclick="sendClick()") Send
+//- change to localstorage
+#username(hidden)
+#status(hidden)
+.ui.container#chat
+    #dialog.ui.comments
+    #inputBox.ui
+        #inputText.ui.input
+            input(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
+        #sendBtn.ui.submit.button(onclick="sendClick()") Send

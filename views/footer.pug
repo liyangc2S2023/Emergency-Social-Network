@@ -1,16 +1,16 @@
 div.main-footer
     div.ui.four.item.menu
-        a.item(class = (pageView == "Directory" ? "active" : ""))
+        a.item(class = (pageView == "Directory" ? "active" : "") onclick="location.href='/directory'")
             i.address.book.outline.icon
             br
             p Directory
-        a.item(class = (pageView == "Public" ? "active" : ""))
+        a.item(class = (pageView == "Public" ? "active" : "")  onclick="location.href='/chat'")
             i.wechat.icon
             p Public
-        a.item(class = (pageView == "Search" ? "active" : ""))
+        a.item(class = (pageView == "Search" ? "active" : "") onclick="location.href='/search'")
             i.search.icon
             br
             p Search
-        a.item(class = (pageView == "Status" ? "active" : ""))
+        a.item(class = (pageView == "Status" ? "active" : "") onclick="location.href='/status'")
             i.user.circle.outline.icon
             p Status

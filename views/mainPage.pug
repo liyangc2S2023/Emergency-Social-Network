@@ -2,12 +2,17 @@ doctype html
 html
     head 
         title ESNetwork - #{pageView}
-        meta(name='viewport' content='width=device-width, initial-scale=1')
-        include lib/semantic.pug
-        link(rel='stylesheet' href='/css/mainPageStyle.css')
-        link(rel='stylesheet' href='/css/directoryPageStyle.css')
+        include lib/socketio.pug
         include lib/axios.pug
-        script(src='/javascript/join.js')
+        include lib/semantic.pug
+        meta(name='viewport' content='width=device-width, initial-scale=1')
+        link(rel='stylesheet' href='/css/mainPageStyle.css')
+        if pageView == "Directory"
+            link(rel='stylesheet' href='/css/directoryPageStyle.css')
+        if pageView == "Public"
+            script(src='/javascript/chat.js')
+            link(rel='stylesheet' href='/css/chat.css')
+            script(src='/javascript/utils/dateUtil.js')
     body
         // header
         include header.pug
@@ -15,5 +20,7 @@ html
         .main-page-content
             if pageView == "Directory"
                 include directory.pug 
+            if pageView == "Public"
+                include chat.pug
         // footer
         include footer.pug

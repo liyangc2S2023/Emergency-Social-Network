@@ -1,3 +1,8 @@
+var statusMap = {"undefined":"circle outline icon",
+                 "ok":"",
+                 "help":"",
+                 "emergency":""}
+
 var newMsg=function(msg,isSender){
     if(isSender){
         return $(`<div class='comment sendMsg'>
@@ -5,10 +10,10 @@ var newMsg=function(msg,isSender){
                     <div class='content msg-top'>
                         <a class='author name'>${msg.sender}</a>
                         <div class='metadata'>
-                            <img class="status" src="/icons/okIcon.png" alt="${msg.status}"/>
-                            <div class='time'>${msg.timestamp}</div>
+                            <i class='${statusMap[msg.status]}'></i>
+                            <div class='time'>${date2Str(new Date(msg.timestamp))}</div>
                         </div>
-                        <div class='text'>${msg.content}</div>
+                        <div class='text'>${$("<div/>").text(msg.content).html()}</div>
                     </div>
                 </div>`)
     }
@@ -18,10 +23,10 @@ var newMsg=function(msg,isSender){
                     <div class='content msg-top'>
                         <a class='author name'>${msg.sender}</a>
                         <div class='metadata'>
-                            <img class="status" src="/icons/okIcon.png" alt="${msg.status}"/>
-                            <div class='time'>${msg.timestamp}</div>
+                            <i class='${statusMap[msg.status]}'></i>
+                            <div class='time'>${date2Str(new Date(msg.timestamp))}</div>
                         </div>
-                        <div class='text'>${msg.content}</div>
+                        <div class='text'>${$("<div/>").text(msg.content).html()}</div>
                     </div>
                 </div>`)
     }
@@ -31,31 +36,39 @@ var newMsg=function(msg,isSender){
 var socket = io();
 socket.on('newMessage',function(msg){
   //scroll to the latest post
-  $("#dialog").append(newMsg(msg,false))
+  $("#dialog").append(newMsg(msg,msg.sender==$('#username').val()))
   var t = document.body.scrollHeight;
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 })
 
+// send post when enter is pressed
+function oneKeyPress(e){
+    keynum = e.keyCode | e.which
+    // 13 for enter
+    if(keynum == 13) sendClick(e)
+}
+
 function sendClick(){
-    // todo: finish status
-    // if($("#inputText").val()=="" || 
-    //     $('#username').val()=="" || 
-    //     $('#status').val()==""){
-    //     return
-    // }
-    // else{
-    var message = {
-        "sender":$('#username').val(),
-        "reciver":"",
-        "status":$('#status').val(),
-        "timestamp":new Date(),
-        "content":$("#inputText").val()
+    var inputText = $("#inputText").val()
+    var username = $('#username').val()
+    var status = $('#status').val()
+    if(inputText=="" || username=="" || status==""){
+        alert(`input text:${inputText} or username:${username} or user status:${status} cannot be null`)
+        return
     }
-    axios.post('/api/v1/messages',message).then(function(res){
-        socket.emit('newMessage',message);
-        $("#inputText").val("")
-    })
-    // }
+    else{
+        var message = {
+            "sender":username,
+            "reciver":"",
+            "status":status,
+            "timestamp":new Date(),
+            "content":inputText
+        }
+        axios.post('/api/v1/messages',message).then(function(res){
+            socket.emit('newMessage',message);
+            $("#inputText").val("")
+        })
+    }
 }
 
 $(document).ready(function(){
