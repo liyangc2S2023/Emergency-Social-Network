@@ -1,7 +1,7 @@
 doctype html
 html
     head 
-        title ESNetwork - Directory Page
+        title ESNetwork - #{pageView}
         meta(name='viewport' content='width=device-width, initial-scale=1')
         include lib/semantic.pug
         link(rel='stylesheet' href='/css/mainPageStyle.css')
@@ -12,6 +12,8 @@ html
         // header
         include header.pug
         // page content
-        include directory.pug 
+        .main-page-content
+            if pageView == "Directory"
+                include directory.pug 
         // footer
         include footer.pug

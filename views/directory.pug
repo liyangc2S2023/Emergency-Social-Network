@@ -1,46 +1,16 @@
-.main-page-content
-    .ui.container
-        .ui.relaxed.divided.items 
+.ui.container
+    .ui.relaxed.divided.items 
+        for user in users
             .item 
                 .content 
                     a.header 
                         .ui.circular.avatar.image 
                             img(src="/icons/cloud-off.svg")
-                        span.main-page-name Lisa
-                    .meta
-                        .online online 
-                    .description Lisa's last message
-            .item 
-                .content 
-                    a.header 
-                        .ui.circular.avatar.image 
-                            img(src="/icons/cloud-off.svg")
-                        span.main-page-name Lisa
-                    .meta
-                        .online online 
-                    .description Lisa's last message
-            .item 
-                .content 
-                    a.header 
-                        .ui.circular.avatar.image 
-                            img(src="/icons/cloud-off.svg")
-                        span.main-page-name Lisa
-                    .meta
-                        .online online 
-                    .description Lisa's last message
-            .item 
-                .content 
-                    a.header 
-                        .ui.circular.avatar.image 
-                            img(src="/icons/cloud-off.svg")
-                        span.main-page-name Lisa
-                    .meta online 
-                    .description Lisa's last message
-            .item 
-                .content 
-                    a.header 
-                        .ui.circular.avatar.image 
-                            img(src="/icons/cloud-off.svg")
-                        span.main-page-name Lisa
-                    .meta online 
+                        span.main-page-name #{user.username}
+                    if user.online
+                        .meta
+                            .online online
+                    else
+                        .meta online
+
                     .description Lisa's last message
