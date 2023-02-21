@@ -53,6 +53,10 @@ app.use("/chat", require("./routes/chatRouter"));
 // rest APIs
 app.use("/api/v1",require("./routes/apiV1Routes"))
 
+app.use("/directory", require("./routes/directoryRouter"));
+
+app.use("/logout", require("./routes/logoutRouter"));
+
 // page not found
 app.use(function(req,res,next){
     next(createError(404,"page not found"));
