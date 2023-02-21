@@ -105,7 +105,7 @@ class User {
 
   static async getAll() {
     // return all users sorted by online status and username in alphabetical order
-    return await UserTable.find({}).sort({ online: -1, username: 1 });
+    return await UserTable.find({}).sort({ online: 'desc', username: 'asc' });
   }
 
   static async getOne(username) {
