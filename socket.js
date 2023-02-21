@@ -1,4 +1,5 @@
 const messageController = require('./controller/messageController');
+const cookieParser = require('cookie-parser')
 
 function formatNotice(text) {
     return {
@@ -11,10 +12,16 @@ function formatNotice(text) {
 
 function setupSocket(server) {
   const io = require('socket.io')(server);
-
+  io.use(function(socket,next){
+    cookieParser()(socket.request,{},next)
+  })
+  io.use(function(socket,next){
+    require('./middleware/jwtMW')(socket.request,{},next)
+  })
   io.on('connection', (socket) => {
     console.log('New socket connection...');
-
+    console.log(socket.request.username)
+    
     socket.on('joinRoom', async (username) => {
 
         console.log("connect .....")
@@ -63,7 +70,7 @@ function setupSocket(server) {
 
     //Broadcast when a user disconnects
     socket.on('disconnect', async (username) => {
-
+        console.log(socket.request.username)
         if(username) {
             io.emit('notice',formatNotice(`${username} has left`));
         }
