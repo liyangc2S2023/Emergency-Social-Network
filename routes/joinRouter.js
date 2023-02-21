@@ -17,7 +17,7 @@ router.post('/', async function (req, res, next) {
     var loginFlag = await userController.verifyUser(username, password)
     if (loginFlag) {
         var token = await userController.login(username)
-        res.cookie('user_token', token)
+        res.cookie('user_token', token, {maxAge:24*60*60*1000})
         res.status(200)
         res.redirect('/directory')
         return
@@ -44,7 +44,7 @@ router.post('/confirm', async function (req, res, next) {
     if (confirmResult.successflag) {
         var token = await userController.login(username)
         res.status(200)
-        res.cookie('user_token', token)
+        res.cookie('user_token', token, {maxAge:24*60*60*1000})
         res.redirect('/directory');
     } else {
         res.status(400)

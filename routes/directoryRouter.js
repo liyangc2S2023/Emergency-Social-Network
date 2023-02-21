@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.get('/', async function (req, res) {
     var userList = User.getAll();
-    res.render('directory', userList)
+    res.render('mainPage', userList)
 });
 
 module.exports = router;

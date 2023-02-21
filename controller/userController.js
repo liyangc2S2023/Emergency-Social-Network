@@ -1,4 +1,7 @@
 const User = require("../model/user")
+const jwt = require("jsonwebtoken");
+const config = require('../config');
+const { token } = require('morgan');
 
 class UserController {
 
@@ -23,12 +26,10 @@ class UserController {
         return await User.login(username)
     }
 
-
     async logout(username) {
         // user status as offline
         return await User.logout(username)
     }
-
 }
 
 const userController = new UserController()

@@ -5,6 +5,7 @@ const userController = require('../controller/userController');
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const config = require('../config');
+const { token } = require('morgan');
 
 router.get('/users', async function (req, res, next) {
     return res.send(Result.success(await userController.getAll()))
@@ -12,6 +13,7 @@ router.get('/users', async function (req, res, next) {
 
 router.get('/users/current', async function(req,res,next){
     token=req.headers.authorization
+    var user = await userController.getCurrentUser(token)
     var username = ""
     try{
         username=jwt.verify(token,config.JWT_KEY).username
