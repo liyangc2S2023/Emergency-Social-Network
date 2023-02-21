@@ -40,12 +40,20 @@ router.post('/', async function (req, res, next) {
 router.post('/confirm', async function (req, res, next) {
     var username = req.body.username.toLowerCase()
     var password = req.body.password.toLowerCase()
+    var loginFlag = await userController.verifyUser(username, password)
+    if (loginFlag) {
+        var token = await userController.login(username)
+        res.cookie('user_token', token, {maxAge:24*60*60*1000})
+        res.status(200)
+        res.redirect('/directory')
+        return
+    }
     var confirmResult = await joinController.confirmJoin(username, password, next)
     if (confirmResult.successflag) {
         var token = await userController.login(username)
         res.status(200)
         res.cookie('user_token', token, {maxAge:24*60*60*1000})
-        res.redirect('/directory');
+        res.render('welcomeRules');
     } else {
         res.status(400)
         res.render('join', { joinErr: confirmResult.err, username: username, password: password })

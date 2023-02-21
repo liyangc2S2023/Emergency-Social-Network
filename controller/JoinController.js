@@ -11,8 +11,9 @@ class JoinController {
     }
 
     async confirmJoin(username, password) {
+        var { successflag, joinErr } = await this.join(username, password)
         await User.createUser(username, password)
-        return await this.join(username, password)
+        return { successflag, joinErr }
     }
 }
 
