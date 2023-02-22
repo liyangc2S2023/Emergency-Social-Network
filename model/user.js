@@ -109,7 +109,8 @@ class User {
   }
 
   static async getOne(username) {
-    return await UserTable.findOne({ "username": username }, { "online": true })
+    // return await UserTable.findOne({ "username": username }, { "online": true })
+    return await UserTable.findOne({ "username": username })
   }
 
   static async addUser(username, password) {
