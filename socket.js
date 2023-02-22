@@ -54,6 +54,7 @@ function setupSocket(server) {
 
     //Broadcast when a user disconnects
     socket.on('disconnect', async () => {
+      console.log(socket.request.username)
       await userController.logout(socket.request.username)
       io.emit('notice', formatNotice(`${socket.request.username} has left`))
     })
