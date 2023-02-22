@@ -61,6 +61,7 @@ function setupSocket(io) {
 
     socket.on('disconnect', async () => {
 <<<<<<< HEAD
+<<<<<<< HEAD
       await userController.logout(socket.request.username);
       console.log('user disconnected');
 
@@ -70,6 +71,8 @@ function setupSocket(io) {
     });
 =======
       console.log(socket.request.username)
+=======
+>>>>>>> fix bug in welcome page
       await userController.logout(socket.request.username)
       io.emit('notice', formatNotice(`${socket.request.username} has left`))
     })
