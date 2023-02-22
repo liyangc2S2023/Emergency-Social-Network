@@ -84,6 +84,8 @@ $(document).ready(function(){
                 for(var msg of result.data){
                     $("#dialog").append(newMsg(msg,$('#username').val()==msg.sender))
                 }
+                var t = document.body.scrollHeight;
+                window.scroll({ top: t, left: 0, behavior: 'smooth' });
             }
         })
     }).catch(function(err){

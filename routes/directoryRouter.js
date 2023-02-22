@@ -4,6 +4,7 @@ const router = express.Router();
 const pug = require('pug')
 
 router.get('/', async function (req, res) {
+    await userController.login(req.username)
     var userList = await userController.getAll();
     res.render('mainPage', {pageView:"Directory", users:userList})
 
