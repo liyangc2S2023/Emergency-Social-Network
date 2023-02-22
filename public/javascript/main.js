@@ -1,2 +1,2 @@
-// socket
-var socket = io();
+// // socket
+// var socket = io();
