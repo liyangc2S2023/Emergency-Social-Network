@@ -52,6 +52,15 @@ function setupSocket(io) {
       }
     });
 
+    socket.on('disconnect', async () => {
+      await userController.logout(socket.request.username)
+      console.log('user disconnected');
+      
+      var userList = await userController.getAll();
+      var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+      socket.broadcast.emit('userlistChange', userListHTML)
+    })
+
   });
 }
 
