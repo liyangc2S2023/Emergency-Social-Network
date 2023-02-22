@@ -24,6 +24,10 @@ function setupSocket(io) {
   io.on('connection', async (socket) => {
     await userController.login(socket.request.username)
     console.log("connection")
+    var userList = await userController.getAll();
+    var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+    socket.broadcast.emit('userlistChange', userListHTML)
+
     socket.on('joinRoom', async (username) => {
       //socket.join('$room');
       socket.join('');
