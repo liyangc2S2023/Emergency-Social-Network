@@ -1,7 +1,6 @@
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
 const cookieParser = require('cookie-parser')
-const pug = require('pug')
 
 function formatNotice(text) {
   return {
@@ -12,8 +11,7 @@ function formatNotice(text) {
   }
 }
 
-function setupSocket(server) {
-  const io = require('socket.io')(server);
+function setupSocket(io) {
 
   io.use(function (socket, next) {
     cookieParser()(socket.request, {}, next)
@@ -53,21 +51,6 @@ function setupSocket(server) {
         console.log(error);
       }
     });
-    
-    socket.on('userOnline', async () => {
-      // compile html and return
-      console.log("receive userOnline")
-      var userList = await userController.getAll();
-
-      var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
-      io.emit('userlistChange', userListHTML)
-    });
-
-    //Broadcast when a user disconnects
-    socket.on('disconnect', async () => {
-      await userController.logout(socket.request.username)
-      io.emit('notice', formatNotice(`${socket.request.username} has left`))
-    })
 
   });
 }

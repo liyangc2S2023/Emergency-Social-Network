@@ -18,11 +18,19 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static('public'));
 app.use(cookieParser())
 
+const io = require('socket.io')(server);
+setupSocket(io);
+
+// Middleware: socketio
+app.use((req, res, next) => {
+    req.io = io;
+    next();
+});
+  
 
 app.get('/', (req, res) => {
     res.redirect('/welcome');
 })
-
 // app.use("/login", require("./routes/login"));
 app.use("/join", require("./routes/joinRouter"));
 app.use("/welcome", require("./routes/welcomeRouter"));
@@ -60,7 +68,6 @@ app.use(function(err,req,res,next){
     res.render("error",{error:err})
 })
 
-setupSocket(server);
 
 console.log("Server started at: http://localhost:"+port)
 
