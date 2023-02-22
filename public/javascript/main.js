@@ -1,2 +1,0 @@
-// socket
-var socket = io();
