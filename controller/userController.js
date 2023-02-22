@@ -1,7 +1,4 @@
 const User = require("../model/user")
-const jwt = require("jsonwebtoken");
-const config = require('../config');
-const { token } = require('morgan');
 
 class UserController {
 
