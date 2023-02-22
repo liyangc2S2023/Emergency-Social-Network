@@ -106,3 +106,6 @@ throw newError
 ## API Doc
 
 The api doc can be found in [this link](https://docs.google.com/spreadsheets/d/1uA0CPb3yRkZHYWAdCfnWtrLeLiTVSnYCXtt_-ttvRq0/edit?usp=sharing).
+
+## UML diagrams doc
+The umldiagrams doc can be found in [this link](https://app.diagrams.net/#G12SLfP04Dnpd3ApFtHoKRB8IWVZi3XpU-).
