@@ -1,6 +1,7 @@
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
 const cookieParser = require('cookie-parser')
+const pug = require('pug')
 
 function formatNotice(text) {
   return {
