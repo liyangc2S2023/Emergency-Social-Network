@@ -57,6 +57,15 @@ function setupSocket(server) {
       await userController.logout(socket.request.username)
       io.emit('notice', formatNotice(`${socket.request.username} has left`))
     })
+
+    socket.on('userOnline', async () => {
+      // compile html and return
+      console.log("receive userOnline")
+      var userList = await userController.getAll();
+
+      var userListHTML = pug.renderFile('mainPage', {users:userList})
+      io.emit('userlistChange', userListHTML)
+    });
   });
 }
 
