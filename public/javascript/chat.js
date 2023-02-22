@@ -49,11 +49,11 @@ function oneKeyPress(e){
 }
 
 function sendClick(){
-    var inputText = $("#inputText").val()
+    var inputContent = $("#inputContent").val()
     var username = $('#username').val()
     var status = $('#status').val()
-    if(inputText=="" || username=="" || status==""){
-        alert(`input text:${inputText} or username:${username} or user status:${status} cannot be null`)
+    if(inputContent=="" || username=="" || status==""){
+        alert(`input text:${inputContent} or username:${username} or user status:${status} cannot be null`)
         return
     }
     else{
@@ -62,11 +62,11 @@ function sendClick(){
             "reciver":"",
             "status":status,
             "timestamp":new Date(),
-            "content":inputText
+            "content":inputContent
         }
         axios.post('/api/v1/messages',message).then(function(res){
             socket.emit('newMessage',message);
-            $("#inputText").val("")
+            $("#inputContent").val("")
         })
     }
 }
