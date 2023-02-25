@@ -1,45 +1,11 @@
-var statusMap = {"undefined":"circle outline icon",
-                 "ok":"",
-                 "help":"",
-                 "emergency":""}
-
-var newMsg=function(msg,isSender){
-    if(isSender){
-        return $(`<div class='comment sendMsg'>
-                    <a class='avatar'><img src="https://semantic-ui.com/images/avatar/small/matt.jpg"></a>
-                    <div class='content msg-top'>
-                        <a class='author name'>${msg.sender}</a>
-                        <div class='metadata'>
-                            <i class='${statusMap[msg.status]}'></i>
-                            <div class='time'>${date2Str(new Date(msg.timestamp))}</div>
-                        </div>
-                        <div class='text'>${$("<div/>").text(msg.content).html()}</div>
-                    </div>
-                </div>`)
-    }
-    else{
-        return $(`<div class='comment receiveMsg'>
-                    <a class='avatar'><img src="https://semantic-ui.com/images/avatar/small/elliot.jpg"></a>
-                    <div class='content msg-top'>
-                        <a class='author name'>${msg.sender}</a>
-                        <div class='metadata'>
-                            <i class='${statusMap[msg.status]}'></i>
-                            <div class='time'>${date2Str(new Date(msg.timestamp))}</div>
-                        </div>
-                        <div class='text'>${$("<div/>").text(msg.content).html()}</div>
-                    </div>
-                </div>`)
-    }
-}
-
 // socket
 var socket = io();
-socket.on('newMessage',function(msg){
-  //scroll to the latest post
-  $("#dialog").append(newMsg(msg,msg.sender==$('#username').val()))
-  var t = document.body.scrollHeight;
-  window.scroll({ top: t, left: 0, behavior: 'smooth' });
-})
+socket.on('newMessage',function(updatedContent){
+    //scroll to the latest post
+    $("#dialog").append(updatedContent)
+    var t = document.body.scrollHeight
+    window.scroll({ top: t, left: 0, behavior: 'smooth' })
+  })
 
 // send post when enter is pressed
 function oneKeyPress(e){
@@ -82,7 +48,7 @@ $(document).ready(function(){
             result=res.data
             if(result.success){
                 for(var msg of result.data){
-                    $("#dialog").append(newMsg(msg,$('#username').val()==msg.sender))
+                    socket.emit('newMessage', msg);
                 }
                 var t = document.body.scrollHeight;
                 window.scroll({ top: t, left: 0, behavior: 'smooth' });

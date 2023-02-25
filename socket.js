@@ -2,6 +2,7 @@ const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
 const cookieParser = require('cookie-parser')
 const pug = require('pug')
+const he = require('he');
 
 function formatNotice(text) {
   return {
@@ -25,7 +26,7 @@ function setupSocket(io) {
     await userController.login(socket.request.username)
     console.log("connection")
     var userList = await userController.getAll();
-    var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+    var userListHTML = pug.renderFile('./views/directory.pug', { users: userList })
     socket.broadcast.emit('userlistChange', userListHTML)
 
     socket.on('joinRoom', async (username) => {
@@ -39,19 +40,30 @@ function setupSocket(io) {
       socket.broadcast.emit('notice', formatNotice(`${username} has joined`))
     });
 
-    // socket.on('newMessage', async (data) => {
-    //   try {
-    //     //new message
-    //     const newMessage = await messageController.addMessage(data.senderName, data.reciverName, data.status, data.content);
-    //     io.emit('newMessage', newMessage);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // });
-
     socket.on('newMessage', async (msg) => {
+      var sender = msg.sender
+      var message = he.encode(msg.content);
+      var date = new Date(msg.timestamp)
+      const formattedDate = date.toLocaleString('en-US', {
+        timeZone: 'UTC',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false
+      }).replace(',', '').replace(/\//g, '.');
+
+      var statusMap = {
+        "undefined": "circle outline icon",
+        "ok": "",
+        "help": "",
+        "emergency": ""
+      }
+      var statusStyle = statusMap[msg.status]
       try {
-        io.emit('newMessage', msg);
+        var messageListHTML = pug.renderFile('./views/message.pug', { sender: sender, message: message, time: formattedDate, statusStyle: statusStyle })
+        io.emit('newMessage', messageListHTML)
       } catch (error) {
         console.log(error);
       }
@@ -60,9 +72,9 @@ function setupSocket(io) {
     socket.on('disconnect', async () => {
       await userController.logout(socket.request.username)
       console.log('user disconnected');
-      
+
       var userList = await userController.getAll();
-      var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+      var userListHTML = pug.renderFile('./views/directory.pug', { users: userList })
       socket.broadcast.emit('userlistChange', userListHTML)
     })
 
