@@ -1,11 +1,11 @@
+script(src='/javascript/utils/dateUtil.js')
 .comment.sendMsg 
     a.avatar
-        img(src="https://semantic-ui.com/images/avatar/small/matt.jpg")
+        img(src='/image/photo.jpeg')
         .content.msg-top 
             a.author.name #{sender}
             .metadata
-                i(class=statusStyle)
+                // the class of element i is a variable called statusStyle
+                i(class=`${statusStyle}`)
                 .time #{time}
             .text #{message}
-
-            

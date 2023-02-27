@@ -1,60 +1,60 @@
 // socket
 var socket = io();
-socket.on('newMessage',function(updatedContent){
+socket.on('newMessage', function (updatedContent) {
     //scroll to the latest post
     $("#dialog").append(updatedContent)
     var t = document.body.scrollHeight
     window.scroll({ top: t, left: 0, behavior: 'smooth' })
-  })
+})
 
 // send post when enter is pressed
-function oneKeyPress(e){
+function oneKeyPress(e) {
     keynum = e.keyCode | e.which
     // 13 for enter
-    if(keynum == 13) sendClick(e)
+    if (keynum == 13) sendClick(e)
 }
 
-function sendClick(){
+function sendClick() {
     var inputContent = $("#inputContent").val()
     var username = $('#username').val()
     var status = $('#status').val()
-    if(inputContent=="" || username=="" || status==""){
+    if (inputContent == "" || username == "" || status == "") {
         alert(`input text:${inputContent} or username:${username} or user status:${status} cannot be null`)
         return
     }
-    else{
+    else {
         var message = {
-            "sender":username,
-            "reciver":"",
-            "status":status,
-            "timestamp":new Date(),
-            "content":inputContent
+            "sender": username,
+            "reciver": "",
+            "status": status,
+            "timestamp": new Date(),
+            "content": inputContent
         }
-        axios.post('/api/v1/messages',message).then(function(res){
-            socket.emit('newMessage',message);
+        axios.post('/api/v1/messages', message).then(function (res) {
+            socket.emit('newMessage', message);
             $("#inputContent").val("")
         })
     }
 }
 
-$(document).ready(function(){
-    axios.get('api/v1/users/current').then(function(res){
+$(document).ready(function () {
+    axios.get('api/v1/users/current').then(function (res) {
         var username = res.data.data.username
         var status = res.data.data.status
         $('#username').val(username)
         $('#status').val(status)
-    }).then(function(){
-        axios.get('/api/v1/messages').then(function(res){
-            result=res.data
-            if(result.success){
-                for(var msg of result.data){
+    }).then(function () {
+        axios.get('/api/v1/messages').then(function (res) {
+            result = res.data
+            if (result.success) {
+                for (var msg of result.data) {
                     socket.emit('newMessage', msg);
                 }
                 var t = document.body.scrollHeight;
                 window.scroll({ top: t, left: 0, behavior: 'smooth' });
             }
         })
-    }).catch(function(err){
+    }).catch(function (err) {
         alert(err)
     })
 })

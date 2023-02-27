@@ -2,7 +2,7 @@ const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
 const cookieParser = require('cookie-parser')
 const pug = require('pug')
-const he = require('he');
+const date2Str = require('./utils/dateUtil.js')
 
 function formatNotice(text) {
   return {
@@ -42,18 +42,9 @@ function setupSocket(io) {
 
     socket.on('newMessage', async (msg) => {
       var sender = msg.sender
-      var message = he.encode(msg.content);
-      var date = new Date(msg.timestamp)
-      const formattedDate = date.toLocaleString('en-US', {
-        timeZone: 'UTC',
-        year: 'numeric',
-        month: '2-digit',
-        day: '2-digit',
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: false
-      }).replace(',', '').replace(/\//g, '.');
-
+      var message = msg.content
+      var date = date2Str(new Date(msg.timestamp))
+      // TODO: move statusMap to a global file
       var statusMap = {
         "undefined": "circle outline icon",
         "ok": "",
@@ -62,7 +53,7 @@ function setupSocket(io) {
       }
       var statusStyle = statusMap[msg.status]
       try {
-        var messageListHTML = pug.renderFile('./views/message.pug', { sender: sender, message: message, time: formattedDate, statusStyle: statusStyle })
+        var messageListHTML = pug.renderFile('./views/message.pug', { sender: sender, message: message, time: date, statusStyle: statusStyle })
         io.emit('newMessage', messageListHTML)
       } catch (error) {
         console.log(error);
