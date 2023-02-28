@@ -1,20 +1,19 @@
-const Message = require("../model/message")
+const Message = require('../model/message');
 
-class MessageController{
+class MessageController {
+  static async getAll() {
+    return Message.getAll();
+  }
 
-    async getAll(){
-        return await Message.getAll()
-    }
+  static async getBySender(sender) {
+    return Message.getBySender(sender);
+  }
 
-    async getBySender(sender){
-        return await Message.getBySender(sender)
-    }
-
-    async addMessage(sender,reciver,status,content){
-        return await Message.addMessage(sender,reciver,status,content)
-    }
+  static async addMessage(sender, reciver, status, content) {
+    return Message.addMessage(sender, reciver, status, content);
+  }
 }
 
-const messageController=new MessageController()
+const messageController = new MessageController();
 
-module.exports=messageController
+module.exports = messageController;

@@ -1,10 +1,9 @@
 const express = require('express');
+
 const router = express.Router();
 
-
-router.get('/', function (req, res) {
-    res.render('welcomeRules');
+router.get('/', (req, res) => {
+  res.render('welcomeRules');
 });
-
 
 module.exports = router;

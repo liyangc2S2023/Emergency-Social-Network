@@ -1,34 +1,33 @@
-const User = require("../model/user")
+const User = require('../model/user');
 
 class UserController {
+  static async getAll() {
+    return User.getAll();
+  }
 
-    async getAll() {
-        return await User.getAll()
-    }
+  static async getOne(username) {
+    return User.getOne(username);
+  }
 
-    async getOne(username) {
-        return await User.getOne(username)
-    }
+  static async addUser(username, password) {
+    return User.addUser(username.toLowerCase(), password.toLowerCase());
+  }
 
-    async addUser(username, password) {
-        return await User.addUser(username.toLowerCase(), password.toLowerCase())
-    }
+  static async verifyUser(username, password) {
+    return User.checkPassword(username, password);
+  }
 
-    async verifyUser(username, password) {
-        return User.checkPassword(username, password)
-    }
+  static async login(username) {
+    // get token & set user status as online
+    return User.login(username);
+  }
 
-    async login(username) {
-        // get token & set user status as online
-        return await User.login(username)
-    }
-
-    async logout(username) {
-        // user status as offline
-        return await User.logout(username)
-    }
+  static async logout(username) {
+    // user status as offline
+    return User.logout(username);
+  }
 }
 
-const userController = new UserController()
+const userController = new UserController();
 
-module.exports = userController
+module.exports = userController;

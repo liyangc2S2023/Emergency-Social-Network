@@ -1,7 +1,7 @@
 // socket
-var socket = io();
+const socket = io();
 socket.on('userlistChange', (updatedContent) => {
-    console.log('receive userlistChange call')
-    console.log(updatedContent)
-    $(".main-page-content").html(updatedContent);
-})
+  console.log('receive userlistChange call');
+  console.log(updatedContent);
+  $('.main-page-content').html(updatedContent);
+});
