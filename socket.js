@@ -41,19 +41,19 @@ function setupSocket(io) {
     });
 
     socket.on('newMessage', async (msg) => {
-      msg.isSender = true
-      msg.time = date2Str(new Date(msg.timestamp))
+      msg.isSender = true;
+      msg.time = date2Str(new Date(msg.timestamp));
       // TODO: move statusMap to a global file
-      var statusMap = {
-        "undefined": "circle outline icon",
-        "ok": "",
-        "help": "",
-        "emergency": ""
-      }
-      msg.statusStyle = statusMap[msg.status]
+      const statusMap = {
+        undefined: 'circle outline icon',
+        ok: '',
+        help: '',
+        emergency: '',
+      };
+      msg.statusStyle = statusMap[msg.status];
       try {
-        var messageListHTML = pug.renderFile('./views/message.pug', { msg: msg })
-        io.emit('newMessage', messageListHTML)
+        const messageListHTML = pug.renderFile('./views/message.pug', { msg });
+        io.emit('newMessage', messageListHTML);
       } catch (error) {
         console.log(error);
       }
