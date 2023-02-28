@@ -1,8 +1,8 @@
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
+const date2Str = require('./utils/dateUtil');
 const cookieParser = require('cookie-parser')
 const pug = require('pug')
-const date2Str = require('./utils/dateUtil.js')
 
 function formatNotice(text) {
   return {
@@ -41,9 +41,7 @@ function setupSocket(io) {
     });
 
     socket.on('newMessage', async (msg) => {
-      var sender = msg.sender
-      var message = msg.content
-      var date = date2Str(new Date(msg.timestamp))
+      msg.time = date2Str(new Date(msg.timestamp))
       // TODO: move statusMap to a global file
       var statusMap = {
         "undefined": "circle outline icon",
@@ -51,9 +49,9 @@ function setupSocket(io) {
         "help": "",
         "emergency": ""
       }
-      var statusStyle = statusMap[msg.status]
+      msg.statusStyle = statusMap[msg.status]
       try {
-        var messageListHTML = pug.renderFile('./views/message.pug', { sender: sender, message: message, time: date, statusStyle: statusStyle })
+        var messageListHTML = pug.renderFile('./views/message.pug', { msg: msg })
         io.emit('newMessage', messageListHTML)
       } catch (error) {
         console.log(error);

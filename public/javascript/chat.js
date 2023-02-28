@@ -1,8 +1,8 @@
 // socket
 var socket = io();
-socket.on('newMessage', function (updatedContent) {
+socket.on('newMessage', function (newMessage) {
     //scroll to the latest post
-    $("#dialog").append(updatedContent)
+    $("#dialog").append(newMessage)
     var t = document.body.scrollHeight
     window.scroll({ top: t, left: 0, behavior: 'smooth' })
 })
@@ -44,16 +44,7 @@ $(document).ready(function () {
         $('#username').val(username)
         $('#status').val(status)
     }).then(function () {
-        axios.get('/api/v1/messages').then(function (res) {
-            result = res.data
-            if (result.success) {
-                for (var msg of result.data) {
-                    socket.emit('newMessage', msg);
-                }
-                var t = document.body.scrollHeight;
-                window.scroll({ top: t, left: 0, behavior: 'smooth' });
-            }
-        })
+        axios.get('/chat').then()
     }).catch(function (err) {
         alert(err)
     })

@@ -1,4 +1,4 @@
-/**
+/**f
  * convert date to string format
  * @param {Date} date 
  * @returns 

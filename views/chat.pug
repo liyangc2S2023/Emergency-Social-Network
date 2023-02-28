@@ -3,6 +3,8 @@
 #status(hidden)
 .ui.container#chat
     #dialog.ui.comments
+        for msg in messages
+            include message.pug
     #inputBox.ui
         #inputText.ui.input
             input#inputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
