@@ -12,14 +12,15 @@ router.get('/', async function (req, res) {
         "ok": "",
         "help": "",
         "emergency": ""
-      }
+    }
     // res.render('mainPage',{pageView:"Public"});
     var messageList = await messageController.getAll();
     messageList.forEach(msg => {
+        msg.isSender = (req.username == msg.sender)
         msg.time = date2Str(new Date(msg.timestamp))
         msg.statusStyle = statusMap[msg.status]
     })
-    res.render('mainPage', { pageView: "Public", messages: messageList})
+    res.render('mainPage', { pageView: "Public", messages: messageList })
 });
 
 

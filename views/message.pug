@@ -1,6 +1,9 @@
 .comment.sendMsg 
     a.avatar
-        img(src='/image/photo.jpeg')
+        if msg.isSender
+            img(src='/image/senderPhoto.jpeg')
+        else 
+            img(src='/image/photo.jpeg')
         .content.msg-top 
             a.author.name #{msg.sender}
             .metadata

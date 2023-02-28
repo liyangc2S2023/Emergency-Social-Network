@@ -41,6 +41,7 @@ function setupSocket(io) {
     });
 
     socket.on('newMessage', async (msg) => {
+      msg.isSender = true
       msg.time = date2Str(new Date(msg.timestamp))
       // TODO: move statusMap to a global file
       var statusMap = {
