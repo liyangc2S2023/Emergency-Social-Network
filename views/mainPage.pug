@@ -22,5 +22,7 @@ html
                 include directory.pug
             #publicContent(style=pageView=="Public"?"display:block":"display:none")
                 include chat.pug
+            #searchContent(style=pageView=="Search"?"display:block":"display:none")
+            #statusContent(style=pageView=="Status"?"display:block":"display:none")
         // footer
         include footer.pug
