@@ -52,7 +52,7 @@ app.use('/logout', require('./routes/logoutRouter'));
 
 // page not found
 app.use((req, res, next) => {
-  next(createError(404, 'page not found'));
+  next(createError(404, req.url+' page not found'));
 });
 
 /* error handling
