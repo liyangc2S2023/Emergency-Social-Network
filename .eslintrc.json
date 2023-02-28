@@ -12,6 +12,6 @@
     },
     "ignorePatterns": ["**/public/*"],
     "rules": {
-      "ignorePropertyModificationsFor": true
+      "no-param-reassign": ["error", { "props": false }]
     }
 }
