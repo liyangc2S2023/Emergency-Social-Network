@@ -56,6 +56,7 @@ if you wish to auto-reload the page, then run:
 ### How to run lint in repo
     $ npm run lint
 If you want the linter to automatically fix the issues
+
     $ npm run lint-fix
 
 ### How to expose port temporarily on the internet 
