@@ -1,5 +1,6 @@
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
+const date2Str = require('./utils/dateUtil');
 const cookieParser = require('cookie-parser')
 const pug = require('pug')
 
@@ -25,7 +26,7 @@ function setupSocket(io) {
     await userController.login(socket.request.username)
     console.log("connection")
     var userList = await userController.getAll();
-    var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+    var userListHTML = pug.renderFile('./views/directory.pug', { users: userList })
     socket.broadcast.emit('userlistChange', userListHTML)
 
     socket.on('joinRoom', async (username) => {
@@ -39,19 +40,20 @@ function setupSocket(io) {
       socket.broadcast.emit('notice', formatNotice(`${username} has joined`))
     });
 
-    // socket.on('newMessage', async (data) => {
-    //   try {
-    //     //new message
-    //     const newMessage = await messageController.addMessage(data.senderName, data.reciverName, data.status, data.content);
-    //     io.emit('newMessage', newMessage);
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // });
-
     socket.on('newMessage', async (msg) => {
+      msg.isSender = true
+      msg.time = date2Str(new Date(msg.timestamp))
+      // TODO: move statusMap to a global file
+      var statusMap = {
+        "undefined": "circle outline icon",
+        "ok": "",
+        "help": "",
+        "emergency": ""
+      }
+      msg.statusStyle = statusMap[msg.status]
       try {
-        io.emit('newMessage', msg);
+        var messageListHTML = pug.renderFile('./views/message.pug', { msg: msg })
+        io.emit('newMessage', messageListHTML)
       } catch (error) {
         console.log(error);
       }
@@ -60,9 +62,9 @@ function setupSocket(io) {
     socket.on('disconnect', async () => {
       await userController.logout(socket.request.username)
       console.log('user disconnected');
-      
+
       var userList = await userController.getAll();
-      var userListHTML = pug.renderFile('./views/directory.pug', {users:userList})
+      var userListHTML = pug.renderFile('./views/directory.pug', { users: userList })
       socket.broadcast.emit('userlistChange', userListHTML)
     })
 

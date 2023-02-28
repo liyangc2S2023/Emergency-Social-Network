@@ -1,0 +1,13 @@
+.comment.sendMsg 
+    a.avatar
+        if msg.isSender
+            img(src='/image/senderPhoto.jpeg')
+        else 
+            img(src='/image/photo.jpeg')
+    .content.msg-top 
+        a.author.name #{msg.sender}
+        .metadata
+            // the class of element i is a variable called statusStyle
+            i(class=`${msg.statusStyle}`)
+            .time #{msg.time}
+        .text #{msg.content}
