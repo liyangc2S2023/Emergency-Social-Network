@@ -33,6 +33,9 @@ router.post('/', async (req, res) => {
     res.status(400);
     res.render('join', { joinErr });
   }
+  // explicitly return to avoid jwt middleware to run
+  // eslint-disable-next-line no-useless-return
+  return;
 });
 
 router.post('/confirm', async (req, res, next) => {
