@@ -7,17 +7,16 @@ class JoinController {
     const usernameExistsCheck = await User.usernameExists(username);
     const flag = successflag && usernameExistsCheck.successFlag;
     if (usernameExistsCheck.err) joinErr.push(usernameExistsCheck.err);
-    return { flag, joinErr };
+    return { successflag: flag, joinErr };
   }
 
-  async confirmJoin(username, password) {
-    const { successflag, joinErr } = await this.join(username, password);
+  static async confirmJoin(username, password) {
+    const { successflag, joinErr } = await JoinController.join(username, password);
     await User.createUser(username, password);
     return { successflag, joinErr };
   }
 }
 
-// Singleton
-const joinController = new JoinController();
+// const joinController = new JoinController();
 
-module.exports = joinController;
+module.exports = JoinController;

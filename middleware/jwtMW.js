@@ -4,10 +4,7 @@ const config = require('../config');
 
 module.exports = function (req, res, next) {
   const token = req.cookies.user_token
-    || req.body.token
-    || req.query.token
     || req.headers.authorization;
-
   if (!token) {
     next(createError(401, 'token required'));
   } else {
