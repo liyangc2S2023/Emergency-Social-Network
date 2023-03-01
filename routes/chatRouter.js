@@ -1,26 +1,8 @@
 const express = require('express');
-const messageController = require('../controller/messageController');
-const userController = require('../controller/userController');
-const date2Str = require('../utils/dateUtil');
 
 const router = express.Router();
+const renderOnePage = require('./common/renderOnePage');
 
-router.get('/', async (req, res) => {
-  await userController.login(req.username);
-  const statusMap = {
-    undefined: 'circle outline icon',
-    ok: '',
-    help: '',
-    emergency: '',
-  };
-  // res.render('mainPage',{pageView:"Public"});
-  const messageList = await messageController.getAll();
-  messageList.forEach((msg) => {
-    msg.isSender = (req.username === msg.sender);
-    msg.time = date2Str(new Date(msg.timestamp));
-    msg.statusStyle = statusMap[msg.status];
-  });
-  res.render('mainPage', { pageView: 'Public', messages: messageList });
-});
+router.get('/', async (req, res) => renderOnePage(req, res, 'Public'));
 
 module.exports = router;

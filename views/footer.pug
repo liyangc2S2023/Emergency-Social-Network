@@ -1,10 +1,10 @@
 div.main-footer
     div.ui.four.item.menu
-        a.item(class = (pageView == "Directory" ? "active" : "") onclick="location.href='/directory'")
+        a.item(class = (pageView == "Directory" ? "active" : "") onclick="displayDirectory()")
             i.address.book.outline.icon
             br
             p Directory
-        a.item(class = (pageView == "Public" ? "active" : "")  onclick="location.href='/chat'")
+        a.item(class = (pageView == "Public" ? "active" : "")  onclick="displayPublic()")
             i.wechat.icon
             p Public
         a.item(class = (pageView == "Search" ? "active" : ""))

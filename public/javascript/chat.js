@@ -1,5 +1,4 @@
 // socket
-const socket = io();
 socket.on('newMessage', (newMessage) => {
   //scroll to the latest post
   $("#dialog").append(newMessage)
