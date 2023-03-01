@@ -2,7 +2,7 @@ version: 2.1 # CircleCI syntax version
 jobs: # a collection of steps
   build: # runs that are not using Workflows must have a `build` job as the entry point
     docker:
-      - image: circleci/node:10.16.3 # the first image is the primary container; this is where all `steps` will run
+      - image: circleci/node:14.18 # the first image is the primary container; this is where all `steps` will run
     steps: # a collection of executable commands 
       - checkout # check out source code to working directory
       - restore_cache: 
