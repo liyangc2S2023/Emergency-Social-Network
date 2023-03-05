@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-const UserHelper = require('./helper/userHelper')
+const UserHelper = require('./helper/userHelper');
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
