@@ -12,7 +12,7 @@ class JoinController {
 
   static async confirmJoin(username, password) {
     const { successflag, joinErr } = await JoinController.join(username, password);
-    await User.createUser(username, password);
+    await User.addUser(username, password);
     return { successflag, joinErr };
   }
 }

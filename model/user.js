@@ -1,9 +1,7 @@
-const cryptoJS = require('crypto-js');
 const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-
-const bannedName = require('../public/username_exclude.json').name;
+const UserHelper = require('./helper/userHelper')
 
 const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
@@ -14,39 +12,12 @@ const userSchema = new mongoose.Schema({
 
 const UserTable = mongoose.model('User', userSchema);
 
-function validatePassword(password, joinErr) {
-  if (!password || password.length < 4) {
-    joinErr.push('Password must be at least 4 characters long.');
-    return false;
-  }
-  return true;
-}
-
-function validateUsername(name, joinErr) {
-  const username = name.toLowerCase();
-
-  if (!username || username.length < 3) {
-    joinErr.push('Username must be at least 3 characters long.');
-    return false;
-  }
-  // banned name
-  if (bannedName.indexOf(username) !== -1) {
-    joinErr.push('Current username is banned.');
-    return false;
-  }
-  return true;
-}
-
-function encrypt(password, crypto = 'SHA256') {
-  return cryptoJS[crypto](password).toString();
-}
-
 class User {
   static nameRuleCheck(username, password) {
     const joinErr = [];
     let successflag = true;
-    successflag = validatePassword(password, joinErr) && successflag;
-    successflag = validateUsername(username, joinErr) && successflag;
+    successflag = UserHelper.validatePassword(password, joinErr) && successflag;
+    successflag = UserHelper.validateUsername(username, joinErr) && successflag;
 
     return { successflag, joinErr };
   }
@@ -69,20 +40,16 @@ class User {
       username,
     }, config.JWT_KEY, { expiresIn: '1d' });
     // todo: learn more about promise
-    await UserTable.create({ username, password: encrypt(password) });
+    await UserTable.create({ username, password: UserHelper.encrypt(password) });
     return token;
   }
 
   static async checkPassword(username, password) {
     const user = await UserTable.findOne({ username }).exec();
     if (user) {
-      if (encrypt(password) === user.password) return true;
+      if (UserHelper.encrypt(password) === user.password) return true;
     }
     return false;
-  }
-
-  static async createUser(username, password) {
-    return UserTable.create({ username, password: encrypt(password) });
   }
 
   static async login(username) {
@@ -112,7 +79,7 @@ class User {
   }
 
   static async addUser(username, password) {
-    return UserTable.create({ username, password: encrypt(password) });
+    return UserTable.create({ username, password: UserHelper.encrypt(password) });
   }
 }
 

@@ -15,8 +15,22 @@ afterAll(async () => {
     await mongoServer.stop();
 });
 
-test('test add message', async () => {
+test('test add messages', async () => {
+    await Message.addMessage("t1","t2","s","content")
     await Message.addMessage("t1","t2","s","content")
     var result = await Message.getAll()
-    // expect(result.);
+    expect(result.length).toBe(2)
+    await Message.addMessage("t1","t2","s","content")
+    result = await Message.getAll()
+    expect(result.length).toBe(3)
 });
+
+test('test get by sender', async()=>{
+    expect((await Message.getBySender("t1")).length).toBe(3)
+    expect((await Message.getBySender("t2")).length).toBe(0)
+})
+
+test('test get by reciever', async()=>{
+    expect((await Message.getByReciver("t1")).length).toBe(0)
+    expect((await Message.getByReciver("t2")).length).toBe(3)
+})
