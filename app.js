@@ -3,15 +3,17 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
-require('./database');
 const http = require('http');
 
 const server = http.createServer(app);
 const cookieParser = require('cookie-parser');
 const io = require('socket.io')(server);
 const setupSocket = require('./socket');
+const setupDB = require('./database');
 
 const port = 3000;
+
+setupDB();
 
 app.set('view engine', 'pug');
 app.set('views', './views');
@@ -64,9 +66,10 @@ app.use((req, res, next) => {
 *    throw newError
 * ```
 */
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   res.status(err.status || 500);
   res.render('error', { error: err });
+  next();
 });
 
 console.log(`Server started at: http://localhost:${port}`);

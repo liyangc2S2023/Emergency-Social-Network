@@ -8,8 +8,8 @@ const messageSchema = new mongoose.Schema({
     default: '',
     require: true,
   },
-  status: { type: String, require: true, default: '' },
-  timestamp: { type: Date, default: Date.now, require: true },
+  status: { type: String, required: true, default: '' },
+  timestamp: { type: Date, default: Date.now, required: true },
 });
 
 const MessageTable = mongoose.model('Message', messageSchema);
