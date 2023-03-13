@@ -19,9 +19,11 @@ jobs: # a collection of steps
       - run: #eslint
           name: eslint
           command: npm run lint 
-    # - run: # run tests
-    #     name: Run Tests and Coverage
-    #       command: npm run coverage
+      - run: # run tests
+          name: Run Tests
+          command: npm run test
+          # name: Run Tests and Coverage
+          # command: npm run coverage
     #   - store_artifacts:
     #       path: coverage/lcov-report
     #       destination: coverage
