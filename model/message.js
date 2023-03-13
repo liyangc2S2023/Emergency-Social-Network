@@ -23,11 +23,11 @@ class Message {
     return MessageTable.find({ sender });
   }
 
-  static async getByReceiver(receiver) {
+  static async getMessageByReceiverOrRoom(receiver) {
     return MessageTable.find({ receiver });
   }
 
-  static async getByPrivate(sender, receiver) {
+  static async getPrivateMessagesBetween(sender, receiver) {
     return MessageTable.find({
       $or: [
         { sender, receiver },
@@ -47,7 +47,7 @@ class Message {
     );
   }
 
-  static async getUserLatestMessage(user1, user2) {
+  static async getLatesMessageBetween(user1, user2) {
     // get latest message between a user and another user
     return MessageTable
       .find({

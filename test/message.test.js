@@ -17,25 +17,33 @@ afterAll(async () => {
 });
 
 test('test add messages', async () => {
-  await Message.addMessage('t1', 't2', 's', 'content');
-  await Message.addMessage('t1', 't2', 's', 'content');
+  await Message.addMessage('t1', 't2', 'status', 'content');
+  await Message.addMessage('t1', 't2', 'status', 'content');
+  await Message.addMessage('t1', 'all', 'status', 'content');
   let result = await Message.getAll();
-  expect(result.length).toBe(2);
-  await Message.addMessage('t1', 't2', 's', 'content');
-  result = await Message.getAll();
   expect(result.length).toBe(3);
+  await Message.addMessage('t1', 't2', 'status', 'content');
+  result = await Message.getAll();
+  expect(result.length).toBe(4);
 });
 
 test('test get by sender', async () => {
-  expect((await Message.getBySender('t1')).length).toBe(3);
+  expect((await Message.getBySender('t1')).length).toBe(4);
   expect((await Message.getBySender('t2')).length).toBe(0);
 });
 
-test('test get by reciever', async () => {
-  expect((await Message.getByReceiver('t1')).length).toBe(0);
-  expect((await Message.getByReceiver('t2')).length).toBe(3);
+test('test get by receiver', async () => {
+  expect((await Message.getMessageByReceiverOrRoom('t1')).length).toBe(0);
+  expect((await Message.getMessageByReceiverOrRoom('t2')).length).toBe(3);
+  expect((await Message.getMessageByReceiverOrRoom('all')).length).toBe(1);
+  expect((await Message.getMessageByReceiverOrRoom('t3')).length).toBe(0);
 });
 
 test('test get by private', async () => {
-  expect((await Message.getByPrivate('t1', 't2')).length).toBe(3);
+  expect((await Message.getPrivateMessagesBetween('t1', 't2')).length).toBe(3);
+});
+
+test('test get latest message between two users', async () => {
+  expect(await Message.getLatesMessageBetween('t1', 't2').toBe('content'));
+  expect(await Message.getLatesMessageBetween('t1', 't3').toBe(undefined));
 });

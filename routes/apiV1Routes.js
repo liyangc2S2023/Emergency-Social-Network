@@ -27,9 +27,6 @@ router.post('/messages', async (req, res) => res.send(Result.success(await messa
 
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
-// modify later
-// router.get('/messages/:receiverId',async function(req,res,next){
-//     return res.send(Result.success(await messageController.getByreceiver()))
-// })
+router.get('/messages/private/:senderId/:receiverId', async (req, res) => res.send(Result.success(await messageController.getByPrivate(req.params.senderId, req.params.receiverId))));
 
 module.exports = router;
