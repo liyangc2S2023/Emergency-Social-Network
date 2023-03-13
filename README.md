@@ -17,10 +17,10 @@ CryptoJS is a growing library of standard and secure cryptographic algorithms im
 ### Jest: https://jestjs.io/
 Jest is a delightful JavaScript Testing Framework with a focus on simplicity. It is fast, safe and has great exceptions. It can easily implement mocking and support code coverage with no additional setup.
 
-## Front-end
 ### Pug: https://pugjs.org/
 Pug has a clean and readable syntax, which makes it easy to write and maintain complex templates. Pug enables dynamic HTML generation, making it easy to build templates that can be customized and reused for different pages or components. Pug is optimized for performance, making it a fast and efficient choice for building complex HTML templates.
 
+## Front-end
 ### CSS3: https://www.w3.org/TR/css-2015/
 CSS3 provides improved styling capabilities, including new selectors, layout modules, and animation features, which allow for more dynamic and creative styles. CSS3 provides better control over layout and positioning of elements, making it easier to create complex and responsive designs. CSS3 is widely supported by modern browsers, making it a versatile choice for building cross-browser compatible web applications.
 
