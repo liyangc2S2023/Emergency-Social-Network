@@ -12,7 +12,6 @@ const userSchema = new mongoose.Schema({
 });
 
 const UserTable = mongoose.model('User', userSchema);
-const USER_ROLE = {ADMIN:"admin",USER:"user"}
 
 class User {
   static nameRuleCheck(username, password) {
@@ -41,10 +40,6 @@ class User {
       if (UserHelper.encrypt(password) === user.password) return true;
     }
     return false;
-  }
-
-  static async createUser(username, password, role = USER_ROLE.USER) {
-    return UserTable.create({ username, password: encrypt(password),role});
   }
 
   static async login(username) {
