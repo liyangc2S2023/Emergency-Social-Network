@@ -9,8 +9,8 @@ class UserController {
     return User.getOne(username);
   }
 
-  static async addUser(username, password) {
-    return User.addUser(username.toLowerCase(), password.toLowerCase());
+  static async addUser(username, password, role) {
+    return User.addUser(username.toLowerCase(), password.toLowerCase(), role);
   }
 
   static async verifyUser(username, password) {

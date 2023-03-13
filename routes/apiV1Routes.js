@@ -19,7 +19,7 @@ router.get('/users/current', async (req, res) => {
 
 router.get('/users/:userId', async (req, res) => res.send(Result.success(await userController.getOne(req.params.userId))));
 
-router.post('/users', async (req, res) => res.send(Result.success(await userController.addUser(req.body.username, req.body.password))));
+router.post('/users', async (req, res) => res.send(Result.success(await userController.addUser(req.body.username, req.body.password, req.body.role))));
 
 router.get('/messages', async (req, res) => res.send(Result.success(await messageController.getAll())));
 
