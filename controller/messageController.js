@@ -21,9 +21,9 @@ class MessageController {
     return Message.addMessage(sender, receiver, status, content);
   }
 
-  static async getLatesMessageBetween(user1, user2) {
+  static async getLatestMessageBetween(user1, user2) {
     // get latest message between a user and another user
-    return Message.getLatesMessageBetween(user1, user2);
+    return Message.getLatestMessageBetween(user1, user2);
   }
 }
 

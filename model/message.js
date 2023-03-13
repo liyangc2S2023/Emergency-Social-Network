@@ -47,9 +47,9 @@ class Message {
     );
   }
 
-  static async getLatesMessageBetween(user1, user2) {
+  static async getLatestMessageBetween(user1, user2) {
     // get latest message between a user and another user
-    return MessageTable
+    const message = await MessageTable
       .find({
         $or: [
           { sender: user1, receiver: user2 },
@@ -58,6 +58,8 @@ class Message {
       })
       .sort({ timestamp: -1 })
       .limit(1);
+    // return message.length == 1 ? message[0].content : "";
+    return message[0];
   }
 }
 
