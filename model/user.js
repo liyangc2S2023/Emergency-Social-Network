@@ -8,6 +8,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   online: { type: Boolean, default: false },
   status: { type: String, default: 'undefined' },
+  role: { type: String, default: config.USER_ROLE.USER },
 });
 
 const UserTable = mongoose.model('User', userSchema);
@@ -33,17 +34,6 @@ class User {
     return { successFlag: true, err: undefined };
   }
 
-  static async confirmJoin(username, password) {
-    // apply full (with DB check) checks when people comfirm join
-    const token = jwt.sign({
-      time: Date(),
-      username,
-    }, config.JWT_KEY, { expiresIn: '1d' });
-    // todo: learn more about promise
-    await UserTable.create({ username, password: UserHelper.encrypt(password) });
-    return token;
-  }
-
   static async checkPassword(username, password) {
     const user = await UserTable.findOne({ username }).exec();
     if (user) {
@@ -54,9 +44,11 @@ class User {
 
   static async login(username) {
     // return a token after login
+    const role = await this.getUserRole(username);
     const token = jwt.sign({
       time: Date(),
       username,
+      role,
     }, config.JWT_KEY, { expiresIn: '1d' });
     // update user status to online
     await UserTable.updateOne({ username }, { $set: { online: true } });
@@ -78,8 +70,17 @@ class User {
     return UserTable.findOne({ username });
   }
 
-  static async addUser(username, password) {
-    return UserTable.create({ username, password: UserHelper.encrypt(password) });
+  static async addUser(username, password, role = config.USER_ROLE.USER) {
+    return UserTable.create({ username, password: UserHelper.encrypt(password), role });
+  }
+
+  static async getUserRole(username) {
+    const user = await this.getOne(username);
+    if (user) {
+      return user.role;
+    }
+
+    return null;
   }
 }
 

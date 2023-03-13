@@ -3,6 +3,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 const User = require('../model/user');
 const UserHelper = require('../model/helper/userHelper');
+const config = require('../config');
 
 let mongoServer;
 
@@ -71,11 +72,6 @@ test('test usernameExists', async () => {
   expect((await User.usernameExists('tttt')).successFlag).toBe(false);
 });
 
-test('test confirmJoin', async () => {
-  await User.confirmJoin('test123', '1234');
-  expect((await User.getOne('test123')).username).toBe('test123');
-});
-
 test('test checkPassword', async () => {
   await User.addUser('testPassword', '123456');
   expect(await User.checkPassword('testPassword', '123456')).toBe(true);
@@ -94,4 +90,11 @@ test('test user login logout', async () => {
 test('test getOne', async () => {
   await User.addUser('testGetOne', '123456');
   expect((await User.getOne('testGetOne')).username).toBe('testGetOne');
+});
+
+test('test user role', async () => {
+  await User.addUser('testUserRole', '123456', config.USER_ROLE.ADMIN);
+  await User.addUser('testUserRole1', '123456', config.USER_ROLE.USER);
+  expect((await User.getOne('testUserRole')).role).toBe(config.USER_ROLE.ADMIN);
+  expect((await User.getOne('testUserRole1')).role).toBe(config.USER_ROLE.USER);
 });
