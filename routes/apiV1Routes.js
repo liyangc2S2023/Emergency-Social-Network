@@ -23,13 +23,13 @@ router.post('/users', async (req, res) => res.send(Result.success(await userCont
 
 router.get('/messages', async (req, res) => res.send(Result.success(await messageController.getAll())));
 
-router.post('/messages', async (req, res) => res.send(Result.success(await messageController.addMessage(req.body.sender, req.body.reciver, req.body.status, req.body.content))));
+router.post('/messages', async (req, res) => res.send(Result.success(await messageController.addMessage(req.body.sender, req.body.receiver, req.body.status, req.body.content))));
 
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
 // modify later
-// router.get('/messages/:reciverId',async function(req,res,next){
-//     return res.send(Result.success(await messageController.getByReciver()))
+// router.get('/messages/:receiverId',async function(req,res,next){
+//     return res.send(Result.success(await messageController.getByreceiver()))
 // })
 
 module.exports = router;

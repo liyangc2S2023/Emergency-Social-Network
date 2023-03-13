@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const messageSchema = new mongoose.Schema({
   content: { type: String, required: true },
   sender: { type: String, required: true },
-  reciver: {
+  receiver: {
     type: String,
     default: '',
     require: true,
@@ -23,20 +23,43 @@ class Message {
     return MessageTable.find({ sender });
   }
 
-  static async getByReciver(reciver) {
-    return MessageTable.find({ reciver });
+  static async getByReceiver(receiver) {
+    return MessageTable.find({ receiver });
   }
 
-  static async addMessage(sender, reciver, status, content) {
+  static async getByPrivate(sender, receiver) {
+    return MessageTable.find({
+      $or: [
+        { sender, receiver },
+        { sender: receiver, receiver: sender },
+      ],
+    });
+  }
+
+  static async addMessage(sender, receiver, status, content) {
     return MessageTable.create(
       {
         sender,
-        reciver,
+        receiver,
         status,
         content,
       },
     );
   }
+
+  static async getUserLatestMessage(user1, user2) {
+    // get latest message between a user and another user
+    return MessageTable
+      .find({
+        $or: [
+          { sender: user1, receiver: user2 },
+          { sender: user2, receiver: user1 },
+        ],
+      })
+      .sort({ timestamp: -1 })
+      .limit(1);
+  }
+
 }
 
 module.exports = Message;
