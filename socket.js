@@ -60,8 +60,6 @@ function setupSocket(io) {
     });
 
     socket.on('disconnect', async () => {
-<<<<<<< HEAD
-<<<<<<< HEAD
       await userController.logout(socket.request.username);
       console.log('user disconnected');
 
@@ -69,14 +67,6 @@ function setupSocket(io) {
       userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
       socket.broadcast.emit('userlistChange', userListHTML);
     });
-=======
-      console.log(socket.request.username)
-=======
->>>>>>> fix bug in welcome page
-      await userController.logout(socket.request.username)
-      io.emit('notice', formatNotice(`${socket.request.username} has left`))
-    })
->>>>>>> fix bug in welcome page
   });
 }
 
