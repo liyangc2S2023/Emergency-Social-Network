@@ -25,7 +25,6 @@ class MessageController {
     // get latest message between a user and another user
     return Message.getUserLatestMessage(user1, user2);
   }
-
 }
 
 module.exports = MessageController;

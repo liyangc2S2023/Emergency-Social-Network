@@ -32,6 +32,10 @@ test('test get by sender', async () => {
 });
 
 test('test get by reciever', async () => {
-  expect((await Message.getByreceiver('t1')).length).toBe(0);
-  expect((await Message.getByreceiver('t2')).length).toBe(3);
+  expect((await Message.getByReceiver('t1')).length).toBe(0);
+  expect((await Message.getByReceiver('t2')).length).toBe(3);
+});
+
+test('test get by private', async () => {
+  expect((await Message.getByPrivate('t1', 't2')).length).toBe(3);
 });

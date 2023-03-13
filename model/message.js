@@ -59,7 +59,6 @@ class Message {
       .sort({ timestamp: -1 })
       .limit(1);
   }
-
 }
 
 module.exports = Message;
