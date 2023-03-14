@@ -48,9 +48,8 @@ function displayPrivate(receiver) {
     window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
-function displayPrivateMessage(receiver) {
-    $('#title').text(`${receiver}`);
-    $('title').text(`ESNetwork - Chat to ${receiver}`);
+function displayPrivate(receiver) {
+    console.log(receiver);
     // clear
     const privateDialog = document.querySelector('#privateDialog');
     privateDialog.innerHTML = '';
@@ -71,7 +70,7 @@ function displayPrivateMessage(receiver) {
     })
 
     // show private chat page
-    hideOtherDisplay("privateChatContent")
+    hideOtherDisplay("privateContent")
 
     window.scrollTo(0, 0)
     var t = document.body.scrollHeight;
