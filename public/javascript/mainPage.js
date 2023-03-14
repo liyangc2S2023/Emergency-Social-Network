@@ -19,3 +19,7 @@ function displayDirectory() {
   hideOtherDisplay("directoryContent")
   window.scrollTo(0, 0)
 }
+
+displayStatus = () => {
+  hideOtherDisplay("statusContent")
+}
