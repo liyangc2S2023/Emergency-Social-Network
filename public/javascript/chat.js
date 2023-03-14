@@ -13,7 +13,7 @@ function oneKeyPress(e) {
   if (keynum == 13) sendClick(e);
 }
 
-function sendClick() {
+function sendPublicMessage() {
   const inputContent = $('#inputContent').val();
   const username = $('#username').val();
   const status = $('#status').val();
@@ -22,6 +22,7 @@ function sendClick() {
   } else {
     const message = {
       sender: username,
+      // 'all' refers to public channel
       receiver: 'all',
       status,
       timestamp: new Date(),
@@ -34,29 +35,6 @@ function sendClick() {
   }
 }
 
-function privateSend() {
-  // get information from local storage
-  const inputContent = $('#privateInputContent').val();
-  const sender = $('#username').val();
-  const status = $('#status').val();
-  const receiver = $('#receiver').val();
-  // check if the input is null
-  if (inputContent == '' || sender == '' || status == '') {
-    alert(`input text:${inputContent} or username:${sender} or user status:${status} cannot be null`);
-  } else {
-    // pack the information
-    const message = {
-      sender: sender,
-      receiver: receiver,
-      status,
-      content: inputContent,
-    };
-    // store message to database
-    axios.post('/api/v1/messages', message).then((res) => {
-      $('#privateInputContent').val('');
-    });
-  }
-}
 
 $(document).ready(() => {
   axios.get('api/v1/users/current').then((res) => {

@@ -1,7 +1,7 @@
 .ui.container
     .ui.relaxed.divided.items 
         for user in users
-            .item(class="active" onclick=`displayPrivate('${user.username}')`) 
+            .item(class="active" onclick=`displayPrivateMessage('${user.username}')`) 
                 .content 
                     a.header 
                         .ui.circular.avatar.image 

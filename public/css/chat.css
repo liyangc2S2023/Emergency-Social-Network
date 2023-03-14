@@ -1,4 +1,4 @@
-#dialog{
+.ui.comments{
     /* background-color: antiquewhite; */
     padding-bottom: 30px;
 }
@@ -11,7 +11,7 @@
     bottom: 60px;
     width: 100%;
 }
-#inputText{
+.ui.input{
     width: 60%;
 }
 
@@ -20,12 +20,3 @@
     height: 10px;
 }
 
-#privateInputBox{
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    position: fixed;
-    bottom: 60px;
-    width: 100%;
-}
