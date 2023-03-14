@@ -1,4 +1,4 @@
-.ui.comments.chat{
+.chatRoomComments{
     /* background-color: antiquewhite; */
     padding-bottom: 30px;
 }
@@ -13,9 +13,11 @@
     width: 100%;
 }
 
-.ui.input.chat{
+.chatInput{
     width: 60%;
 }
+
+
 
 .status{
     width: 10px;

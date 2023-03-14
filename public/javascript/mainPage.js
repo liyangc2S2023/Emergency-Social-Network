@@ -26,9 +26,7 @@ function displayPublic() {
 }
 
 function displayPrivate(receiver) {
-    console.log(receiver);
-    // clear
-    const privateDialog = document.querySelector('#privateDialog');
+    changTitle("Chat Public");
     privateDialog.innerHTML = '';
     // get receiver
     $('#receiver').val(receiver);
@@ -47,7 +45,7 @@ function displayPrivate(receiver) {
     })
 
     // show private chat page
-    hideOtherDisplay("privateContent")
+    hideOtherDisplay("privateChatContent")
 
     window.scrollTo(0, 0)
 }
@@ -69,10 +67,10 @@ function displayPrivateMessage(receiver) {
 
     // get receiver
     $('#receiver').val(receiver);
-    const sender = $('#username').val();
+    //const sender = $('#username').val();
 
     // to-do get history message
-    axios.get(`api/v1/messages/private/${sender}/${receiver}`)
+    // axios.get(`api/v1/messages/private/${sender}/${receiver}`)
 
     // show private chat page
     hideOtherDisplay("privateChatContent")
