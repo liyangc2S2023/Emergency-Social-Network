@@ -41,6 +41,11 @@ app.use('/welcome', require('./routes/welcomeRouter'));
 // Middleware: JWT(Json Web Token) Authentication
 app.use(require('./middleware/jwtMW'));
 
+app.use('/speedTest', require('./routes/speedRoutes'));
+
+// Middleware: suspend normal page if start ESN speed test
+app.use(require('./middleware/speedTestMW'));
+
 app.use('/rules', require('./routes/welcomeRulesRouter'));
 
 app.use('/chat', require('./routes/chatRouter'));
