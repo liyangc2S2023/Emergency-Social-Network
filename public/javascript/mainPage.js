@@ -50,6 +50,8 @@ function displayPrivate(receiver) {
     hideOtherDisplay("privateContent")
 
     window.scrollTo(0, 0)
+}
+
 function displayPublic(){
     changTitle("Chat Public");
     hideOtherDisplay("publicChatContent")
@@ -80,15 +82,7 @@ function displayPrivateMessage(receiver) {
     window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
-function displayDirectory() {
-    $('#title').text("Directory")
-    $('title').text("Directory")
-    document.querySelector('title').textContent = "ESNetwork - Directory";
-    $('#title').text("Directory")
-    $('title').text("Directory")
-    document.querySelector('title').textContent = "ESNetwork - Directory";
-  hideOtherDisplay("directoryContent")
-  window.scrollTo(0, 0)
+
 function displayDirectory(){
     changTitle("Directory");
     hideOtherDisplay("directoryContent")
