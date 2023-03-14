@@ -22,7 +22,7 @@ function sendClick() {
   } else {
     const message = {
       sender: username,
-      reciver: '',
+      receiver: '',
       status,
       timestamp: new Date(),
       content: inputContent,
