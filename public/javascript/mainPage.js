@@ -81,12 +81,11 @@ displayStatus = () => {
   hideOtherDisplay("statusContent")
 }
 
-displayStatus = () => {
-  hideOtherDisplay("statusContent")
-}
-
-function clickSpeedTest(){
-    $('.ui.modal').modal('show')
+// function for ESN speed test
+function speedTestModalDisplayAndHideOther(action){
+    $("#speedTestStopActions").hide()
+    $("#speedTestForm").hide()
+    $("#speedTestActions").hide()
     $("#speedTestLoading").hide()
     $("#speedTestReport").hide()
     $("#speedTestForm").show()
@@ -161,6 +160,3 @@ function startSpeedTest(){
 $(document).ready(() => {
     $(".ui.icon").popup();
 })
-socket.on('statusChange', (data) => {
-  updateUserStatusUI(data.username, data.status)
-});
