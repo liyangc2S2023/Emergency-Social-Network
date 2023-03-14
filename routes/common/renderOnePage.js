@@ -27,7 +27,7 @@ async function renderOnePage(req, res, pageView) {
 
   // current user status
   let status = await statusController.getStatus(req.username);
-  if (!status) status = 'undefined';
+  status = status ? status : 'undefined';
 
   // render main page with all data
   res.render('mainPage', { pageView, users: userList, messages: messageList, status: status});
