@@ -21,7 +21,9 @@ test('test no user status', async () => {
 });
 
 test('test get user status', async () => {
-  await Status.updateUserStatus('lisa', 'ok');
+  // the update status should also return new status
+  const res = await Status.updateUserStatus('lisa', 'ok');
+  expect(res).toBe('ok');
   expect(await Status.getStatus('lisa')).toBe('ok');
 });
 

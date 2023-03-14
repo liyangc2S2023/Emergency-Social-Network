@@ -13,7 +13,8 @@ class Status {
   // create a new object of user's status
   static async updateUserStatus(username, status) {
     const newDate = new Date();
-    return StatusTable.create({ username, status, timestamp: newDate });
+    const res = await StatusTable.create({ username, status, timestamp: newDate });
+    return res.status;
   }
 
   // get the stats of the current user stored in the database

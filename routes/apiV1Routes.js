@@ -33,6 +33,9 @@ router.get('/messages/private/:senderId/:receiverId', async (req, res) => res.se
 
 router.get('/speedTest', async (req, res) => res.send(Result.success(await SpeedRecordController.get())));
 
-router.post('/status', async (req, res) => res.send(Result.success(await statusController.updateUserStatus(req.body.username, req.body.status))));
+router.post('/status', async (req, res) => {
+  const status = await statusController.updateUserStatus(req.body.username, req.body.status);
+  return res.send(Result.success({ status }));
+});
 
 module.exports = router;
