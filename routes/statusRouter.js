@@ -1,6 +1,6 @@
 const express = require('express');
-const statusController = require('../controller/statusController');
-const renderOnePage = require('./common/renderOnePage');
+// const statusController = require('../controller/statusController');
+// const renderOnePage = require('./common/renderOnePage');
 
 const router = express.Router();
 
