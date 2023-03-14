@@ -82,6 +82,10 @@ class User {
 
     return null;
   }
+
+  static async updateCurrentStatus(username, status) {
+    return UserTable.updateOne({ username }, { $set: { status } });
+  }
 }
 
 module.exports = User;

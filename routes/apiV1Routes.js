@@ -3,6 +3,7 @@ const Result = require('./common/result');
 const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const SpeedRecordController = require('../controller/speedController');
+const statusController = require('../controller/statusController');
 
 const router = express.Router();
 
@@ -31,5 +32,7 @@ router.get('/messages/:senderId', async (req, res) => res.send(Result.success(aw
 router.get('/messages/private/:senderId/:receiverId', async (req, res) => res.send(Result.success(await messageController.getPrivateMessagesBetween(req.params.senderId, req.params.receiverId))));
 
 router.get('/speedTest', async (req, res) => res.send(Result.success(await SpeedRecordController.get())));
+
+router.post('/status', async (req, res) => res.send(Result.success(await statusController.updateUserStatus(req.body.username, req.body.status))));
 
 module.exports = router;

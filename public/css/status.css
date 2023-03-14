@@ -1,0 +1,78 @@
+/* .container.statusFrame {
+    max-width: 800px;
+    margin: 0 auto;
+  } */
+  
+.statusTitle{
+  text-align: center;
+  font-size: 20px;
+  color:black;
+}
+
+.currentStatus{
+  text-align: center;
+  font-size: 28px;
+  color:black;
+}
+
+#current-status {
+  font-weight: bold;
+}
+
+.statusDisplay {
+  margin-top: 0;
+}
+
+.status {
+  margin-left: 5px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.statusDescription {
+  font-size: 15px;
+  color:gray;
+}
+
+.statusImg{
+  border-radius: 50%;
+  width: 1em;
+  height: 1em;
+  margin-left: 5px;
+}
+  
+.btn-confirm {
+  width: 100%;
+  padding: 15px;
+  background-color: black;
+  color: #fff;
+  border: 2px solid black;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+
+  font-family: 'Roboto';
+  font-style: normal;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.statusFrame {
+  margin-top: 40px;
+  max-width: 390px;
+  padding: 16px;
+  background-color: white;
+  margin: auto auto;
+}
+
+.statusChoices {
+  align-items: center;
+  margin: auto auto;
+}
+
+.currentStatus {
+  padding: 20px;
+  background-color: whitesmoke;
+  margin: auto auto;
+  margin-bottom: 40px;
+}

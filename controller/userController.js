@@ -26,6 +26,10 @@ class UserController {
     // user status as offline
     return User.logout(username);
   }
+
+  static async updateCurrentStatus(username, status) {
+    return User.updateCurrentStatus(username, status);
+  }
 }
 
 // const userController = new UserController();
