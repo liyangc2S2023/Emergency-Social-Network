@@ -48,8 +48,9 @@ function displayPrivate(receiver) {
     window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
-function displayPrivate(receiver) {
-    console.log(receiver);
+function displayPrivateMessage(receiver) {
+    $('#title').text(`${receiver}`);
+    $('title').text(`ESNetwork - Chat to ${receiver}`);
     // clear
     const privateDialog = document.querySelector('#privateDialog');
     privateDialog.innerHTML = '';
@@ -70,7 +71,7 @@ function displayPrivate(receiver) {
     })
 
     // show private chat page
-    hideOtherDisplay("privateContent")
+    hideOtherDisplay("privateChatContent")
 
     window.scrollTo(0, 0)
     var t = document.body.scrollHeight;
@@ -78,6 +79,9 @@ function displayPrivate(receiver) {
 }
 
 function displayDirectory() {
+    $('#title').text("Directory")
+    $('title').text("Directory")
+    document.querySelector('title').textContent = "ESNetwork - Directory";
     $('#title').text("Directory")
     $('title').text("Directory")
     document.querySelector('title').textContent = "ESNetwork - Directory";
