@@ -10,6 +10,13 @@ class config {
   static POST_TEST_PERCENTAGE = 0.9;
 
   static GET_TEST_PERCENTAGE = 0.1;
+
+  static statusMap = {
+    undefined: 'circle outline grey icon',
+    ok: 'circle green icon ',
+    help: 'circle yellow icon',
+    emergency: 'circle red icon',
+  };
 }
 
 module.exports = config;

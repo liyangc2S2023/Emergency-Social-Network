@@ -4,6 +4,7 @@ const jwtMW = require('./middleware/jwtMW');
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
 const date2Str = require('./utils/dateUtil');
+const config = require('./config');
 
 function formatNotice(text) {
   return {
@@ -43,14 +44,8 @@ function setupSocket(io) {
     socket.on('newMessage', async (msg) => {
       msg.isSender = true;
       msg.time = date2Str(new Date(msg.timestamp));
-      // TODO: move statusMap to a global file
-      const statusMap = {
-        undefined: 'circle outline icon',
-        ok: '',
-        help: '',
-        emergency: '',
-      };
-      msg.statusStyle = statusMap[msg.status];
+
+      msg.statusStyle = config.statusMap[msg.status];
       try {
         const messageListHTML = pug.renderFile('./views/message.pug', { msg });
         io.emit('newMessage', messageListHTML);

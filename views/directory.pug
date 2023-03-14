@@ -1,7 +1,7 @@
 .ui.container
     .ui.relaxed.divided.items 
         for user in users
-            .item 
+            .item(class="active" onclick=`displayPrivate('${user.username}')`) 
                 .content 
                     a.header 
                         .ui.circular.avatar.image 
@@ -12,5 +12,3 @@
                             .online online
                     else
                         .meta offline
-
-                    .description Lisa's last message
