@@ -101,8 +101,8 @@ function clickSpeedTest(){
 
 function displayLoading(time){
     $("#speedTestLoading").show()
+    $("#progress").progress({percent:0})
     progressInterval = setInterval(()=>{
-        console.log()
         var prev = Number($("#progress").attr("data-percent"))
         // $("#progress").attr("data-percent",str(prev+1))
         $("#progress").progress({percent:prev+1})
