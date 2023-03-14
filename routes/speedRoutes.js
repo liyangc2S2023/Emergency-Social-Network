@@ -22,10 +22,9 @@ router.use(async (req, res, next) => {
 router.get('/', async (req, res) => res.send(Result.success(await speedRecordController.get())));
 
 router.post('/', async (req, res, next) => {
-  if(typeof req.body.duration !== 'number' || typeof req.body.interval !== 'number'){
-    next(createError(400,"duration and interval should be number"))
-  }
-  else{
+  if (typeof req.body.duration !== 'number' || typeof req.body.interval !== 'number') {
+    next(createError(400, 'duration and interval should be number'));
+  } else {
     // start test
     await speedRecordController.startTest(req, req.body.duration * 1000, req.body.interval);
     // response the result when test finish
@@ -46,7 +45,6 @@ router.post('/', async (req, res, next) => {
     // method 2:
     // res.send("start speed test")
   }
-
 });
 
 router.delete('/', async (req, res, next) => {
