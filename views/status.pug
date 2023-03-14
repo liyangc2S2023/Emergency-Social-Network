@@ -1,0 +1,28 @@
+.ui.container#status 
+#username(hidden)
+#status(hidden)
+  title Status Tracker
+  .container
+    h2 YOUR CURRENT STATUS IS 
+    h2.h #{status}
+      span#current-status
+    form#status-form
+      h3 Change your status:
+      input(type="radio", name='status', value='OK', id='ok')
+      label(for='ok') OK
+        img(src='/icons/okIcon.png')
+        p.p.p I am OK: I do not need help.
+      br
+      input(type="radio", name='status', value='Help', id='help')
+      label(for='help') Help
+        img(src='/icons/helpIcon.png')
+        p.p.p I need help, but this is not a life threatening emergency.
+      br
+      input(type="radio", name='status', value='Emergency', id='emergency')
+      label(for='emergency') Emergency
+        img(src='/icons/emergencyIcon.png')
+        p.p.p I need help now: this is a life threatening emergency!
+      br
+      input(type='submit', value='Update')
+      //- div.btn-container
+      //-   button.btn-confirm(onclick="changeClick") CHANGE
