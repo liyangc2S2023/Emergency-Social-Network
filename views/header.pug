@@ -3,17 +3,33 @@ div.ui.borderless.fixed.menu#main-header
         .ui.modal
             .header ESN Speed Test
             .content 
-                .ui.form
-                    .two.fields
+                .ui.form#speedTestForm 
+                    .two.fields 
                         .field
                             label Duration: 
-                            input(type="text",placeholder="Duration")  
+                            input#durationInput(type="text",placeholder="Duration")  
                         .field
                             label Interval: 
-                            input(type="text",placeholder="Interval")
-            .actions 
+                            input#intervalInput(type="text",placeholder="Interval")
+                .ui.form#speedTestReport(hidden)
+                    .two.field
+                        .field 
+                            label Post Performance:
+                            label#PostResult
+                        .field 
+                            label Get Performance:
+                            label#GetResult
+                #speedTestLoading(hidden)
+                    .ui.indicating.progress#progress(data-percent=0)
+                        .bar
+                        .label Testing
+                #speedTestStopping(hidden) stopping
+                #speedTestStopResult(hidden)
+            .actions#speedTestActions
                 .ui.cancel.button Cancel
                 .ui.green.button(onclick="startSpeedTest()") Start
+            .actions#speedTestStop(hidden)
+                .ui.red.button(onclick="stopSpeedTest()") Stop
         a.item
             //- i.chevron.left.icon#main-page-back 
         h1.ui.center.aligned.header#title #{pageView}

@@ -19,27 +19,34 @@ router.use(async (req, res, next) => {
   // }
 });
 
-router.post('/', async (req, res) => {
-  // start test
-  await speedRecordController.startTest(req, req.body.duration * 1000, req.body.interval);
+router.get('/', async (req, res) => res.send(Result.success(await speedRecordController.get())));
 
-  // response the result when test finish
-  const responseInterval = setInterval(async () => {
-    if (!SuspendFlag.getInstance().isSuspend) {
-      // method1 sync:  wait until test finish
-      clearInterval(responseInterval);
-      // todo: give right response
-      res.send(Result.success({
-        exitStatus: SuspendFlag.getInstance().exitStatus,
-        postPerformance: SuspendFlag.getInstance().postPerformance,
-        getPerformance: SuspendFlag.getInstance().getPerformance,
-      }));
-      // todo: method 2 async: use socket send to client
-      // req.io.emit("test finish",result)
-    }
-  }, 1000);
-  // method 2:
-  // res.send("start speed test")
+router.post('/', async (req, res, next) => {
+  if(typeof req.body.duration !== 'number' || typeof req.body.interval !== 'number'){
+    next(createError(400,"duration and interval should be number"))
+  }
+  else{
+    // start test
+    await speedRecordController.startTest(req, req.body.duration * 1000, req.body.interval);
+    // response the result when test finish
+    const responseInterval = setInterval(async () => {
+      if (!SuspendFlag.getInstance().isSuspend) {
+        // method1 sync:  wait until test finish
+        clearInterval(responseInterval);
+        // todo: give right response
+        res.send(Result.success({
+          exitStatus: SuspendFlag.getInstance().exitStatus,
+          postPerformance: SuspendFlag.getInstance().postPerformance,
+          getPerformance: SuspendFlag.getInstance().getPerformance,
+        }));
+        // todo: method 2 async: use socket send to client
+        // req.io.emit("test finish",result)
+      }
+    }, 1000);
+    // method 2:
+    // res.send("start speed test")
+  }
+
 });
 
 router.delete('/', async (req, res, next) => {
