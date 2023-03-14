@@ -54,4 +54,4 @@ function changeClick() {
             //socket.emit('statusUpdate',status_) 
         });
     });
-}  
+}
