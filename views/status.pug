@@ -1,25 +1,25 @@
 .ui.container#status 
   #status(hidden)
   title Status Tracker
-  .container
+  .container.statusFrame
       h2.statusTitle YOUR CURRENT STATUS IS 
-      h2.h #{status}
+      h2.currentStatus #{status}
       span#current-status
-      form#status-form
-      h3 Change your status:
+      form.statusForm#status-form
+      h3.statusDisplay Change your status:
       input(type="radio", name='status', value='OK', id='ok')
-      label(for='ok') OK
-          img(src='/icons/okIcon.png')
-          p.p.p I am OK: I do not need help.
+      label.status(for='ok') OK
+          img.status(src='/icons/okIcon.png')
+          p.statusDescription I am OK: I do not need help.
       br
       input(type="radio", name='status', value='Help', id='help')
-      label(for='help') Help
-          img(src='/icons/helpIcon.png')
-          p.p.p I need help, but this is not a life threatening emergency.
+      label.status(for='help') Help
+          img.status(src='/icons/helpIcon.png')
+          p.statusDescription I need help, but this is not a life threatening emergency.
       br
       input(type="radio", name='status', value='Emergency', id='emergency')
-      label(for='emergency') Emergency
-          img(src='/icons/emergencyIcon.png')
-          p.p.p I need help now: this is a life threatening emergency!
+      label.status(for='emergency') Emergency
+          img.status(src='/icons/emergencyIcon.png')
+          p.statusDescription I need help now: this is a life threatening emergency!
       br
-      input(type='submit', value='Update')
+      button.btn-confirm(onclick=) Update

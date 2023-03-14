@@ -1,0 +1,63 @@
+.container.statusFrame {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  h2.statusTitle{
+    text-align: center;
+    font-size: 30px;
+    color:black;
+  }
+  h2.currentStatus{
+    text-align: center;
+    font-size: 30px;
+    color:black;
+  }
+  
+  #current-status {
+    font-weight: bold;
+  }
+  
+  form.statusForm {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    padding: 20px;
+  }
+  
+  h3.statusDisplay {
+    margin-top: 0;
+  }
+  
+  label.status {
+    margin-left: 5px;
+    font-size: 20px;
+  }
+
+  p.statusDescription {
+    font-size: 15px;
+    color:gray;
+  }
+  
+  img.status{
+    border-radius: 50%;
+    width: 30;
+    height: 30;
+    margin-left: 5px;
+  }
+    
+  .btn-confirm {
+    width: 100%;
+    padding: 15px;
+    background-color: black;
+    color: #fff;
+    border: 2px solid black;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+
+    font-family: 'Roboto';
+    font-style: normal;
+    font-weight: 600;
+    font-size: 14px;
+}
+  
