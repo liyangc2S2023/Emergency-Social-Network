@@ -25,9 +25,6 @@ async function renderOnePage(req, res, pageView) {
 
   // render main page with all data
   res.render('mainPage', { pageView, users: userList, messages: messageList, status: status});
-
-  const userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
-  req.io.emit('userlistChange', userListHTML);
 }
 
 module.exports = renderOnePage;
