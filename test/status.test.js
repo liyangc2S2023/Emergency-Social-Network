@@ -17,12 +17,12 @@ afterAll(async () => {
 });
 
 test('test no user status', async () => {
-  expect((await Status.getStatus('rui')).status).toBe(undefined);
+  expect(await Status.getStatus('rui')).toBe(undefined);
 });
 
 test('test get user status', async () => {
-  await Status.createUserStatus('lisa', 'ok');
-  expect((await Status.getStatus('lisa')).status).toBe('ok');
+  await Status.updateUserStatus('lisa', 'ok');
+  expect(await Status.getStatus('lisa')).toBe('ok');
 });
 
 test('test no user history status', async () => {
@@ -32,10 +32,10 @@ test('test no user history status', async () => {
 test('test getHistoryStatus status', async () => {
   const username = 'noreen';
   const ohterName = 'lisa';
-  await Status.createUserStatus(username, 'ok');
+  await Status.updateUserStatus(username, 'ok');
   expect((await Status.getHistoryStatus(username)).length).toBe(1);
   await Status.updateUserStatus(username, 'help');
-  expect((await Status.getHistoryStatus).length).toBe(2);
+  expect((await Status.getHistoryStatus(username)).length).toBe(2);
   await Status.updateUserStatus(username, 'emergency');
   await Status.updateUserStatus(ohterName, 'emergency');
   const statusHistory = await Status.getHistoryStatus(username);
