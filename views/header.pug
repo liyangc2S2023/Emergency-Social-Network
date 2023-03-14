@@ -1,6 +1,24 @@
 div.ui.borderless.fixed.menu#main-header
     div.ui.container
+        .ui.modal
+            .header ESN Speed Test
+            .content 
+                .ui.form
+                    .two.fields
+                        .field
+                            label Duration: 
+                            input(type="text",placeholder="Duration")  
+                        .field
+                            label Interval: 
+                            input(type="text",placeholder="Interval")
+            .actions 
+                .ui.cancel.button Cancel
+                .ui.green.button(onclick="startSpeedTest()") Start
         a.item
             //- i.chevron.left.icon#main-page-back 
-        h1.ui.center.aligned.header#title #{pageView} 
-        a.right.item#logout(href="/logout") logout
+        h1.ui.center.aligned.header#title #{pageView}
+        .right.item 
+            a.item#speedTest(onclick="clickSpeedTest()") 
+                div.ui.icon(data-content="Speed Test")
+                    i.bolt.icon  
+            a.right.item#logout(href="/logout") logout

@@ -80,6 +80,23 @@ displayStatus = () => {
   hideOtherDisplay("statusContent")
 }
 
+displayStatus = () => {
+  hideOtherDisplay("statusContent")
+}
+
+function clickSpeedTest(){
+    console.log("clicked")
+    $('.ui.modal').modal('show')
+}
+
+function startSpeedTest(){
+    //todo: send post
+    axios.post('/')
+}
+
+$(document).ready(() => {
+    $(".ui.icon").popup();
+})
 socket.on('statusChange', (data) => {
   updateUserStatusUI(data.username, data.status)
 });
