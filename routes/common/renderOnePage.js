@@ -1,4 +1,3 @@
-const pug = require('pug');
 const messageController = require('../../controller/messageController');
 const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
