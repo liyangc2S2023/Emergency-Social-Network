@@ -4,6 +4,7 @@ const Result = require('./common/result');
 const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
+const socketMap = require('../utils/socketMap');
 const config = require('../config');
 
 const router = express.Router();
@@ -46,7 +47,38 @@ router.post('/messages', async (req, res) => {
 
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
-router.get('/messages/private/:senderId/:receiverId', async (req, res) => res.send(Result.success(await messageController.getPrivateMessagesBetween(req.params.senderId, req.params.receiverId))));
+router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
+  const { senderId, receiverId } = req.params;
+  const result = await messageController.getPrivateMessagesBetween(senderId, receiverId);
+  res.send(Result.success(result));
+});
+
+router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
+  const {
+    sender, receiver, status, content,
+  } = req.body;
+  // save to database
+  await messageController.addMessage(sender, receiver, status, content);
+  console.log('SEND: send message: ', req.body);
+  // render html
+  const messageHTML = pug.renderFile('./views/message.pug', {
+    msg: {
+      sender,
+      receiver,
+      statusStyle: config.statusMap[status],
+      content,
+    },
+  });
+
+  // send back to sender over socket
+  socketMap.getInstance().getSocket(sender).emit('newPrivateMessage', messageHTML, sender);
+  // send to receiver
+  const receiverSocket = socketMap.getInstance().getSocket(receiver);
+  if (receiverSocket) {
+    receiverSocket.emit('newPrivateMessage', messageHTML, sender);
+  }
+  res.send(Result.success());
+});
 
 router.post('/status', async (req, res) => {
   const status = await statusController.updateUserStatus(req.body.username, req.body.status);

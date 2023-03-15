@@ -32,9 +32,8 @@ updateUserStatusUI = (username, status) => {
   // this function handles UI changes when user status changes
 
   // update the hidden UI on page
-  if($("#currentUsername").val()==username){
+  if ($("#currentUsername").val() == username) {
     $("#currentUserStatus").val(status)
-    console.log("update current status: "+status)
   }
 
   // update user status in directory
@@ -43,6 +42,11 @@ updateUserStatusUI = (username, status) => {
   if (userStatus) {
     userStatus.classList = classList;
   }
+}
+
+appendPrivateMessage = (msg) => {
+  // TODO: render sender avatar
+  $('#privateDialog').append(msg);
 }
 
 function displayPublic() {
@@ -63,13 +67,14 @@ function displayPrivateMessage(receiver) {
   const privateDialog = document.querySelector('#privateDialog');
   privateDialog.innerHTML = '';
 
-  // get receiver
+  // save receiver for future message
   $('#chatPrivateReceiver').val(receiver);
-  //const sender = $('#currentUsername').val();
+  const sender = $('#currentUsername').val();
 
-  // to-do get history message
-  // axios.get(`api/v1/messages/private/${sender}/${receiver}`)
 
+  axios.get(`chat/messages/private/${sender}/${receiver}`).then((res) => {
+    $('#privateDialog').html(res.data);
+  });
   // show private chat page
   hideOtherDisplay("privateChatContent")
 
@@ -93,6 +98,10 @@ displayStatus = () => {
 
 socket.on('statusChange', (data) => {
   updateUserStatusUI(data.username, data.status);
+});
+
+socket.on('newPrivateMessage', (messageHTML, sender) => {
+  appendPrivateMessage(messageHTML, sender);
 });
 
 function setActiveItem(itemId) {
