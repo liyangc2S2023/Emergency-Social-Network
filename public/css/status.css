@@ -58,16 +58,18 @@
 }
 
 .statusFrame {
-  margin-top: 40px;
-  max-width: 390px;
+  max-width: 800px;
   padding: 16px;
   background-color: white;
   margin: auto auto;
 }
 
-.statusChoices {
+.statusChoice {
+  padding: 16px;
   align-items: center;
   margin: auto auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .currentStatus {
