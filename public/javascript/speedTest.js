@@ -1,5 +1,6 @@
 // function for ESN speed test
 function speedTestModalDisplayAndHideOther(action){
+    $("#speedTestModal").modal('show')
     $("#speedTestStopActions").hide()
     $("#speedTestForm").hide()
     $("#speedTestActions").hide()
@@ -38,7 +39,7 @@ function stopSpeedTest(){
         }
     })
     $("#speedTestStopping").show()
-    $("#speedTestStop").hide()
+    $("#speedTestStopActions").hide()
     $("#speedTestLoading").hide()
     clearInterval(progressInterval)
 }
@@ -54,7 +55,7 @@ function startSpeedTest(){
             // stop loading
             clearInterval(progressInterval)
             $("#speedTestLoading").hide()
-            $("#speedTestStop").hide()
+            $("#speedTestStopActions").hide()
             var data = res.data.data
             if(data.exitStatus==0){
                 // display message
@@ -70,7 +71,7 @@ function startSpeedTest(){
         displayLoading(duration)
         $("#speedTestForm").hide()
         $("#speedTestActions").hide()
-        $("#speedTestStop").show()
+        $("#speedTestStopActions").show()
     }
 }
 
