@@ -80,6 +80,15 @@ class Message {
       isRead: false,
     });
   }
+
+  static async getAllUsernamesWithUnreadMessage(receiver) {
+    const unreadMessage = await Message.getUserUnreadMessage(receiver);
+    const usernames = new Set();
+    unreadMessage.forEach((message) => {
+      usernames.add(message.sender);
+    });
+    return usernames;
+  }
 }
 
 module.exports = Message;

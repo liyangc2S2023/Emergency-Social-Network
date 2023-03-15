@@ -112,3 +112,23 @@ test('test get all unread messages', async () => {
   const result2 = await Message.getUserUnreadMessage('t2');
   expect(result2.length).toBe(4);
 });
+
+test('test get AllUsernames With Unread Message', async () => {
+  await Message.addMessage('t3', 't2', 'status', 'content');
+  await Message.addMessage('t4', 't2', 'status', 'content');
+  await Message.addMessage('t5', 't2', 'status', 'content');
+
+  const result = await Message.getAllUsernamesWithUnreadMessage('t2');
+  expect(result.size).toBe(4);
+  // expect result to be ['t3', 't4', 't5', 't1']
+  const requiredElements = ['t1', 't3', 't4', 't5'];
+  requiredElements.forEach((element) => {
+    expect(result.has(element)).toBeTruthy();
+  });
+
+  const updateResult = await Message.userReadMessage('t3', 't2');
+  expect(updateResult.modifiedCount).toBe(1);
+
+  const result2 = await Message.getAllUsernamesWithUnreadMessage('t2');
+  expect(result2.size).toBe(3);
+});
