@@ -1,3 +1,5 @@
+var progressInterval;
+
 // function for ESN speed test
 function speedTestModalDisplayAndHideOther(action){
     $("#speedTestModal").modal('show')
@@ -22,7 +24,9 @@ function displayLoading(time){
     progressInterval = setInterval(()=>{
         var prev = Number($("#progress").attr("data-percent"))
         // $("#progress").attr("data-percent",str(prev+1))
-        $("#progress").progress({percent:prev+1})
+        if(prev<100){
+            $("#progress").progress({percent:prev+1})
+        }
     },time*10)
 }
 
