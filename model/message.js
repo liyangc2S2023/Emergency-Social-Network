@@ -10,6 +10,7 @@ const messageSchema = new mongoose.Schema({
   },
   status: { type: String, required: true, default: '' },
   timestamp: { type: Date, default: Date.now, required: true },
+  isRead: { type: Boolean, default: false },
 });
 
 const MessageTable = mongoose.model('Message', messageSchema);
@@ -33,7 +34,7 @@ class Message {
         { sender, receiver },
         { sender: receiver, receiver: sender },
       ],
-    });
+    }).sort({ timestamp: -1 });
   }
 
   static async addMessage(sender, receiver, status, content) {
@@ -60,6 +61,24 @@ class Message {
       .limit(1);
     // return message.length == 1 ? message[0].content : "";
     return message[0];
+  }
+
+  static async userReadMessage(sender, receiver) {
+    return MessageTable.updateMany(
+      {
+        sender,
+        receiver,
+        isRead: false,
+      },
+      { isRead: true },
+    );
+  }
+
+  static async getUserUnreadMessage(receiver) {
+    return MessageTable.find({
+      receiver,
+      isRead: false,
+    });
   }
 }
 

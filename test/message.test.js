@@ -86,3 +86,29 @@ test('test get latest message between two users', async () => {
   result = (await Message.getLatestMessageBetween('t1', 't3')).content;
   expect(result).toBe('hello');
 });
+
+test('test user read message', async () => {
+  await Message.addMessage('t2', 't1', 'status', 'content');
+  const updateResult = await Message.userReadMessage('t1', 't2');
+  expect(updateResult.modifiedCount).toBe(2);
+  const result = (await Message.getPrivateMessagesBetween('t1', 't2'));
+  // should read receiver message, not read sender message
+  expect(result[1].isRead).toBe(true);
+  expect(result[2].isRead).toBe(true);
+  expect(result[0].isRead).toBe(false);
+});
+
+test('test get all unread messages', async () => {
+  await Message.addMessage('t3', 't2', 'status', 'content');
+  await Message.addMessage('t4', 't2', 'status', 'content');
+  await Message.addMessage('t5', 't2', 'status', 'content');
+
+  const result = await Message.getUserUnreadMessage('t2');
+  expect(result.length).toBe(5);
+
+  const updateResult = await Message.userReadMessage('t3', 't2');
+  expect(updateResult.modifiedCount).toBe(1);
+
+  const result2 = await Message.getUserUnreadMessage('t2');
+  expect(result2.length).toBe(4);
+});
