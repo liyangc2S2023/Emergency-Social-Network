@@ -5,3 +5,11 @@
 .online {
     color:green;
 }
+
+.new-message-alert-icon {
+    color:rgb(184,62,41);
+}
+
+.new-message-alert {
+    display: none;
+}

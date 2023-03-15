@@ -59,7 +59,6 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
   } = req.body;
   // save to database
   await messageController.addMessage(sender, receiver, status, content);
-  console.log('SEND: send message: ', req.body);
   // render html
   const messageHTML = pug.renderFile('./views/message.pug', {
     msg: {

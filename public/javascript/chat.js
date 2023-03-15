@@ -18,7 +18,8 @@ socket.on('newMessage', (newMessage, sender) => {
 function oneKeyPress(e) {
   keynum = e.keyCode | e.which;
   // 13 for enter
-  if (keynum == 13) sendMessage();
+  // TODO handle enter for private message
+  // if (keynum == 13) sendMessage();
 }
 
 function sendMessage(isPublic = true) {

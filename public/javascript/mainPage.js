@@ -49,6 +49,10 @@ appendPrivateMessage = (msg) => {
   $('#privateDialog').append(msg);
 }
 
+alertPrivateMessage = (sender) => {
+  $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
+}
+
 function displayPublic() {
   changTitle("Chat Public");
   // document.querySelector('headerTitle').textContent = "Public Chat";
@@ -66,11 +70,11 @@ function displayPrivateMessage(receiver) {
   // clear current page
   const privateDialog = document.querySelector('#privateDialog');
   privateDialog.innerHTML = '';
+  $('#directoryNewMessage-' + receiver).hide();
 
   // save receiver for future message
   $('#chatPrivateReceiver').val(receiver);
   const sender = $('#currentUsername').val();
-
 
   axios.get(`chat/messages/private/${sender}/${receiver}`).then((res) => {
     $('#privateDialog').html(res.data);
@@ -101,6 +105,7 @@ socket.on('statusChange', (data) => {
 });
 
 socket.on('newPrivateMessage', (messageHTML, sender) => {
+  alertPrivateMessage(sender);
   appendPrivateMessage(messageHTML, sender);
 });
 
