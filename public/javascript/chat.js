@@ -35,6 +35,10 @@ function sendPublicMessage() {
   }
 }
 
+function mainPageBack(){
+  displayDirectory();
+  $("#main-page-back").hide();
+}
 
 $(document).ready(() => {
   axios.get('api/v1/users/current').then((res) => {
