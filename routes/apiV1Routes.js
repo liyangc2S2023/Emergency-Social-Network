@@ -5,6 +5,7 @@ const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
 const config = require('../config');
+const date2Str = require('../utils/dateUtil');
 
 const router = express.Router();
 
@@ -33,13 +34,14 @@ router.post('/messages', async (req, res) => {
     content: req.body.content,
     receiver: req.body.receiver,
   };
-  const messageListHTML = pug.renderFile('./views/message.pug', { msg });
   const result = await messageController.addMessage(
     req.body.sender,
     req.body.receiver,
     req.body.status,
     req.body.content,
   );
+  msg.time = date2Str(new Date(result.timestamp));
+  const messageListHTML = pug.renderFile('./views/message.pug', { msg });
   req.io.emit('newMessage', messageListHTML, req.body.sender);
   res.send(Result.success(result));
 });
