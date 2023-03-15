@@ -8,7 +8,7 @@ async function renderOnePage(req, res, pageView) {
   // make user online
   await userController.login(req.username);
 
-  const messageList = await messageController.getBySender("all");
+  const messageList = await messageController.getBySender('all');
   messageList.forEach((msg) => {
     msg.isSender = (req.username === msg.sender);
     msg.time = date2Str(new Date(msg.timestamp));
