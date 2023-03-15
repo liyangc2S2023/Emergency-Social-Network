@@ -10,7 +10,7 @@ socket.on('newMessage', (newMessage) => {
 function oneKeyPress(e) {
   keynum = e.keyCode | e.which;
   // 13 for enter
-  if (keynum == 13) sendClick(e);
+  if (keynum == 13) sendPublicMessage();
 }
 
 function sendPublicMessage() {
