@@ -21,10 +21,13 @@ async function renderOnePage(req, res, pageView) {
 
   // current user status
   let status = await statusController.getStatus(req.username);
-  status = status ? status : 'undefined';
+  // if status is undefined, set it to 'undefined'
+  status = status || 'undefined';
 
   // render main page with all data
-  res.render('mainPage', { pageView, users: userList, messages: messageList, status: status});
+  res.render('mainPage', {
+    pageView, users: userList, messages: messageList, status,
+  });
 }
 
 module.exports = renderOnePage;

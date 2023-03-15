@@ -3,6 +3,7 @@ const User = require('../model/user');
 
 class StatusController {
   // cache status in user model to improve performance
+  // will return the updated status
   static async updateUserStatus(username, status) {
     await User.updateCurrentStatus(username, status);
     return Status.updateUserStatus(username, status);
