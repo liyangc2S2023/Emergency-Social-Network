@@ -147,11 +147,9 @@ socket.on('newPrivateMessage', (messageHTML, sender) => {
 });
 
 socket.on('userLogin', (username) => {
-  console.log('HDLGLG: userLogin', username);
   handleUserStateChange(username, 'login');
 });
 
 socket.on('userLogout', (username) => {
-  console.log('HDLGLG: userLogout', username);
   handleUserStateChange(username, 'offline');
 });
