@@ -99,7 +99,5 @@ function setActiveItem(itemId) {
   });
 
   const clickedItem = document.getElementById(itemId);
-  console.log(clickedItem)
   clickedItem.classList.add('active');
-  console.log(clickedItem.classList)
 }
