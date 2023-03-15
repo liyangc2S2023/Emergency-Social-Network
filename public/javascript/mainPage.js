@@ -80,3 +80,7 @@ function displayDirectory() {
 displayStatus = () => {
   hideOtherDisplay("statusContent")
 }
+
+socket.on('statusChange', (data) => {
+  updateUserStatusUI(data.username, data.status)
+});
