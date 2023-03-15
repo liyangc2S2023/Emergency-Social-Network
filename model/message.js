@@ -25,7 +25,7 @@ class Message {
   }
 
   static async getMessageByReceiverOrRoom(receiver) {
-    return MessageTable.find({ receiver });
+    return MessageTable.find({ receiver }).sort({ timestamp: 1 });
   }
 
   static async getPrivateMessagesBetween(sender, receiver) {
@@ -34,7 +34,7 @@ class Message {
         { sender, receiver },
         { sender: receiver, receiver: sender },
       ],
-    }).sort({ timestamp: -1 });
+    }).sort({ timestamp: 1 });
   }
 
   static async addMessage(sender, receiver, status, content) {
