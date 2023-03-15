@@ -34,6 +34,18 @@ function changTitle(title) {
   $('title').text(`ESNetwork - ${title}`);
 }
 
+function setActiveItem(itemId) {
+  const menu = document.getElementById('menu');
+  const items = menu.querySelectorAll('.menuItem');
+
+  items.forEach((item) => {
+    item.classList.remove('active');
+  });
+
+  const clickedItem = document.getElementById(itemId);
+  clickedItem.classList.add('active');
+}
+
 updateUserStatusUI = (username, status) => {
   // this function handles UI changes when user status changes
 
@@ -57,6 +69,21 @@ appendPrivateMessage = (msg) => {
 
 alertPrivateMessage = (sender) => {
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
+}
+
+handleUserStateChange = (username, state) => {
+  // this function handles UI changes when user state changes
+  // eg. login or logout
+  const userElement = $('#directory-user-block-' + username);
+  if (state === 'login') {
+    const metaElement = userElement.find('.meta');
+    metaElement.text('online');
+    metaElement.addClass('online');
+  } else {
+    const metaElement = userElement.find('.meta');
+    metaElement.text('offline');
+    metaElement.removeClass('online');
+  }
 }
 
 function displayPublic() {
@@ -119,14 +146,12 @@ socket.on('newPrivateMessage', (messageHTML, sender) => {
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 });
 
-function setActiveItem(itemId) {
-  const menu = document.getElementById('menu');
-  const items = menu.querySelectorAll('.menuItem');
+socket.on('userLogin', (username) => {
+  console.log('HDLGLG: userLogin', username);
+  handleUserStateChange(username, 'login');
+});
 
-  items.forEach((item) => {
-    item.classList.remove('active');
-  });
-
-  const clickedItem = document.getElementById(itemId);
-  clickedItem.classList.add('active');
-}
+socket.on('userLogout', (username) => {
+  console.log('HDLGLG: userLogout', username);
+  handleUserStateChange(username, 'offline');
+});
