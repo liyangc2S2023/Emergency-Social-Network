@@ -1,7 +1,7 @@
 .container.statusFrame
     .container.currentStatus
         h2.statusTitle Your current status is
-        h2.currentStatus #{status}
+        h2.currentStatus#userStatus #{status}
     h3.statusDisplay Change your status:
     input(type="radio", name='status', value='OK', id='ok')
     label.status(for='ok') OK
