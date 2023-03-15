@@ -46,8 +46,7 @@ updateUserStatusUI = (username, status) => {
 }
 
 function displayPublic() {
-  $('#title').text("Chat Public")
-  $('title').text("ESNetwork - Chat Public")
+  changTitle("Chat Public");
   // document.querySelector('headerTitle').textContent = "Public Chat";
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
@@ -87,6 +86,7 @@ function displayDirectory() {
 }
 
 displayStatus = () => {
+  changTitle("Status");
   hideOtherDisplay("statusContent")
   setActiveItem('statusMenu');
 }
