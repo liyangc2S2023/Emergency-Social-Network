@@ -9,6 +9,8 @@
                         span.main-page-name #{user.username}
                         
                         i(class=`${user.statusStyle}` id=`directoryStatus-${user.username}`)
+                        .new-message-alert(id=`directoryNewMessage-${user.username}` )
+                          i.certificate.icon.new-message-alert-icon
                     if user.online
                         .meta
                             .online online

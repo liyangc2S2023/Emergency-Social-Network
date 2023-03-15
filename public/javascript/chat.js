@@ -1,15 +1,15 @@
-const avatar={
-  sender:'/image/senderPhoto.jpeg',
-  receiver:'/image/photo.jpeg'
+const avatar = {
+  sender: '/image/senderPhoto.jpeg',
+  receiver: '/image/photo.jpeg'
 }
 
 
 // socket
-socket.on('newMessage', (newMessage,sender) => {
+socket.on('newMessage', (newMessage, sender) => {
   //scroll to the latest post
   $("#dialog").append(newMessage)
   const username = $('#currentUsername').val();
-  $(`.avatar-${sender}`).attr("src",sender==username?avatar.sender:avatar.receiver)
+  $(`.avatar-${sender}`).attr("src", sender == username ? avatar.sender : avatar.receiver)
   const t = document.body.scrollHeight;
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 });
@@ -18,31 +18,40 @@ socket.on('newMessage', (newMessage,sender) => {
 function oneKeyPress(e) {
   keynum = e.keyCode | e.which;
   // 13 for enter
-  if (keynum == 13) sendPublicMessage();
+  // TODO handle enter for private message
+  // if (keynum == 13) sendMessage();
 }
 
-function sendPublicMessage() {
-  const inputContent = $('#inputContent').val();
+function sendMessage(isPublic = true) {
+  const inputContent = isPublic ? $('#inputContent').val() : $('#privateInputContent').val();
   const username = $('#currentUsername').val();
   const status = $('#currentUserStatus').val();
-  if (inputContent == '' || username == '' || status == '') {
+  // 'all' refers to public channel
+  const receiver = isPublic ? 'all' : $('#chatPrivateReceiver').val();
+  if (!(inputContent && username && status)) {
     alert(`input text:${inputContent} or username:${username} or user status:${status} cannot be null`);
   } else {
     const message = {
       sender: username,
-      // 'all' refers to public channel
-      receiver: 'all',
+      receiver,
       status,
       timestamp: new Date(),
       content: inputContent,
     };
-    axios.post('/api/v1/messages', message).then((res) => {
-      $('#inputContent').val('');
-    });
+    console.log('SEND: send message: ', message);
+    if (isPublic) {
+      axios.post('/api/v1/messages', message).then((res) => {
+        $('#inputContent').val('');
+      });
+    } else {
+      axios.post(`/api/v1/messages/private/${username}/${receiver}`, message).then((res) => {
+        $('#privateInputContent').val('');
+      });
+    }
   }
 }
 
-function mainPageBack(){
+function mainPageBack() {
   displayDirectory();
   $("#main-page-back").hide();
 }
