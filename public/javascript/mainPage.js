@@ -15,6 +15,12 @@ function hideOtherDisplay(componentId) {
   $("#statusContent").hide()
   $("#privateChatContent").hide()
   $("#" + componentId).show()
+  if (componentId === "privateChatContent") {
+    $("#main-page-back").show();
+  } else {
+    $("#main-page-back").hide();
+    $('#receiver').val('');
+  }
 }
 
 // run to chang title of net and header

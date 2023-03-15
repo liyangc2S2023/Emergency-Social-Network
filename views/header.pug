@@ -1,7 +1,7 @@
 div.ui.borderless.fixed.menu#main-header
     div.ui.container
         a.item
-            //- i.chevron.left.icon#main-page-back 
+            i.chevron.left.icon#main-page-back(onclick="mainPageBack()") 
         h1.ui.center.aligned.header#title #{pageView}
         .right.item 
             a.item#speedTest(onclick="speedTestModalDisplayAndHideOther('clickSpeedTest')") 
