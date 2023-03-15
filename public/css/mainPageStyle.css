@@ -7,23 +7,23 @@
     background-color: rgb(184,62,41);
 }
 
-.ui.item.menu .menuItem{
+.ui.item.menu .item{
     background-color: rgb(184,62,41);
     color:whitesmoke;
 }
 
-.ui.item.menu .menuItem.active{
+.ui.item.menu .item.active{
     background-color: rgb(154, 53, 35);
     color:beige;
 }
 
 
-.ui.item.menu .menuItem:hover{
+.ui.item.menu .item:hover{
     background-color: rgb(213, 83, 60);
     color:whitesmoke;
 }
 
-.ui.item.menu .menuItem.active:hover{
+.ui.item.menu .item.active:hover{
     background-color: rgb(213, 83, 60);
     color:beige;
 }
