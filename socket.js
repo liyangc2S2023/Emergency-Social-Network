@@ -27,6 +27,10 @@ function setupSocket(io) {
     await userController.login(socket.request.username);
     console.log('connection');
     let userList = await userController.getAll();
+    // render user status
+    userList.forEach((user) => {
+      user.statusStyle = config.statusMap[user.status];
+    });
     let userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
     socket.broadcast.emit('userlistChange', userListHTML);
 
@@ -59,6 +63,9 @@ function setupSocket(io) {
       console.log('user disconnected');
 
       userList = await userController.getAll();
+      userList.forEach((user) => {
+        user.statusStyle = config.statusMap[user.status];
+      });
       userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
       socket.broadcast.emit('userlistChange', userListHTML);
     });
