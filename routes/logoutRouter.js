@@ -13,10 +13,6 @@ router.get('/', async (req, res) => {
   res.status(200);
   // render welcome
   res.redirect('/welcome');
-
-  const userList = await userController.getAll();
-  const userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
-  req.io.emit('userlistChange', userListHTML);
 });
 
 module.exports = router;
