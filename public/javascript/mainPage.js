@@ -27,7 +27,10 @@ updateUserStatusUI = (username, status) => {
   // this function handles UI changes when user status changes
 
   // update the hidden UI on page
-
+  if($("#currentUsername").val()==username){
+    $("#currentUserStatus").val(status)
+    console.log("update current status: "+status)
+  }
 
   // update user status in directory
   const classList = statusMap[status];
@@ -56,8 +59,8 @@ function displayPrivateMessage(receiver) {
   privateDialog.innerHTML = '';
 
   // get receiver
-  $('#receiver').val(receiver);
-  //const sender = $('#username').val();
+  $('#chatPrivateReceiver').val(receiver);
+  //const sender = $('#currentUsername').val();
 
   // to-do get history message
   // axios.get(`api/v1/messages/private/${sender}/${receiver}`)

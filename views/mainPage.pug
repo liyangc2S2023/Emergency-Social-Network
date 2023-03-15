@@ -21,7 +21,9 @@ html
         include header.pug
         // page content
         .main-page-content
-            #receiver(hidden)
+            #chatPrivateReceiver(hidden)
+            #currentUsername(hidden)
+            #currentUserStatus(hidden)
             #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
                 include directory.pug
             #publicChatContent(style=pageView=="Public"?"display:block":"display:none")

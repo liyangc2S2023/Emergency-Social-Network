@@ -3,7 +3,7 @@ $(document).ready(function () {
 })
 
 function changeStatus() {
-  const username = $('#username').val();
+  const username = $('#currentUsername').val();
   const newStatus = $('input[name="status"]:checked').val();
   console.log('change status to: ' + newStatus, ' for user: ' + username)
   let updatedStatus;
