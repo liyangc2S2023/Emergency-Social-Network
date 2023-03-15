@@ -7,9 +7,9 @@ class config {
 
   static POST_REQUEST_LIMIT = 1000;
 
-  static POST_TEST_PERCENTAGE = 0.9;
+  static POST_TEST_PERCENTAGE = 0.5;
 
-  static GET_TEST_PERCENTAGE = 0.1;
+  static GET_TEST_PERCENTAGE = 0.5;
 
   static statusMap = {
     undefined: 'circle outline grey icon',

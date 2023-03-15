@@ -1,4 +1,5 @@
 var socket = io();
+var progressInterval;
 
 const statusMap = {
   undefined: 'circle outline grey icon',

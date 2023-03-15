@@ -11,11 +11,13 @@ html
         link(rel='stylesheet' href='/css/directoryPageStyle.css')
         script(src='/javascript/directory.js')
         script(src='/javascript/chat.js')
+        script(src='/javascript/speedTest.js')
         link(rel='stylesheet' href='/css/chat.css')
         link(rel='stylesheet' href='/css/status.css')
         script(src='/javascript/status.js')
     body
         // header
+        include speedTestModal.pug 
         include header.pug
         // page content
         .main-page-content
