@@ -115,6 +115,8 @@ socket.on('newPrivateMessage', (messageHTML, sender) => {
     alertPrivateMessage(sender);
   }
   appendPrivateMessage(messageHTML, sender);
+  const username = $('#currentUsername').val();
+  $(`.avatar-${sender}`).attr("src", sender == username ? avatar.sender : avatar.receiver)
   var t = document.body.scrollHeight;
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 });
