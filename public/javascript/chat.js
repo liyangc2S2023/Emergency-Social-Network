@@ -17,9 +17,16 @@ socket.on('newMessage', (newMessage, sender) => {
 // send post when enter is pressed
 function oneKeyPress(e) {
   keynum = e.keyCode | e.which;
+
   // 13 for enter
-  // TODO handle enter for private message
-  // if (keynum == 13) sendMessage();
+  // chat public do not have a certain receiver, but chat private have
+  if (keynum == 13)   {
+    if($('#chatPrivateReceiver').val() != ''){
+      sendMessage(false);
+    }else{
+      sendMessage();
+    }
+  }
 }
 
 function sendMessage(isPublic = true) {

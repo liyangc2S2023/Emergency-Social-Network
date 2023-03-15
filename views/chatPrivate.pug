@@ -2,6 +2,6 @@
     .ui.comments.chatRoomComments#privateDialog
     .ui#inputBox
         .ui.input.chatInput#privateInputText
-            input#privateInputContent(type="text" placeholder="Message..." )
+            input#privateInputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
         #privateSendBtn.ui.submit.button(onclick="sendMessage(false)") Send
 
