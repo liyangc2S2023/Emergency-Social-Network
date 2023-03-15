@@ -1,7 +1,15 @@
+const avatar={
+  sender:'/image/senderPhoto.jpeg',
+  receiver:'/image/photo.jpeg'
+}
+
+
 // socket
-socket.on('newMessage', (newMessage) => {
+socket.on('newMessage', (newMessage,sender) => {
   //scroll to the latest post
   $("#dialog").append(newMessage)
+  const username = $('#currentUsername').val();
+  $(`.avatar-${sender}`).attr("src",sender==username?avatar.sender:avatar.receiver)
   const t = document.body.scrollHeight;
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 });
@@ -29,7 +37,6 @@ function sendPublicMessage() {
       content: inputContent,
     };
     axios.post('/api/v1/messages', message).then((res) => {
-      socket.emit('newMessage', message);
       $('#inputContent').val('');
     });
   }

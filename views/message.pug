@@ -1,11 +1,11 @@
 .comment.sendMsg 
     a.avatar
         if msg.isSender
-            img(src='/image/senderPhoto.jpeg')
+            img(src='/image/senderPhoto.jpeg',class=`avatar-${msg.sender}`)
         else 
-            img(src='/image/photo.jpeg')
+            img(src='/image/photo.jpeg',class=`avatar-${msg.sender}`)
     .content.msg-top 
-        a.author.name #{msg.sender}
+        a.author.name#msgSender #{msg.sender}
         .metadata
             // the class of element i is a variable called statusStyle
             i(class=`${msg.statusStyle}`)
