@@ -72,8 +72,10 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
     },
   });
 
-  // send back to sender over socket
-  socketMap.getInstance().getSocket(sender).emit('newPrivateMessage', messageHTML, sender);
+  // send back to sender over socket. when send to self, prevent render
+  if (receiver !== sender) {
+    socketMap.getInstance().getSocket(sender).emit('newPrivateMessage', messageHTML, sender);
+  }
   // send to receiver
   const receiverSocket = socketMap.getInstance().getSocket(receiver);
   if (receiverSocket) {
