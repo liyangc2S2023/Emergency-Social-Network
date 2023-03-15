@@ -24,7 +24,7 @@ function hideOtherDisplay(componentId) {
     $("#main-page-back").show();
   } else {
     $("#main-page-back").hide();
-    $('#receiver').val('');
+    $('#chatPrivateReceiver').val('');
   }
 }
 
