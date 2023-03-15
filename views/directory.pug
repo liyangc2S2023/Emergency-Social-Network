@@ -1,7 +1,7 @@
 .ui.container
     .ui.relaxed.divided.items 
         for user in users
-            .item(class="active" onclick=`displayPrivateMessage('${user.username}')`) 
+            .item(class="active" id=`directory-user-block-${user.username}` onclick=`displayPrivateMessage('${user.username}')`) 
                 .content 
                     a.header 
                         .ui.circular.avatar.image 
@@ -12,7 +12,6 @@
                         .new-message-alert(id=`directoryNewMessage-${user.username}` )
                           i.certificate.icon.new-message-alert-icon
                     if user.online
-                        .meta
-                            .online online
+                        .meta.online online
                     else
                         .meta offline

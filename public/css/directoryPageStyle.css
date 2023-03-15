@@ -3,7 +3,7 @@
 }
 
 .online {
-    color:green;
+    color:green !important;
 }
 
 .new-message-alert-icon {

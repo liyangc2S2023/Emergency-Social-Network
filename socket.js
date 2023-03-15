@@ -30,13 +30,8 @@ function setupSocket(io) {
     // add user to socketMap
     socketMap.getInstance().addSocket(socket.request.username, socket);
 
-    let userList = await userController.getAll();
-    // render user status
-    userList.forEach((user) => {
-      user.statusStyle = config.statusMap[user.status];
-    });
-    let userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
-    socket.broadcast.emit('userlistChange', userListHTML);
+    // a new user logged in
+    socket.broadcast.emit('userLogin', socket.request.username);
 
     socket.on('joinRoom', async (username) => {
       // socket.join('$room');
@@ -53,13 +48,8 @@ function setupSocket(io) {
       await userController.logout(socket.request.username);
       console.log('user disconnected');
       socketMap.getInstance().removeSocket(socket.request.username);
-
-      userList = await userController.getAll();
-      userList.forEach((user) => {
-        user.statusStyle = config.statusMap[user.status];
-      });
-      userListHTML = pug.renderFile('./views/directory.pug', { users: userList });
-      socket.broadcast.emit('userlistChange', userListHTML);
+      // Broadcast when a user disconnects
+      socket.broadcast.emit('userLogout', socket.request.username);
     });
   });
 }
