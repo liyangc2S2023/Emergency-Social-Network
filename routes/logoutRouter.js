@@ -1,5 +1,4 @@
 const express = require('express');
-const pug = require('pug');
 
 const router = express.Router();
 const userController = require('../controller/userController');
