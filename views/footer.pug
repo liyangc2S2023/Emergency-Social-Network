@@ -1,16 +1,16 @@
 div.main-footer
-    div.ui.four.item.menu
-        a.item(class = (pageView == "Directory" ? "active" : "") onclick="displayDirectory()")
+    div.ui.four.item.menu#menu
+        a.item(class = (pageView == "Directory" ? "active" : "") id = "directoryMenu" onclick="displayDirectory()")
             i.address.book.outline.icon
             br
             p Directory
-        a.item(class = (pageView == "Public" ? "active" : "")  onclick="displayPublic()")
+        a.item(class = (pageView == "Public" ? "active" : "") id = "publicMenu" onclick="displayPublic()")
             i.wechat.icon
             p Public
-        a.item(class = (pageView == "Search" ? "active" : ""))
+        a.item(class = (pageView == "Search" ? "active" : "") id = "searchMenu")
             i.search.icon
             br
             p Search
-        a.item(class = (pageView == "Status" ? "active" : "") onclick="displayStatus()")
+        a.item(class = (pageView == "Status" ? "active" : "") id = "statusMenu" onclick="displayStatus()")
             i.user.circle.outline.icon
             p Status

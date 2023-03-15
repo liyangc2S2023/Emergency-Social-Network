@@ -48,6 +48,7 @@ function displayPublic() {
   window.scrollTo(0, 0)
   var t = document.body.scrollHeight;
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
+  setActiveItem('publicMenu');
 }
 
 
@@ -73,17 +74,32 @@ function displayPrivateMessage(receiver) {
   window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
-
 function displayDirectory() {
   changTitle("Directory");
   hideOtherDisplay("directoryContent")
   window.scrollTo(0, 0)
+  setActiveItem('directoryMenu');
 }
 
 displayStatus = () => {
   hideOtherDisplay("statusContent")
+  setActiveItem('statusMenu');
 }
 
 socket.on('statusChange', (data) => {
-  updateUserStatusUI(data.username, data.status)
+  updateUserStatusUI(data.username, data.status);
 });
+
+function setActiveItem(itemId) {
+  const menu = document.getElementById('menu');
+  const items = menu.querySelectorAll('.item');
+
+  items.forEach((item) => {
+    item.classList.remove('active');
+  });
+
+  const clickedItem = document.getElementById(itemId);
+  console.log(clickedItem)
+  clickedItem.classList.add('active');
+  console.log(clickedItem.classList)
+}
