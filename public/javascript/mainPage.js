@@ -92,7 +92,7 @@ socket.on('statusChange', (data) => {
 
 function setActiveItem(itemId) {
   const menu = document.getElementById('menu');
-  const items = menu.querySelectorAll('.item');
+  const items = menu.querySelectorAll('.menuItem');
 
   items.forEach((item) => {
     item.classList.remove('active');
