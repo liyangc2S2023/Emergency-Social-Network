@@ -60,7 +60,7 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
     sender, receiver, status, content,
   } = req.body;
   // save to database
-  await messageController.addMessage(sender, receiver, status, content);
+  const result = await messageController.addMessage(sender, receiver, status, content);
   // render html
   const messageHTML = pug.renderFile('./views/message.pug', {
     msg: {
@@ -68,6 +68,7 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
       receiver,
       statusStyle: config.statusMap[status],
       content,
+      time: date2Str(result.timestamp),
     },
   });
 

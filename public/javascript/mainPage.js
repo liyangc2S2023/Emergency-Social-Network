@@ -1,5 +1,11 @@
 var socket = io();
 
+function getCurrentUsername() {
+  return $("#currentUsername").val()
+}
+function getCurrentStatus() {
+  return $("#currentUserStatus").val()
+}
 const statusMap = {
   undefined: 'circle outline grey icon',
   ok: 'circle green icon ',
@@ -105,8 +111,12 @@ socket.on('statusChange', (data) => {
 });
 
 socket.on('newPrivateMessage', (messageHTML, sender) => {
-  alertPrivateMessage(sender);
+  if (getCurrentUsername() !== sender) {
+    alertPrivateMessage(sender);
+  }
   appendPrivateMessage(messageHTML, sender);
+  var t = document.body.scrollHeight;
+  window.scroll({ top: t, left: 0, behavior: 'smooth' });
 });
 
 function setActiveItem(itemId) {
