@@ -7,6 +7,8 @@
                         .ui.circular.avatar.image 
                             img(src="/icons/cloud-off.svg")
                         span.main-page-name #{user.username}
+                        
+                        i(class=`${user.statusStyle}` id=`directoryStatus-${user.username}`)
                     if user.online
                         .meta
                             .online online

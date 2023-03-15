@@ -35,6 +35,7 @@ router.get('/speedTest', async (req, res) => res.send(Result.success(await Speed
 
 router.post('/status', async (req, res) => {
   const status = await statusController.updateUserStatus(req.body.username, req.body.status);
+  req.io.emit('statusChange', { username: req.body.username, status });
   return res.send(Result.success({ status }));
 });
 

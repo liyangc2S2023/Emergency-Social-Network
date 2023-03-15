@@ -1,5 +1,12 @@
 var socket = io();
 
+const statusMap = {
+  undefined: 'circle outline grey icon',
+  ok: 'circle green icon ',
+  help: 'circle yellow icon',
+  emergency: 'circle red icon',
+};
+
 function hideOtherDisplay(componentId) {
   $("#directoryContent").hide()
   $("#publicChatContent").hide()
@@ -10,15 +17,29 @@ function hideOtherDisplay(componentId) {
 }
 
 // run to chang title of net and header
-function changTitle(title){
-    $('#title').text(`${title}`);
-    $('title').text(`ESNetwork - ${title}`);
+function changTitle(title) {
+  $('#title').text(`${title}`);
+  $('title').text(`ESNetwork - ${title}`);
+}
+
+updateUserStatusUI = (username, status) => {
+  // this function handles UI changes when user status changes
+
+  // update the hidden UI on page
+
+
+  // update user status in directory
+  const classList = statusMap[status];
+  const userStatus = document.querySelector(`#directoryStatus-${username}`);
+  if (userStatus) {
+    userStatus.classList = classList;
+  }
 }
 
 function displayPublic() {
-    $('#title').text("Chat Public")
-    $('title').text("ESNetwork - Chat Public")
-    // document.querySelector('headerTitle').textContent = "Public Chat";
+  $('#title').text("Chat Public")
+  $('title').text("ESNetwork - Chat Public")
+  // document.querySelector('headerTitle').textContent = "Public Chat";
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
   var t = document.body.scrollHeight;
@@ -27,34 +48,38 @@ function displayPublic() {
 
 
 function displayPrivateMessage(receiver) {
-    changTitle(`${receiver}`);
+  changTitle(`${receiver}`);
 
-    // clear current page
-    const privateDialog = document.querySelector('#privateDialog');
-    privateDialog.innerHTML = '';
+  // clear current page
+  const privateDialog = document.querySelector('#privateDialog');
+  privateDialog.innerHTML = '';
 
-    // get receiver
-    $('#receiver').val(receiver);
-    //const sender = $('#username').val();
+  // get receiver
+  $('#receiver').val(receiver);
+  //const sender = $('#username').val();
 
-    // to-do get history message
-    // axios.get(`api/v1/messages/private/${sender}/${receiver}`)
+  // to-do get history message
+  // axios.get(`api/v1/messages/private/${sender}/${receiver}`)
 
-    // show private chat page
-    hideOtherDisplay("privateChatContent")
+  // show private chat page
+  hideOtherDisplay("privateChatContent")
 
-    window.scrollTo(0, 0)
-    var t = document.body.scrollHeight;
-    window.scroll({ top: t, left: 0, behavior: 'smooth' });
+  window.scrollTo(0, 0)
+  var t = document.body.scrollHeight;
+  window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
 
-function displayDirectory(){
-    changTitle("Directory");
-    hideOtherDisplay("directoryContent")
-    window.scrollTo(0,0)
+function displayDirectory() {
+  changTitle("Directory");
+  hideOtherDisplay("directoryContent")
+  window.scrollTo(0, 0)
 }
 
 displayStatus = () => {
   hideOtherDisplay("statusContent")
 }
+
+socket.on('statusChange', (data) => {
+  updateUserStatusUI(data.username, data.status)
+});
