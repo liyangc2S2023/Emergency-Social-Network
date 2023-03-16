@@ -25,6 +25,10 @@ class MessageController {
     // get latest message between a user and another user
     return Message.getLatestMessageBetween(user1, user2);
   }
+
+  static async getAllUsernamesWithUnreadMessage(receiver) {
+    return Array.from(await Message.getAllUsernamesWithUnreadMessage(receiver));
+  }
 }
 
 module.exports = MessageController;

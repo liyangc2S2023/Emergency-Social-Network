@@ -1,9 +1,7 @@
 const cookieParser = require('cookie-parser');
-const pug = require('pug');
 const jwtMW = require('./middleware/jwtMW');
 const messageController = require('./controller/messageController');
 const userController = require('./controller/userController');
-const config = require('./config');
 const socketMap = require('./utils/socketMap');
 
 function formatNotice(text) {
@@ -32,6 +30,7 @@ function setupSocket(io) {
 
     // a new user logged in
     socket.broadcast.emit('userLogin', socket.request.username);
+    socket.emit('updateAlert', await messageController.getAllUsernamesWithUnreadMessage(socket.request.username));
 
     socket.on('joinRoom', async (username) => {
       // socket.join('$room');

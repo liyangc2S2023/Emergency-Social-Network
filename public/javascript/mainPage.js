@@ -68,6 +68,7 @@ appendPrivateMessage = (msg) => {
 }
 
 alertPrivateMessage = (sender) => {
+  console.log('received new message from ' + sender)
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
 }
 
@@ -154,4 +155,11 @@ socket.on('userLogin', (username) => {
 
 socket.on('userLogout', (username) => {
   handleUserStateChange(username, 'offline');
+});
+
+socket.on('updateAlert', (unreadUserSet) => {
+  console.log("unreadUserSet:", unreadUserSet)
+  unreadUserSet.forEach((user) => {
+    alertPrivateMessage(user);
+  });
 });
