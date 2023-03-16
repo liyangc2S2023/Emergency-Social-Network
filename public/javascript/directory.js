@@ -1,4 +1,4 @@
 // socket
-socket.on('userlistChange', (updatedContent) => {
-  $('#directoryContent').html(updatedContent);
+socket.on('userRegistered', (updatedContent) => {
+  $('#userItems').append(updatedContent);
 });
