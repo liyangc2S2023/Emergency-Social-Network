@@ -14,12 +14,13 @@ const statusMap = {
 };
 
 function hideOtherDisplay(componentId) {
-  $("#directoryContent").hide()
-  $("#publicChatContent").hide()
-  $("#searchContent").hide()
-  $("#statusContent").hide()
-  $("#privateChatContent").hide()
+  $("#directoryContent").hide();
+  $("#publicChatContent").hide();
+  $("#searchContent").hide();
+  $("#statusContent").hide();
+  $("#privateChatContent").hide();
   $("#" + componentId).show()
+  $("#currentPage").val(componentId);
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
   } else {
@@ -94,8 +95,7 @@ function displayPublic() {
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
   var t = document.body.scrollHeight;
-  window.scroll({ top: t, left: 0, behavior: 'smooth' });
-  setActiveItem('publicMenu');
+  scrollDown("publicChatContent");
 }
 
 
@@ -113,13 +113,11 @@ function displayPrivateMessage(receiver) {
 
   axios.get(`chat/messages/private/${sender}/${receiver}`).then((res) => {
     $('#privateDialog').html(res.data);
+    scrollDown("privateChatContent");
   });
+
   // show private chat page
   hideOtherDisplay("privateChatContent")
-
-  window.scrollTo(0, 0)
-  var t = document.body.scrollHeight;
-  window.scroll({ top: t, left: 0, behavior: 'smooth' });
 }
 
 function displayDirectory() {
@@ -146,8 +144,7 @@ socket.on('newPrivateMessage', (messageHTML, sender) => {
   appendPrivateMessage(messageHTML, sender);
   const username = $('#currentUsername').val();
   $(`.avatar-${sender}`).attr("src", sender == username ? avatar.sender : avatar.receiver)
-  var t = document.body.scrollHeight;
-  window.scroll({ top: t, left: 0, behavior: 'smooth' });
+  scrollDown('privateChatContent');
 });
 
 socket.on('userLogin', (username) => {
