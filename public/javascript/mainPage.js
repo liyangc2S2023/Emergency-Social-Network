@@ -73,7 +73,20 @@ alertPrivateMessage = (sender) => {
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
 }
 
-handleUserStateChange = (username, state) => {
+reorderClass = (className)=>{
+  var elements = $("."+className)
+  var parent = elements.parent()
+  elements.detach().sort(function(a,b){
+    return a.id.localeCompare(b.id);
+  }).appendTo(parent)
+}
+
+reorderDirectory= ()=>{
+  reorderClass('true')
+  reorderClass('false')
+}
+
+handleUserStateChange =async (username, state) => {
   // this function handles UI changes when user state changes
   // eg. login or logout
   const userElement = $('#directory-user-block-' + username);
@@ -81,10 +94,16 @@ handleUserStateChange = (username, state) => {
     const metaElement = userElement.find('.meta');
     metaElement.text('online');
     metaElement.addClass('online');
+    userElement.removeClass('false')
+    userElement.addClass('true')
+    reorderDirectory()
   } else {
     const metaElement = userElement.find('.meta');
     metaElement.text('offline');
     metaElement.removeClass('online');
+    userElement.removeClass('true')
+    userElement.addClass('false')
+    reorderDirectory()
   }
 }
 
