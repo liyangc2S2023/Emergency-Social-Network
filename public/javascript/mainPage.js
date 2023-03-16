@@ -7,7 +7,7 @@ function getCurrentStatus() {
   return $("#currentUserStatus").val()
 }
 const statusMap = {
-  undefined: 'circle outline grey icon',
+  undefined: 'circle outline purple icon',
   ok: 'circle green icon ',
   help: 'circle yellow icon',
   emergency: 'circle red icon',
