@@ -82,8 +82,8 @@ reorderClass = (className)=>{
 }
 
 reorderDirectory= ()=>{
-  reorderClass('true')
-  reorderClass('false')
+  reorderClass('trueForOneline')
+  reorderClass('falseForOneline')
 }
 
 handleUserStateChange =async (username, state) => {
@@ -94,15 +94,15 @@ handleUserStateChange =async (username, state) => {
     const metaElement = userElement.find('.meta');
     metaElement.text('online');
     metaElement.addClass('online');
-    userElement.removeClass('false')
-    userElement.addClass('true')
+    userElement.removeClass('falseForOneline')
+    userElement.addClass('trueForOneline')
     reorderDirectory()
   } else {
     const metaElement = userElement.find('.meta');
     metaElement.text('offline');
     metaElement.removeClass('online');
-    userElement.removeClass('true')
-    userElement.addClass('false')
+    userElement.removeClass('trueForOneline')
+    userElement.addClass('falseForOneline')
     reorderDirectory()
   }
 }
