@@ -26,6 +26,10 @@ class MessageController {
     return Message.getLatestMessageBetween(user1, user2);
   }
 
+  static async markAsRead(sender, receiver) {
+    return Message.userReadMessage(sender, receiver);
+  }
+
   static async getAllUsernamesWithUnreadMessage(receiver) {
     return Array.from(await Message.getAllUsernamesWithUnreadMessage(receiver));
   }

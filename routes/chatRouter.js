@@ -12,6 +12,8 @@ router.get('/', async (req, res) => { renderOnePage(req, res, 'Public'); });
 router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
   const { senderId, receiverId } = req.params;
   const messageList = await messageController.getPrivateMessagesBetween(senderId, receiverId);
+  // also mark the message as read
+  await messageController.markAsRead(senderId, receiverId);
   let messageHTML = '';
 
   messageList.forEach((msg) => {
