@@ -1,0 +1,14 @@
+.item(class="active" id=`directory-user-block-${user.username}` onclick=`displayPrivateMessage('${user.username}')`) 
+    .content 
+        a.header 
+            .ui.circular.avatar.image 
+                img(src="/icons/cloud-off.svg")
+            span.main-page-name #{user.username}
+            
+            i(class=`${user.statusStyle}` id=`directoryStatus-${user.username}`)
+            .new-message-alert(id=`directoryNewMessage-${user.username}` )
+                i.certificate.icon.new-message-alert-icon
+        if user.online
+            .meta.online online
+        else
+            .meta offline
