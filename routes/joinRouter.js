@@ -1,6 +1,8 @@
 const express = require('express');
 const joinController = require('../controller/joinController');
 const userController = require('../controller/userController');
+const pug = require('pug');
+const config = require('../config');
 
 const router = express.Router();
 
@@ -51,7 +53,16 @@ router.post('/confirm', async (req, res, next) => {
     return;
   }
   const confirmResult = await joinController.confirmJoin(username, password, next);
+  // succussful register the user
   if (confirmResult.successflag) {
+    const user = {
+      username: username,
+      statusStyle: config.statusMap['undefined'],
+      online: false,
+    };
+    // emit a socket to update directory ui
+    const newUserHTML = pug.renderFile('./views/userItem.pug', { user });
+    req.io.emit('userRegistered', newUserHTML);
     token = await userController.login(username);
     res.status(200);
     res.cookie('user_token', token, { maxAge: 24 * 60 * 60 * 1000 });
