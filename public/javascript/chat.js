@@ -4,14 +4,20 @@ const avatar = {
 }
 
 
+function scrollDown(currentPage){
+  if ($('#currentPage').val() === currentPage) {
+    const t = document.body.scrollHeight;
+    window.scroll({ top: t, left: 0, behavior: 'smooth' });
+  }
+}
+
 // socket
 socket.on('newMessage', (newMessage, sender) => {
   //scroll to the latest post
   $("#dialog").append(newMessage)
   const username = $('#currentUsername').val();
-  $(`.avatar-${sender}`).attr("src", sender == username ? avatar.sender : avatar.receiver)
-  const t = document.body.scrollHeight;
-  window.scroll({ top: t, left: 0, behavior: 'smooth' });
+  $(`.avatar-${sender}`).attr("src", sender == username ? avatar.sender : avatar.receiver);
+  scrollDown('publicChatContent');
 });
 
 // send post when enter is pressed
@@ -20,10 +26,10 @@ function oneKeyPress(e) {
 
   // 13 for enter
   // chat public do not have a certain receiver, but chat private have
-  if (keynum == 13)   {
-    if($('#chatPrivateReceiver').val() != ''){
+  if (keynum == 13) {
+    if ($('#currentPage').val() === 'privateChatContent') {
       sendMessage(false);
-    }else{
+    } else {
       sendMessage();
     }
   }
