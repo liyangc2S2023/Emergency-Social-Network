@@ -1,0 +1,15 @@
+.container.searchFrame
+  h2.searchTitle Search Information
+  .container.search
+    select.searchDropdown(name="dropdown" id="dropdown" class='searchCriteria')
+      option.searchInfo(value='username') Username
+      option.searchInfo(value='status' ) Status
+      option.searchInfo(value='announcement' ) Announcement
+      option.searchInfo(value='publicMessage' ) Public Message
+      option.searchInfo(value='privateMessage' ) Private Message
+    input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword' )
+  button.btn-confirm(onclick='searchKeywords()') Search
+  .container.searchResults
+    h2.searchTitle Search Results
+      
+      

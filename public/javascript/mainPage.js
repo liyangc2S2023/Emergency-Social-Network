@@ -122,6 +122,13 @@ function displayPublic() {
   scrollDown("publicChatContent");
 }
 
+function displaySearch() {
+  changTitle("Search");
+  hideOtherDisplay("searchContent")
+  window.scrollTo(0, 0)
+  var t = document.body.scrollHeight;
+  scrollDown("searchContent");
+}
 
 function displayPrivateMessage(receiver) {
   changTitle(`${receiver}`);

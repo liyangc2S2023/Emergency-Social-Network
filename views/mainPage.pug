@@ -14,6 +14,7 @@ html
         script(src='/javascript/speedTest.js')
         link(rel='stylesheet' href='/css/chat.css')
         link(rel='stylesheet' href='/css/status.css')
+        link(rel='stylesheet' href='/css/search.css')
         script(src='/javascript/status.js')
     body
         // header
@@ -25,6 +26,7 @@ html
             #chatPrivateReceiver(hidden)
             #currentUsername(hidden)
             #currentUserStatus(hidden)
+            #searchInfo(hidden)
             #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
                 include directory.pug
             #publicChatContent(style=pageView=="Public"?"display:block":"display:none")
@@ -32,6 +34,7 @@ html
             #privateChatContent(style=pageView=="Private"?"display:block":"display:none")
                 include chatPrivate.pug  
             #searchContent(style=pageView=="Search"?"display:block":"display:none")
+                include search.pug 
             #statusContent(style=pageView=="Status"?"display:block":"display:none")
                 include status.pug
         // footer
