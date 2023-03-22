@@ -89,6 +89,15 @@ class Message {
     });
     return usernames;
   }
+
+  static async searchByPublicMessage(keywords, page = 0, limit = 10) {
+    const regex = new RegExp(keywords.join('|'), 'i');
+    const messages = await MessageTable.find({ content: regex, receiver: 'all' })
+      .sort({ timestamp: -1 })
+      .skip(page * limit)
+      .limit(limit);
+    return messages;
+  }
 }
 
 module.exports = Message;
