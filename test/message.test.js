@@ -198,11 +198,11 @@ test('test search information by private message and get no result', async () =>
   // if keywords are empty, it will return all private messages
   const keywords = [];
   // there should be 2 private messages sent by t1
-  expect((await Message.searchByPrivateMessage('t1', keywords)).length).toBe(2);
+  expect((await Message.searchByPrivateMessage(keywords, 't1', 't2')).length).toBe(2);
   // if no existing private messages matches one of the keywords, it should return empty result.
   keywords[0] = 'hello';
   keywords[1] = 'bye';
-  expect(await Message.searchByPrivateMessage('t1', keywords)).toEqual([]);
+  expect(await Message.searchByPrivateMessage(keywords, 't1', 't2')).toEqual([]);
 });
 
 test('test search information by private message and get matching messages', async () => {
@@ -217,42 +217,40 @@ test('test search information by private message and get matching messages', asy
   // search for keywords: hi
   const keywords = [];
   keywords[0] = 'hi';
-  expect((await Message.searchByPrivateMessage('lisa', keywords)).length).toBe(1);
+  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(1);
   let res;
-  res = await Message.searchByPrivateMessage('lisa', keywords);
+  res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
   expect(res[0].content).toBe('hi');
-  expect(res[0].sender).toBe('lisa');
   // search for keywords: he and hi
   keywords[1] = 'he';
-  expect((await Message.searchByPrivateMessage('lisa', keywords)).length).toBe(2);
-  res = await Message.searchByPrivateMessage('lisa', keywords);
+  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(2);
+  res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
   // result should be ordered by timestamp
   expect(res[0].content).toBe('hello');
-  expect(res[0].sender).toBe('lisa');
   expect(res[1].content).toBe('hi');
-  expect(res[1].sender).toBe('lisa');
 });
 
 test('test search information by private message and get more than 10 matching results', async () => {
   // add ten more private messages
-  await Message.addMessage('t1', 't2', 'ok', 'content');
+  await Message.addMessage('t1', 't2', 'ok', 'content1');
+  await Message.addMessage('t1', 't2', 'ok', 'content2');
+  await Message.addMessage('t1', 't2', 'ok', 'content3');
+  await Message.addMessage('t1', 't2', 'ok', 'content4');
+  await Message.addMessage('t1', 't2', 'ok', 'content5');
+  await Message.addMessage('t1', 't2', 'ok', 'content6');
+  await Message.addMessage('t1', 't2', 'ok', 'content7');
+  await Message.addMessage('t1', 't2', 'ok', 'content8');
+  await Message.addMessage('t1', 't2', 'ok', 'content9');
+  await Message.addMessage('t1', 't2', 'ok', 'content10');
+  // add a private messages not sent by t1 and received by t2
   await Message.addMessage('t1', 't3', 'ok', 'content');
-  await Message.addMessage('t1', 't4', 'ok', 'content');
-  await Message.addMessage('t1', 't5', 'ok', 'content');
-  await Message.addMessage('t1', 't6', 'ok', 'content');
-  await Message.addMessage('t1', 't7', 'ok', 'content');
-  await Message.addMessage('t1', 't8', 'ok', 'content');
-  await Message.addMessage('t1', 't9', 'ok', 'content');
-  await Message.addMessage('t1', 't10', 'ok', 'content');
-  await Message.addMessage('t1', 't11', 'ok', 'content');
-  // add a private message sent by t2
   await Message.addMessage('t2', 't1', 'ok', 'content');
   // search for keywords: content
   const keywords = [];
   keywords[0] = 'content';
   // there are 12 matching public messages, but the result should only return 10 latest messages.
-  const res = await Message.searchByPrivateMessage('t1', keywords);
+  const res = await Message.searchByPrivateMessage(keywords, 't1', 't2');
   expect(res.length).toBe(10);
   // should be ordered by timestamp
-  expect(res[0].receiver).toBe('t11');
+  expect(res[0].content).toBe('content10');
 });

@@ -10,16 +10,18 @@ const searchTopics = {
   },
   publicMessage: async (searchPhrase, page) => Message.searchByPublicMessage(searchPhrase, page),
   privateMessage:
-  async (sender, searchPhrase, page) => Message.searchByPrivateMessage(sender, searchPhrase, page),
+    // eslint-disable-next-line max-len
+    async (searchPhrase, sender, receiver, page) => Message.searchByPrivateMessage(searchPhrase, sender, receiver, page),
 };
 
 class searchController {
-  static async searchContent(username, topic, searchPhrase, page = 0) {
+  static async searchContent(topic, searchPhrase, sender = null, receiver = null, page = 0) {
+    let results = [];
     if (!(topic in searchTopics)) {
-      throw new Error('Invalid search topic');
+      return results;
     }
     const searchFunction = searchTopics[topic];
-    const results = await searchFunction(username, searchPhrase, page);
+    results = await searchFunction(searchPhrase, sender, receiver, page);
     return results;
   }
 }
