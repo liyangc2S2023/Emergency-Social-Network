@@ -9,8 +9,10 @@ beforeEach(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
+  // add some private messages
   await Message.addMessage('t1', 't2', 'status', 'content');
   await Message.addMessage('t1', 't2', 'status', 'content');
+  // add a public message
   await Message.addMessage('t1', 'all', 'status', 'content');
 });
 
@@ -131,4 +133,47 @@ test('test get all usernames with unread message', async () => {
 
   const result2 = await Message.getAllUsernamesWithUnreadMessage('t2');
   expect(result2.size).toBe(3);
+});
+
+test('test search information by public message and get no result', async () => {
+  // add two private messages
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'world');
+  // add two public messages
+  await Message.addMessage('lisa', 'all', 'help', 'hi all');
+  await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
+  // if keywords are empty, it will return all public messages.
+  const keywords = [];
+  // there should be 3 public messages in total.
+  expect((await Message.searchByPublicMessage(keywords)).length).toBe(3);
+  // if no existing public messages matches one of the keywords, it should return empty result.
+  keywords[0] = 'bye';
+  keywords[1] = 'good';
+  expect(await Message.searchByPublicMessage(keywords)).toEqual([]);
+});
+
+test('test search information by public message and get matching messages', async () => {
+  // add two private messages
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'world');
+  // add two public messages
+  await Message.addMessage('lisa', 'all', 'help', 'hi all');
+  await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
+  // search for keywords: hi
+  const keywords = [];
+  keywords[0] = 'hi';
+  expect((await Message.searchByPublicMessage(keywords)).length).toBe(1);
+  let res;
+  res = await Message.searchByPublicMessage(keywords);
+  expect(res[0].content).toBe('hi all');
+  expect(res[0].sender).toBe('lisa');
+  // search for keywords: hello and hi
+  keywords[1] = 'hello';
+  expect((await Message.searchByPublicMessage(keywords)).length).toBe(2);
+  res = await Message.searchByPublicMessage(keywords);
+  // result should be ordered by timestamp
+  expect(res[0].content).toBe('hello all');
+  expect(res[0].sender).toBe('noreen');
+  expect(res[1].content).toBe('hi all');
+  expect(res[1].sender).toBe('lisa');
 });
