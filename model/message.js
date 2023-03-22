@@ -91,8 +91,20 @@ class Message {
   }
 
   static async searchByPublicMessage(keywords, page = 0, limit = 10) {
+    // '|' for matching either values, 'i' for case insensitive
     const regex = new RegExp(keywords.join('|'), 'i');
     const messages = await MessageTable.find({ content: regex, receiver: 'all' })
+      .sort({ timestamp: -1 })
+      .skip(page * limit)
+      .limit(limit);
+    return messages;
+  }
+
+  static async searchByPrivateMessage(sender, keywords, page = 0, limit = 10) {
+    // '|' for matching either values, 'i' for case insensitive
+    const regex = new RegExp(keywords.join('|'), 'i');
+    // $ne for not equal to the value
+    const messages = await MessageTable.find({ content: regex, sender, receiver: { $ne: 'all' } })
       .sort({ timestamp: -1 })
       .skip(page * limit)
       .limit(limit);

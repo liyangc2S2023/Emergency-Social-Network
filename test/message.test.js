@@ -136,26 +136,20 @@ test('test get all usernames with unread message', async () => {
 });
 
 test('test search information by public message and get no result', async () => {
-  // add two private messages
-  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
-  await Message.addMessage('noreen', 'lisa', 'ok', 'world');
-  // add two public messages
-  await Message.addMessage('lisa', 'all', 'help', 'hi all');
-  await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
-  // if keywords are empty, it will return all public messages.
+  // if keywords are empty, it will return all public messages
   const keywords = [];
-  // there should be 3 public messages in total.
-  expect((await Message.searchByPublicMessage(keywords)).length).toBe(3);
+  // there should be 1 public message
+  expect((await Message.searchByPublicMessage(keywords)).length).toBe(1);
   // if no existing public messages matches one of the keywords, it should return empty result.
-  keywords[0] = 'bye';
-  keywords[1] = 'good';
+  keywords[0] = 'hello';
+  keywords[1] = 'bye';
   expect(await Message.searchByPublicMessage(keywords)).toEqual([]);
 });
 
 test('test search information by public message and get matching messages', async () => {
   // add two private messages
-  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
-  await Message.addMessage('noreen', 'lisa', 'ok', 'world');
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hi');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'hello');
   // add two public messages
   await Message.addMessage('lisa', 'all', 'help', 'hi all');
   await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
@@ -176,4 +170,89 @@ test('test search information by public message and get matching messages', asyn
   expect(res[0].sender).toBe('noreen');
   expect(res[1].content).toBe('hi all');
   expect(res[1].sender).toBe('lisa');
+});
+
+test('test search information by public message and get more than 10 matching results', async () => {
+  // add ten more public messages
+  await Message.addMessage('t2', 'all', 'ok', 'content');
+  await Message.addMessage('t3', 'all', 'ok', 'content');
+  await Message.addMessage('t4', 'all', 'ok', 'content');
+  await Message.addMessage('t5', 'all', 'ok', 'content');
+  await Message.addMessage('t6', 'all', 'ok', 'content');
+  await Message.addMessage('t7', 'all', 'ok', 'content');
+  await Message.addMessage('t8', 'all', 'ok', 'content');
+  await Message.addMessage('t9', 'all', 'ok', 'content');
+  await Message.addMessage('t10', 'all', 'ok', 'content');
+  await Message.addMessage('t11', 'all', 'ok', 'content');
+  // search for keywords: content
+  const keywords = [];
+  keywords[0] = 'content';
+  // there are 11 matching public messages, but the result should only return 10 latest messages.
+  const res = await Message.searchByPublicMessage(keywords);
+  expect(res.length).toBe(10);
+  // should be ordered by timestamp
+  expect(res[0].sender).toBe('t11');
+});
+
+test('test search information by private message and get no result', async () => {
+  // if keywords are empty, it will return all private messages
+  const keywords = [];
+  // there should be 2 private messages sent by t1
+  expect((await Message.searchByPrivateMessage('t1', keywords)).length).toBe(2);
+  // if no existing private messages matches one of the keywords, it should return empty result.
+  keywords[0] = 'hello';
+  keywords[1] = 'bye';
+  expect(await Message.searchByPrivateMessage('t1', keywords)).toEqual([]);
+});
+
+test('test search information by private message and get matching messages', async () => {
+  // add two private messages
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hi');
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'hi');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'hello');
+  // add two public messages
+  await Message.addMessage('lisa', 'all', 'help', 'hi all');
+  await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
+  // search for keywords: hi
+  const keywords = [];
+  keywords[0] = 'hi';
+  expect((await Message.searchByPrivateMessage('lisa', keywords)).length).toBe(1);
+  let res;
+  res = await Message.searchByPrivateMessage('lisa', keywords);
+  expect(res[0].content).toBe('hi');
+  expect(res[0].sender).toBe('lisa');
+  // search for keywords: he and hi
+  keywords[1] = 'he';
+  expect((await Message.searchByPrivateMessage('lisa', keywords)).length).toBe(2);
+  res = await Message.searchByPrivateMessage('lisa', keywords);
+  // result should be ordered by timestamp
+  expect(res[0].content).toBe('hello');
+  expect(res[0].sender).toBe('lisa');
+  expect(res[1].content).toBe('hi');
+  expect(res[1].sender).toBe('lisa');
+});
+
+test('test search information by private message and get more than 10 matching results', async () => {
+  // add ten more private messages
+  await Message.addMessage('t1', 't2', 'ok', 'content');
+  await Message.addMessage('t1', 't3', 'ok', 'content');
+  await Message.addMessage('t1', 't4', 'ok', 'content');
+  await Message.addMessage('t1', 't5', 'ok', 'content');
+  await Message.addMessage('t1', 't6', 'ok', 'content');
+  await Message.addMessage('t1', 't7', 'ok', 'content');
+  await Message.addMessage('t1', 't8', 'ok', 'content');
+  await Message.addMessage('t1', 't9', 'ok', 'content');
+  await Message.addMessage('t1', 't10', 'ok', 'content');
+  await Message.addMessage('t1', 't11', 'ok', 'content');
+  // add a private message sent by t2
+  await Message.addMessage('t2', 't1', 'ok', 'content');
+  // search for keywords: content
+  const keywords = [];
+  keywords[0] = 'content';
+  // there are 12 matching public messages, but the result should only return 10 latest messages.
+  const res = await Message.searchByPrivateMessage('t1', keywords);
+  expect(res.length).toBe(10);
+  // should be ordered by timestamp
+  expect(res[0].receiver).toBe('t11');
 });
