@@ -86,6 +86,20 @@ class User {
   static async updateCurrentStatus(username, status) {
     return UserTable.updateOne({ username }, { $set: { status } });
   }
+
+  static async searchByUsername(username) {
+    // 'i' for case insensitive
+    const regex = new RegExp(username, 'i');
+    // if no user find, it will return an empty array.
+    const users = await UserTable.find({ username: regex }).sort({ online: 'desc', username: 'asc' });
+    return users;
+  }
+
+  static async searchByStatus(status) {
+    // if no user find, it will return an empty array.
+    const users = await UserTable.find({ status }).sort({ online: 'desc', username: 'asc' });
+    return users;
+  }
 }
 
 module.exports = User;

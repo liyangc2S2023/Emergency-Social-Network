@@ -89,6 +89,26 @@ class Message {
     });
     return usernames;
   }
+
+  static async searchByPublicMessage(keywords, page = 0, limit = 10) {
+    // '|' for matching either values, 'i' for case insensitive
+    const regex = new RegExp(keywords.join('|'), 'i');
+    const messages = await MessageTable.find({ content: regex, receiver: 'all' })
+      .sort({ timestamp: -1 })
+      .skip(page * limit)
+      .limit(limit);
+    return messages;
+  }
+
+  static async searchByPrivateMessage(keywords, sender, receiver, page = 0, limit = 10) {
+    // '|' for matching either values, 'i' for case insensitive
+    const regex = new RegExp(keywords.join('|'), 'i');
+    const messages = await MessageTable.find({ content: regex, sender, receiver })
+      .sort({ timestamp: -1 })
+      .skip(page * limit)
+      .limit(limit);
+    return messages;
+  }
 }
 
 module.exports = Message;
