@@ -1,7 +1,7 @@
 class config {
   static JWT_KEY = 'secret';
 
-  static USER_ROLE = { ADMIN: 'admin', USER: 'user' };
+  static USER_ROLE = { COORDINATOR: 'coordinator', USER: 'user' };
 
   static SPEED_TEST_WAIT_TIME = 500;
 

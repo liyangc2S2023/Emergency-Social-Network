@@ -93,9 +93,9 @@ test('test getOne', async () => {
 });
 
 test('test user role', async () => {
-  await User.addUser('testUserRole', '123456', config.USER_ROLE.ADMIN);
+  await User.addUser('testUserRole', '123456', config.USER_ROLE.COORDINATOR);
   await User.addUser('testUserRole1', '123456', config.USER_ROLE.USER);
-  expect((await User.getOne('testUserRole')).role).toBe(config.USER_ROLE.ADMIN);
+  expect((await User.getOne('testUserRole')).role).toBe(config.USER_ROLE.COORDINATOR);
   expect((await User.getOne('testUserRole1')).role).toBe(config.USER_ROLE.USER);
 });
 

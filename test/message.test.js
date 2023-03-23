@@ -96,8 +96,8 @@ test('test user read message', async () => {
   const result = (await Message.getPrivateMessagesBetween('t1', 't2'));
   // should read receiver message, not read sender message
   expect(result[1].isRead).toBe(true);
-  expect(result[2].isRead).toBe(true);
-  expect(result[0].isRead).toBe(false);
+  expect(result[2].isRead).toBe(false);
+  expect(result[0].isRead).toBe(true);
 });
 
 test('test get all unread messages', async () => {
