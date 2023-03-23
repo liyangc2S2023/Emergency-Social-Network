@@ -1,9 +1,11 @@
 const Message = require('../model/message');
 const User = require('../model/user');
+const Status = require('../model/status');
+const stopWords = require('../public/search_stopWord.json').search;
 
 const searchTopics = {
   username: async (searchPhrase) => User.searchByUsername(searchPhrase),
-  status: async (searchPhrase) => User.searchByStatus(searchPhrase),
+  status: async (searchPhrase, page) => User.searchByStatus(searchPhrase, page),
   announcement: async () => {
     // TODO: implement this function after setting up the announcement model.
     // return Announcement.searchByAnnouncement(searchPhrase, page);
@@ -11,13 +13,21 @@ const searchTopics = {
   publicMessage: async (searchPhrase, page) => Message.searchByPublicMessage(searchPhrase, page),
   privateMessage:
     // eslint-disable-next-line max-len
-    async (searchPhrase, sender, receiver, page) => Message.searchByPrivateMessage(searchPhrase, sender, receiver, page),
+    async (searchPhrase, sender, receiver, page) => {
+      if (searchPhrase === 'status') {
+        return Status.searchHistoryStatus(receiver, page);
+      }
+      return Message.searchByPrivateMessage(searchPhrase, sender, receiver, page);
+    },
 };
 
 class searchController {
   static async searchContent(topic, searchPhrase, sender = null, receiver = null, page = 0) {
+    // check if searchPhrase contains only stop words
+    const words = searchPhrase.split(' ');
+    const isStopWord = words.every((word) => stopWords.includes(word));
     let results = [];
-    if (!(topic in searchTopics)) {
+    if (!(topic in searchTopics) || isStopWord) {
       return results;
     }
     const searchFunction = searchTopics[topic];
