@@ -75,7 +75,7 @@ alertPrivateMessage = (sender) => {
 }
 
 directoryGetisOnline= (a)=>{
-  return $(a).children("div").children("div").attr("class").includes('online')
+  return $(a).find('.online').length>0
 }
 
 reorderDirectory = ()=>{
@@ -84,15 +84,7 @@ reorderDirectory = ()=>{
   elements.detach().sort(function(a,b){
     var isAOnline = directoryGetisOnline(a)
     var isBOnline = directoryGetisOnline(b)
-    if(isAOnline && !isBOnline){
-      return -1
-    }
-    else if(isBOnline && !isAOnline){
-      return 1
-    }
-    else{
-      return a.id.localeCompare(b.id);
-    }
+    return isAOnline == isBOnline ? a.id.localeCompare(b.id) : isBOnline - isAOnline;
   }).appendTo(parent)
 }
 
