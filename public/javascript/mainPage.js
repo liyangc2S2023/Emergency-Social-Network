@@ -29,8 +29,8 @@ function hideOtherDisplay(componentId) {
   }
 }
 
-// run to chang title of net and header
-function changTitle(title) {
+// run to change title of net and header
+function changeTitle(title) {
   $('#title').text(`${title}`);
   $('title').text(`ESNetwork - ${title}`);
 }
@@ -106,7 +106,7 @@ handleUserStateChange =async (username, state) => {
 }
 
 function displayPublic() {
-  changTitle("Chat Public");
+  changeTitle("Chat Public");
   // document.querySelector('headerTitle').textContent = "Public Chat";
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
@@ -115,7 +115,7 @@ function displayPublic() {
 }
 
 function displayPrivateMessage(receiver) {
-  changTitle(`${receiver}`);
+  changeTitle(`${receiver}`);
 
   // clear current page
   const privateDialog = document.querySelector('#privateDialog');
@@ -136,20 +136,20 @@ function displayPrivateMessage(receiver) {
 }
 
 function displayDirectory() {
-  changTitle("Directory");
+  changeTitle("Directory");
   hideOtherDisplay("directoryContent")
   window.scrollTo(0, 0)
   setActiveItem('directoryMenu');
 }
 
 displayStatus = () => {
-  changTitle("Status");
+  changeTitle("Status");
   hideOtherDisplay("statusContent")
   setActiveItem('statusMenu');
 }
 
 function displaySearch() {
-  changTitle("Search");
+  changeTitle("Search");
   hideOtherDisplay("searchContent")
   window.scrollTo(0, 0)
   scrollDown("searchContent");
