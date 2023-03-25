@@ -171,7 +171,6 @@ function displaySearch() {
       }
     }
   });
-  changeTitle("Search");
   hideOtherDisplay("searchContent");
   window.scrollTo(0, 0);
   scrollDown("searchContent");
