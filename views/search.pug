@@ -1,6 +1,7 @@
 .container.searchFrame
   .container.search
-    select.searchDropdown(name="dropdown" id="dropdown" class='searchCriteria')
+    select.searchDropdown(id="dropdown")
+      option.searchInfo.default(selected)
       option.searchInfo(value='directoryContent') Username
       option.searchInfo(value='directoryContent' ) Status
       option.searchInfo(value='announcementContent' ) Announcement

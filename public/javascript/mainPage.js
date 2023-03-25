@@ -160,14 +160,15 @@ function displaySearch() {
   const searchDropdown = $('#dropdown');
   const searchOptions = searchDropdown.find('option');
   $(searchOptions).hide();
-
-  // Loop through each option and show/hide based on the data-page attribute
+  let hasSelected;
+  // show the option corresponding to current page
   searchOptions.each((_index, option) => {
-    console.log($(option).val());
-    console.log(currentPage);
     if ($(option).val() === currentPage) {
       $(option).show();
-      console.log($(option).val());
+      if (!hasSelected) {
+        $(option).prop('selected', true);
+        hasSelected = true;
+      }
     }
   });
   changeTitle("Search");
