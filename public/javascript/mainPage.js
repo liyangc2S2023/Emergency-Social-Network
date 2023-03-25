@@ -13,6 +13,10 @@ const statusMap = {
   emergency: 'circle red icon',
 };
 
+function setCurrentPage(componentId) {
+    $("#currentPage").val(componentId);
+}
+
 function hideOtherDisplay(componentId) {
   $("#directoryContent").hide();
   $("#publicChatContent").hide();
@@ -20,7 +24,6 @@ function hideOtherDisplay(componentId) {
   $("#statusContent").hide();
   $("#privateChatContent").hide();
   $("#" + componentId).show()
-  $("#currentPage").val(componentId);
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
   } else {
@@ -111,6 +114,7 @@ function displayPublic() {
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
   var t = document.body.scrollHeight;
+  setCurrentPage("publicChatContent");
   scrollDown("publicChatContent");
 }
 
@@ -131,12 +135,14 @@ function displayPrivateMessage(receiver) {
     scrollDown("privateChatContent");
   });
 
+  setCurrentPage("privateChatContent");
   // show private chat page
   hideOtherDisplay("privateChatContent")
 }
 
 function displayDirectory() {
   changeTitle("Directory");
+  setCurrentPage("directoryContent");
   hideOtherDisplay("directoryContent")
   window.scrollTo(0, 0)
   setActiveItem('directoryMenu');
@@ -144,14 +150,29 @@ function displayDirectory() {
 
 displayStatus = () => {
   changeTitle("Status");
+  setCurrentPage("statusContent");
   hideOtherDisplay("statusContent")
   setActiveItem('statusMenu');
 }
 
 function displaySearch() {
+  const currentPage = $("#currentPage").val();
+  const searchDropdown = $('#dropdown');
+  const searchOptions = searchDropdown.find('option');
+  $(searchOptions).hide();
+
+  // Loop through each option and show/hide based on the data-page attribute
+  searchOptions.each((_index, option) => {
+    console.log($(option).val());
+    console.log(currentPage);
+    if ($(option).val() === currentPage) {
+      $(option).show();
+      console.log($(option).val());
+    }
+  });
   changeTitle("Search");
-  hideOtherDisplay("searchContent")
-  window.scrollTo(0, 0)
+  hideOtherDisplay("searchContent");
+  window.scrollTo(0, 0);
   scrollDown("searchContent");
 }
 
@@ -181,4 +202,8 @@ socket.on('updateAlert', (unreadUserSet) => {
   unreadUserSet.forEach((user) => {
     alertPrivateMessage(user);
   });
+});
+
+$(document).ready(() => {
+  setCurrentPage("directoryContent");
 });
