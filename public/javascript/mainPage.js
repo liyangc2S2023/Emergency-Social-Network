@@ -13,6 +13,10 @@ const statusMap = {
   emergency: 'circle red icon',
 };
 
+function setCurrentPage(componentId) {
+    $("#currentPage").val(componentId);
+}
+
 function hideOtherDisplay(componentId) {
   $("#directoryContent").hide();
   $("#publicChatContent").hide();
@@ -20,17 +24,21 @@ function hideOtherDisplay(componentId) {
   $("#statusContent").hide();
   $("#privateChatContent").hide();
   $("#" + componentId).show()
-  $("#currentPage").val(componentId);
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
   } else {
     $("#main-page-back").hide();
     $('#chatPrivateReceiver').val('');
   }
+  if (componentId === "statusContent") {
+    $("#searchButton").hide();
+  } else {
+    $("#searchButton").show();
+  }
 }
 
-// run to chang title of net and header
-function changTitle(title) {
+// run to change title of net and header
+function changeTitle(title) {
   $('#title').text(`${title}`);
   $('title').text(`ESNetwork - ${title}`);
 }
@@ -106,24 +114,17 @@ handleUserStateChange =async (username, state) => {
 }
 
 function displayPublic() {
-  changTitle("Chat Public");
+  changeTitle("Chat Public");
   // document.querySelector('headerTitle').textContent = "Public Chat";
   hideOtherDisplay("publicChatContent")
   window.scrollTo(0, 0)
   var t = document.body.scrollHeight;
+  setCurrentPage("publicChatContent");
   scrollDown("publicChatContent");
 }
 
-function displaySearch() {
-  changTitle("Search");
-  hideOtherDisplay("searchContent")
-  window.scrollTo(0, 0)
-  var t = document.body.scrollHeight;
-  scrollDown("searchContent");
-}
-
 function displayPrivateMessage(receiver) {
-  changTitle(`${receiver}`);
+  changeTitle(`${receiver}`);
 
   // clear current page
   const privateDialog = document.querySelector('#privateDialog');
@@ -139,21 +140,44 @@ function displayPrivateMessage(receiver) {
     scrollDown("privateChatContent");
   });
 
+  setCurrentPage("privateChatContent");
   // show private chat page
   hideOtherDisplay("privateChatContent")
 }
 
 function displayDirectory() {
-  changTitle("Directory");
+  changeTitle("Directory");
+  setCurrentPage("directoryContent");
   hideOtherDisplay("directoryContent")
   window.scrollTo(0, 0)
   setActiveItem('directoryMenu');
 }
 
 displayStatus = () => {
-  changTitle("Status");
+  changeTitle("Status");
+  setCurrentPage("statusContent");
   hideOtherDisplay("statusContent")
   setActiveItem('statusMenu');
+}
+
+function displaySearch() {
+  const currentPage = $("#currentPage").val();
+  const searchOptions = $('.searchInfo');
+  $(searchOptions).hide();
+  let hasSelected;
+  // show the option corresponding to current page
+  searchOptions.each((_index, option) => {
+    if ($(option).val() === currentPage) {
+      $(option).show();
+      if (!hasSelected) {
+        $(option).prop('selected', true);
+        hasSelected = true;
+      }
+    }
+  });
+  hideOtherDisplay("searchContent");
+  window.scrollTo(0, 0);
+  scrollDown("searchContent");
 }
 
 socket.on('statusChange', (data) => {
@@ -182,4 +206,8 @@ socket.on('updateAlert', (unreadUserSet) => {
   unreadUserSet.forEach((user) => {
     alertPrivateMessage(user);
   });
+});
+
+$(document).ready(() => {
+  setCurrentPage("directoryContent");
 });
