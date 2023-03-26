@@ -95,7 +95,7 @@ class User {
     return users;
   }
 
-  static async searchByStatus(status, page = 0, limit = 10) {
+  static async searchByStatus(status) {
     // if no user find, it will return an empty array.
     const users = await UserTable.find({ status })
       .sort({ online: 'desc', username: 'asc' })

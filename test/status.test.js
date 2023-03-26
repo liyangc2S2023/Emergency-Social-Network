@@ -69,17 +69,20 @@ test('test search information by typing "status" in privateMessge and get a matc
   expect(result[1].status).toBe('help');
 });
 
-test('test search information by private message and get more than 10 matching results', async () => {
+test('test search information by private message and get no more than 10 matching results', async () => {
   // add ten more private messages
   await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'help');
+  await Status.updateUserStatus('noreen', 'help');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'emergency');
   await Status.updateUserStatus('noreen', 'ok');
   await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
-  await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'emergency');
+  //more than 10
+  await Status.updateUserStatus('noreen', 'help');
   await Status.updateUserStatus('noreen', 'ok');
   await Status.updateUserStatus('noreen', 'help');
   const res = await Status.searchHistoryStatus('noreen');
