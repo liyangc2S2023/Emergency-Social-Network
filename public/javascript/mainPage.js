@@ -157,8 +157,7 @@ displayStatus = () => {
 
 function displaySearch() {
   const currentPage = $("#currentPage").val();
-  const searchDropdown = $('#dropdown');
-  const searchOptions = searchDropdown.find('option');
+  const searchOptions = $('.searchInfo');
   $(searchOptions).hide();
   let hasSelected;
   // show the option corresponding to current page

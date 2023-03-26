@@ -1,13 +1,14 @@
 .container.searchFrame
   .container.search
-    select.searchDropdown(id="dropdown")
+    select.searchDropdown(id='searchDropdown')
       option.searchInfo.default(selected)
       option.searchInfo(value='directoryContent') Username
-      option.searchInfo(value='directoryContent' ) Status
-      option.searchInfo(value='announcementContent' ) Announcement
-      option.searchInfo(value='publicChatContent' ) Public Message
-      option.searchInfo(value='privateChatContent' ) Private Message
-    input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword' )
+      option.searchInfo(value='directoryContent') Status
+      option.searchInfo(value='announcementContent') Announcement
+      option.searchInfo(value='publicChatContent') Public Message
+      option.searchInfo(value='privateChatContent') Private Message
+    input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword')
+  // TODO: add searchKeywords() to call api for search results in search.js
   button.btn-confirm(onclick='searchKeywords()') Search
   .container.searchResults
     h2.searchTitle Search Results
