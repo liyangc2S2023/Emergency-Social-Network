@@ -28,7 +28,8 @@ class Status {
     return StatusTable.find({ username }).sort({ timestamp: -1 });
   }
 
-  static async searchHistoryStatus(receiver, page = 0, limit = 10) {
+  static async searchHistoryStatus(receiver, page = 0) {
+    const limit = 10;
     const status = await StatusTable.find({ username: receiver })
       .sort({ timestamp: -1 })
       .skip(page * limit)

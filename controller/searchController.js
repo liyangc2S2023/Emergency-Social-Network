@@ -4,13 +4,13 @@ const Status = require('../model/status');
 const stopWords = require('../public/search_stopWord.json').search;
 
 const searchTopics = {
-  username: async (searchPhrase) => User.searchByUsername(searchPhrase),
-  status: async (searchPhrase) => User.searchByStatus(searchPhrase),
+  username: async (searchPhrase, sender, receiver, page) => User.searchByUsername(searchPhrase),
+  status: async (searchPhrase, sender, receiver, page) => User.searchByStatus(searchPhrase, page),
   announcement: async () => {
     // TODO: implement this function after setting up the announcement model.
     // return Announcement.searchByAnnouncement(searchPhrase, page);
   },
-  publicMessage: async (searchPhrase, page) => Message.searchByPublicMessage(searchPhrase, page),
+  publicMessage: async (searchPhrase, sender, receiver, page) => Message.searchByPublicMessage(searchPhrase, page),
   privateMessage:
     // eslint-disable-next-line max-len
     async (searchPhrase, sender, receiver, page) => {
