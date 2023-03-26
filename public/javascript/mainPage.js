@@ -30,6 +30,11 @@ function hideOtherDisplay(componentId) {
     $("#main-page-back").hide();
     $('#chatPrivateReceiver').val('');
   }
+  if (componentId === "statusContent") {
+    $("#searchButton").hide();
+  } else {
+    $("#searchButton").show();
+  }
 }
 
 // run to change title of net and header
