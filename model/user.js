@@ -95,9 +95,8 @@ class User {
     return users;
   }
 
-  static async searchByStatus(status, page) {
+  static async searchByStatus(status, page, limit = 10) {
     // if no user find, it will return an empty array.
-    const limit = 10;
     const users = await UserTable.find({ status })
       .sort({ online: 'desc', username: 'asc' })
       .skip(page * limit)
