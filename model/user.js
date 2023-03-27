@@ -95,9 +95,14 @@ class User {
     return users;
   }
 
-  static async searchByStatus(status) {
+  static async searchByStatus(status, page) {
     // if no user find, it will return an empty array.
-    const users = await UserTable.find({ status }).sort({ online: 'desc', username: 'asc' });
+    const page = 0;
+    const limit = 10;
+    const users = await UserTable.find({ status })
+      .sort({ online: 'desc', username: 'asc' })
+      .skip(page * limit)
+      .limit(limit);
     return users;
   }
 }

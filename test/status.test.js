@@ -46,3 +46,46 @@ test('test getHistoryStatus status', async () => {
   expect(statusHistory[1].status).toBe('help');
   expect(statusHistory[2].status).toBe('ok');
 });
+
+test('test search information by typing "status" in privateMessge and get no result', async () => {
+  // search for a not valid username
+  const res = await Status.searchHistoryStatus('app');
+  expect(res).toEqual([]);
+});
+
+test('test search information by typing "status" in privateMessge and get a matching status list of receiver', async () => {
+  // add status history of a certain user (receiver in private Caht)
+  await Status.updateUserStatus('noreenGoodUserUser', 'ok');
+  expect((await Status.searchHistoryStatus('noreenGoodUserUser')).length).toBe(1);
+  await Status.updateUserStatus('noreenGoodUserUser', 'help');
+  expect((await Status.searchHistoryStatus('noreenGoodUserUser')).length).toBe(2);
+  await Status.updateUserStatus('noreenGoodUserUser', 'emergency');
+  expect((await Status.searchHistoryStatus('noreenGoodUserUser')).length).toBe(3);
+  await Status.updateUserStatus('lisa', 'emergency');
+  await Status.updateUserStatus('lisa', 'help');
+  await Status.updateUserStatus('lisa', 'ok');
+  const result = await Status.searchHistoryStatus('lisa');
+  expect(result[0].status).toBe('ok');
+  expect(result[1].status).toBe('help');
+});
+
+test('test search information by private message and get no more than 10 matching results', async () => {
+  // add ten more private messages
+  await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'help');
+  await Status.updateUserStatus('noreen', 'help');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'emergency');
+  await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'emergency');
+  //more than 10
+  await Status.updateUserStatus('noreen', 'help');
+  await Status.updateUserStatus('noreen', 'ok');
+  await Status.updateUserStatus('noreen', 'help');
+  const res = await Status.searchHistoryStatus('noreen');
+  expect(res.length).toBe(10);
+});
+
