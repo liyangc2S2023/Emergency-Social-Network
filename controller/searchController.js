@@ -1,7 +1,7 @@
 const Message = require('../model/message');
 const User = require('../model/user');
 const Status = require('../model/status');
-const stopWords = require('../public/search_stopWord.json').search;
+const stopWords = require('../public/search_stopWord.json').stopWord;
 
 const searchTopics = {
   username: async (searchPhrase, sender, receiver, page) => User.searchByUsername(searchPhrase),
