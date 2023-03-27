@@ -206,28 +206,32 @@ test('test search information by private message and get no result', async () =>
 });
 
 test('test search information by private message and get matching messages', async () => {
-  // add two private messages
+  // add some private messages
   await Message.addMessage('lisa', 'noreen', 'ok', 'hi');
   await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
   await Message.addMessage('noreen', 'lisa', 'ok', 'hi');
-  await Message.addMessage('noreen', 'lisa', 'ok', 'hello');
+  await Message.addMessage('noreen', 'joseph', 'ok', 'hello');
   // add two public messages
   await Message.addMessage('lisa', 'all', 'help', 'hi all');
   await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
   // search for keywords: hi
   const keywords = [];
   keywords[0] = 'hi';
-  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(1);
+  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(2);
   let res;
   res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
+  // result should be ordered by timestamp
   expect(res[0].content).toBe('hi');
+  expect(res[0].sender).toBe('noreen');
+  expect(res[1].content).toBe('hi');
+  expect(res[1].sender).toBe('lisa');
   // search for keywords: he and hi
   keywords[1] = 'he';
-  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(2);
+  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(3);
   res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
-  // result should be ordered by timestamp
-  expect(res[0].content).toBe('hello');
-  expect(res[1].content).toBe('hi');
+  // result should include both keyword 'hi' and 'he'
+  expect(res[0].content).toBe('hi');
+  expect(res[1].content).toBe('hello');
 });
 
 test('test search information by private message and get more than 10 matching results', async () => {
@@ -242,9 +246,9 @@ test('test search information by private message and get more than 10 matching r
   await Message.addMessage('t1', 't2', 'ok', 'content8');
   await Message.addMessage('t1', 't2', 'ok', 'content9');
   await Message.addMessage('t1', 't2', 'ok', 'content10');
-  // add a private messages not sent by t1 and received by t2
+  // add a private messages not between t1 and t2
   await Message.addMessage('t1', 't3', 'ok', 'content');
-  await Message.addMessage('t2', 't1', 'ok', 'content');
+  await Message.addMessage('t2', 't3', 'ok', 'content');
   // search for keywords: content
   const keywords = [];
   keywords[0] = 'content';
