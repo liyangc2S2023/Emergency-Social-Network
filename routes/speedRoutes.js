@@ -7,11 +7,11 @@ const speedRecordController = require('../controller/speedController');
 const Result = require('./common/result');
 const SuspendFlag = require('./common/suspendFlag');
 
-// authenticate user role, can only visited by coordinator
+// authenticate user role, can only visited by admin
 router.use(async (req, res, next) => {
   // will be enabled in iteration 5
   // const role = req.role
-  // if(role != config.USER_ROLE.COORDINATOR){
+  // if(role != config.USER_ROLE.ADMIN){
   //     next(createError(401, `${req.username} is not authorized to speed test`));
   // }
   // else{
