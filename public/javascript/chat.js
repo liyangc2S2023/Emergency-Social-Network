@@ -4,7 +4,7 @@ const avatar = {
 }
 
 
-function scrollDown(currentPage){
+function scrollDown(currentPage) {
   if ($('#currentPage').val() === currentPage) {
     const t = document.body.scrollHeight;
     window.scroll({ top: t, left: 0, behavior: 'smooth' });
@@ -29,8 +29,10 @@ function oneKeyPress(e) {
   if (keynum == 13) {
     if ($('#currentPage').val() === 'privateChatContent') {
       sendMessage(false);
-    } else {
+    } else if ($('#currentPage').val() === 'publicChatContent') {
       sendMessage();
+    } else if ($('#currentPage').val() === 'announcementContent') {
+      sendAnnouncement();
     }
   }
 }
