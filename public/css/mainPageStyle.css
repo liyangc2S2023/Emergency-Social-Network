@@ -75,3 +75,7 @@
     width: 100%;
     /* display: none; */
 }
+
+#announcementDialogContainer {
+    padding-bottom: 1em;
+}

@@ -23,7 +23,7 @@ html
         include header.pug
         // page content
         .main-page-content
-            include announcement.pug
+            // include announcement.pug
             #currentPage(hidden)
             #chatPrivateReceiver(hidden)
             #currentUsername(hidden)
@@ -35,8 +35,8 @@ html
                 include chat.pug
             #privateChatContent(style=pageView=="Private"?"display:block":"display:none")
                 include chatPrivate.pug  
-            #searchContent(style=pageView=="Search"?"display:block":"display:none")
-                include search.pug 
+            #announcementContent(style=pageView=="Announcement"?"display:block":"display:none")
+                include announcementBoard.pug 
             #statusContent(style=pageView=="Status"?"display:block":"display:none")
                 include status.pug
         // footer

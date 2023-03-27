@@ -1,6 +1,7 @@
 const messageController = require('../../controller/messageController');
 const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
+const announcementController = require('../../controller/announcementController');
 const date2Str = require('../../utils/dateUtil');
 const config = require('../../config');
 
@@ -13,6 +14,11 @@ async function renderOnePage(req, res, pageView) {
     msg.isSender = (req.username === msg.sender);
     msg.time = date2Str(new Date(msg.timestamp));
     msg.statusStyle = config.statusMap[msg.status];
+  });
+
+  const announcementList = await announcementController.getAll();
+  announcementList.forEach((ancm) => {
+    ancm.time = date2Str(new Date(ancm.timestamp));
   });
 
   // data preparation for directory page
@@ -28,7 +34,7 @@ async function renderOnePage(req, res, pageView) {
 
   // render main page with all data
   res.render('mainPage', {
-    pageView, users: userList, messages: messageList, status,
+    pageView, users: userList, messages: messageList, status, announcements: announcementList,
   });
 }
 

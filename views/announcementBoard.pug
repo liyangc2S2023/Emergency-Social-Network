@@ -1,0 +1,8 @@
+.ui.container.chatRoomComments#announcementBoard
+    #announcementDialog.ui.comments
+        for ancm in announcements
+            include announcement.pug
+    #inputBox.ui
+        #inputText.ui.input.chatInput
+            input#inputContent(type="text" placeholder="Message...")
+        #sendBtn.ui.submit.button() Send

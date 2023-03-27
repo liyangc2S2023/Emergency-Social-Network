@@ -20,7 +20,7 @@ function setCurrentPage(componentId) {
 function hideOtherDisplay(componentId) {
   $("#directoryContent").hide();
   $("#publicChatContent").hide();
-  $("#searchContent").hide();
+  $("#announcementContent").hide();
   $("#statusContent").hide();
   $("#privateChatContent").hide();
   $("#" + componentId).show()
@@ -143,6 +143,15 @@ function displayPrivateMessage(receiver) {
   setCurrentPage("privateChatContent");
   // show private chat page
   hideOtherDisplay("privateChatContent")
+}
+
+function displayAnnouncement() {
+  changeTitle("Announce");
+  hideOtherDisplay("announcementContent")
+  window.scrollTo(0, 0)
+  var t = document.body.scrollHeight;
+  setCurrentPage("announcementContent");
+  scrollDown("announcementContent");
 }
 
 function displayDirectory() {

@@ -1,10 +1,9 @@
-div.ui.container#announcementContainer
-    .ui.message#announcementBox
+div.ui.container#announcementDialogContainer
+    .ui.message
         .ui.comments
             .comment
                 .content
-                    a.author.name#announcementSender Joseph
+                    a.author.name#announcementSender #{ancm.sender} 
                     .metadata
-                        .time#announcementTime 22:31
-                    .text#announcementContent Socket.io enables real-time communication between the client and server, making it possible to build applications with real-time updates and notifications. Socket.io is designed to work with a variety of browsers and platforms, making it a versatile choice for building cross-browser compatible applications.
-        i.close.icon(onclick = "hideAnnouncement()")
+                        .time#announcementTime #{ancm.time}
+                    .text#announcementContent #{ancm.content}
