@@ -87,17 +87,19 @@ class User {
     return UserTable.updateOne({ username }, { $set: { status } });
   }
 
-  static async searchByUsername(username) {
+  static async searchByUsername(username, page = 0, limit = 10) {
     // 'i' for case insensitive
     const regex = new RegExp(username, 'i');
     // if no user find, it will return an empty array.
-    const users = await UserTable.find({ username: regex }).sort({ online: 'desc', username: 'asc' });
+    const users = await UserTable.find({ username: regex })
+      .sort({ online: 'desc', username: 'asc' })
+      .skip(page * limit)
+      .limit(limit);
     return users;
   }
 
-  static async searchByStatus(status, page) {
+  static async searchByStatus(status, page = 0, limit = 10) {
     // if no user find, it will return an empty array.
-    const limit = 10;
     const users = await UserTable.find({ status })
       .sort({ online: 'desc', username: 'asc' })
       .skip(page * limit)

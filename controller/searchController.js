@@ -4,7 +4,7 @@ const Status = require('../model/status');
 const stopWords = require('../public/search_stopWord.json').stopWord;
 
 const searchTopics = {
-  username: async (searchPhrase, sender, receiver, page) => User.searchByUsername(searchPhrase),
+  username: async (searchPhrase, sender, receiver, page) => User.searchByUsername(searchPhrase, page),
   status: async (searchPhrase, sender, receiver, page) => User.searchByStatus(searchPhrase, page),
   announcement: async () => {
     // TODO: implement this function after setting up the announcement model.
