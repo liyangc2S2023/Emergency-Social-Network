@@ -1,8 +1,8 @@
 .ui.container.chatRoomComments#announcementBoard
-    #announcementDialog.ui.comments
+    .ui.comments#announcementDialog
         for ancm in announcements
             include announcement.pug
-    #inputBox.ui
-        #inputText.ui.input.chatInput
-            input#inputContent(type="text" placeholder="Message...")
-        #sendBtn.ui.submit.button() Send
+    .ui#inputBox
+        .ui.input.chatInput
+            input#announcementInputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
+        #sendAnnouncementBtn.ui.submit.button(onclick="sendAnnouncement()") Send

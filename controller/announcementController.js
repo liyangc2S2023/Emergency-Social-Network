@@ -1,5 +1,4 @@
 const Announcement = require('../model/announcement');
-const User = require('../model/user');
 
 class AnnouncementController {
   static async getAll() {
@@ -10,9 +9,8 @@ class AnnouncementController {
     return Announcement.getBySender(sender);
   }
 
-  static async addAnnouncement(sender, content) {
-    const role = User.getUserRole(sender);
-    return Announcement.addMessage(sender, content, role);
+  static async addAnnouncement(sender, content, role) {
+    return Announcement.addAnnouncement(sender, content, role);
   }
 
   static async getLastestAnnouncement() {

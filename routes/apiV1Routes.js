@@ -4,6 +4,7 @@ const Result = require('./common/result');
 const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
+const announcementController = require('../controller/announcementController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
@@ -88,6 +89,23 @@ router.post('/status', async (req, res) => {
   const status = await statusController.updateUserStatus(req.body.username, req.body.status);
   req.io.emit('statusChange', { username: req.body.username, status });
   return res.send(Result.success({ status }));
+});
+
+router.post('/announcements', async (req, res) => {
+  const ancm = {
+    sender: req.body.sender,
+    content: req.body.content,
+    time: req.body.timestamp,
+  };
+  const result = await announcementController.addAnnouncement(
+    req.body.sender,
+    req.body.content,
+    config.USER_ROLE.COORDINATOR,
+  );
+  ancm.time = date2Str(new Date(req.body.timestamp));
+  const announcementHTML = pug.renderFile('./views/announcement.pug', { ancm });
+  req.io.emit('newAnnouncement', announcementHTML);
+  return res.send(Result.success(result));
 });
 
 module.exports = router;

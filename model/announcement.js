@@ -27,7 +27,7 @@ class Announcement {
         },
       );
     }
-    return null;
+    return false;
   }
 
   static async getLatestAnnouncement() {
