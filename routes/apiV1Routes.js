@@ -4,6 +4,7 @@ const Result = require('./common/result');
 const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
+const searchController = require('../controller/searchController');
 const announcementController = require('../controller/announcementController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
@@ -106,6 +107,14 @@ router.post('/announcements', async (req, res) => {
   const announcementHTML = pug.renderFile('./views/announcement.pug', { ancm });
   req.io.emit('newAnnouncement', announcementHTML);
   return res.send(Result.success(result));
+});
+
+/* ************ Search use case router realizing methods ************** */
+router.get('/search', async (req, res) => {
+  const { content, criteria, sender, receiver, page } = req.query;
+  // TO DO: Add searchController's function and insert it in xxxx
+  const searchResult = await searchController.searchContent(content, criteria.split(','), sender, receiver, page);
+  res.send(Result.success(searchResult));
 });
 
 module.exports = router;

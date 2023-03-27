@@ -14,7 +14,7 @@ const searchTopics = {
   privateMessage:
     // eslint-disable-next-line max-len
     async (searchPhrase, sender, receiver, page) => {
-      if (searchPhrase === 'status') {
+      if (searchPhrase.length === 1 && searchPhrase[0] === 'status') {
         return Status.searchHistoryStatus(receiver, page);
       }
       return Message.searchByPrivateMessage(searchPhrase, sender, receiver, page);
@@ -24,8 +24,7 @@ const searchTopics = {
 class searchController {
   static async searchContent(topic, searchPhrase, sender = null, receiver = null, page = 0) {
     // check if searchPhrase contains only stop words
-    const words = searchPhrase.split(' ');
-    const isStopWord = words.every((word) => stopWords.includes(word));
+    const isStopWord = searchPhrase.every((word) => stopWords.includes(word));
     let results = [];
     if (!(topic in searchTopics) || isStopWord) {
       return results;
