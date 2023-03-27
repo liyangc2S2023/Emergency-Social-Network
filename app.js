@@ -1,9 +1,3 @@
-// const express = require('express');
-
-// const app = express();
-// const bodyParser = require('body-parser');
-// const createError = require('http-errors');
-// const http = require('http');
 const createError = require('http-errors');
 const socketServer = require('socket.io');
 
@@ -18,20 +12,12 @@ const setupSocket = require('./socket');
 const io = socketServer(server);
 setupSocket(io);
 
-// const cookieParser = require('cookie-parser');
-// const setupDB = require('./database');
-
 const port = 3000;
 
 setupDB();
 
 app.set('view engine', 'pug');
 app.set('views', './views');
-
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
-// app.use(express.static('public'));
-// app.use(cookieParser());
 
 // Middleware: socketio
 app.use((req, res, next) => {

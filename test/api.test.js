@@ -16,7 +16,6 @@ const { server, setupRestfulRoutes } = new APP();
 let mongoServer;
 let token;
 
-
 beforeAll(async () => {
   setupRestfulRoutes();
   server.listen(PORT);
@@ -78,5 +77,3 @@ test('Can post a new user', async () => {
     expect(error).toBeUndefined();
   });
 });
-
-// test('Cannot post a new user with invalid username', async () => { });
