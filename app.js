@@ -1,15 +1,15 @@
-const express = require('express');
-
-const app = express();
-const bodyParser = require('body-parser');
 const createError = require('http-errors');
-const http = require('http');
 
-const server = http.createServer(app);
-const cookieParser = require('cookie-parser');
-const io = require('socket.io')(server);
-const setupSocket = require('./socket');
+const APP = require('./backend');
 const setupDB = require('./database');
+
+const { app, server } = new APP();
+// const server = http.createServer(app);
+
+// const setupSocket = require('./socket');
+
+// const io = socketServer(server);
+// setupSocket(io);
 
 const port = 3000;
 
@@ -18,18 +18,11 @@ setupDB();
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(cookieParser());
-
-setupSocket(io);
-
-// Middleware: socketio
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+// // Middleware: socketio
+// app.use((req, res, next) => {
+//   req.io = io;
+//   next();
+// });
 
 app.get('/', (req, res) => {
   res.redirect('/welcome');

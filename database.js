@@ -2,10 +2,10 @@ const mongoose = require('mongoose');
 const SuspendFlag = require('./routes/common/suspendFlag');
 
 // mongodb atlas connection uri
-const uri = 'mongodb+srv://liyang:cmstc123@cluster0.4yg6j3d.mongodb.net/';
+const defaultUri = 'mongodb+srv://liyang:cmstc123@cluster0.4yg6j3d.mongodb.net/';
 const dbname = 'FSE-ESN-SB5';
 
-module.exports = async () => {
+module.exports = async (uri = defaultUri) => {
   mongoose.set('strictQuery', false);
   mongoose.connect(uri + dbname, {
     useNewUrlParser: true,
