@@ -23,6 +23,7 @@ function hideOtherDisplay(componentId) {
   $("#announcementContent").hide();
   $("#statusContent").hide();
   $("#privateChatContent").hide();
+  $("#searchContent").hide();
   $("#" + componentId).show()
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
