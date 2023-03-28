@@ -3,6 +3,7 @@ const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
+const config = require('../config');
 
 const PORT = 3000;
 const HOST = `http://localhost:${PORT}/api/v1`;
@@ -14,7 +15,8 @@ const { server, setupRestfulRoutes } = new APP();
 
 // let server;
 let mongoServer;
-let token;
+let userToken;
+let coordinatorToken;
 
 beforeAll(async () => {
   setupRestfulRoutes();
@@ -26,19 +28,34 @@ afterAll(async () => {
   server.close();
 });
 
+const sampleUser = {
+  username: 'test1',
+  password: 'tttt',
+  role: 'user',
+};
+
+const smapleCoordinator = {
+  username: 'test2',
+  password: 'tttt',
+  role: config.USER_ROLE.COORDINATOR,
+};
+
 beforeEach(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
   await User.addUser('test1', 'tttt');
-  await User.addUser('test2', 'tttt');
+  await User.addUser('test2', 'tttt', config.USER_ROLE.COORDINATOR);
   await User.addUser('test3', 'tttt');
   await User.addUser('test4', 'tttt');
 
   // loigin to a test user fist
-  const sampleUser = { username: 'test1', password: 'tttt' };
   await axios.put(`${HOST}/login`, sampleUser).then((response) => {
-    token = response.data.token;
+    userToken = response.data.token;
+  });
+
+  await axios.put(`${HOST}/login`, smapleCoordinator).then((response) => {
+    coordinatorToken = response.data.token;
   });
 });
 
@@ -47,14 +64,29 @@ afterEach(async () => {
   await mongoServer.stop();
 });
 
-const testUserData = {
-  username: 'testA',
-  password: '1234412m',
-  role: 'user',
-};
+test('Can post a new user', async () => {
+  const UserData = {
+    username: 'testA',
+    password: '1234412m',
+    role: 'user',
+  };
+
+  await axios.post(`${HOST}/users`, UserData, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+
+  await axios.get(`${HOST}/users`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.length).toBe(5);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
 
 test('Can get all users', async () => {
-  await axios.get(`${HOST}/users`, { headers: { authorization: token } }).then((response) => {
+  await axios.get(`${HOST}/users`, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
     expect(response.data.data.length).toBe(4);
   }).catch((error) => {
@@ -62,17 +94,34 @@ test('Can get all users', async () => {
   });
 });
 
-test('Can post a new user', async () => {
-  console.log('test');
-  await axios.post(`${HOST}/users`, testUserData, { headers: { authorization: token } }).then((response) => {
+test('can get a user by id', async () => {
+  await axios.get(`${HOST}/users/test1`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.username).toBe('test1');
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can post announcement', async () => {
+  const announcement = {
+    content: 'test',
+    sender: 'test',
+  };
+  await axios.post(`${HOST}/announcements`, announcement, { headers: { authorization: coordinatorToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
     expect(error).toBeUndefined();
   });
+});
 
-  await axios.get(`${HOST}/users`, { headers: { authorization: token } }).then((response) => {
+test('user cannot post announcement', async () => {
+  const announcement = {
+    sender: 'test',
+    content: 'test',
+  };
+  await axios.post(`${HOST}/announcements`, announcement, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
-    expect(response.data.data.length).toBe(5);
   }).catch((error) => {
     expect(error).toBeUndefined();
   });

@@ -1,5 +1,4 @@
 const createError = require('http-errors');
-const socketServer = require('socket.io');
 
 const APP = require('./backend');
 const setupDB = require('./database');
@@ -7,10 +6,10 @@ const setupDB = require('./database');
 const { app, server } = new APP();
 // const server = http.createServer(app);
 
-const setupSocket = require('./socket');
+// const setupSocket = require('./socket');
 
-const io = socketServer(server);
-setupSocket(io);
+// const io = socketServer(server);
+// setupSocket(io);
 
 const port = 3000;
 
@@ -19,11 +18,11 @@ setupDB();
 app.set('view engine', 'pug');
 app.set('views', './views');
 
-// Middleware: socketio
-app.use((req, res, next) => {
-  req.io = io;
-  next();
-});
+// // Middleware: socketio
+// app.use((req, res, next) => {
+//   req.io = io;
+//   next();
+// });
 
 app.get('/', (req, res) => {
   res.redirect('/welcome');
