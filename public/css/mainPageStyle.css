@@ -69,11 +69,11 @@
     right: 0;
     z-index: 9999;
     overflow: hidden;
+    display: none;
 }
 
 #announcementBox {
     width: 100%;
-    /* display: none; */
 }
 
 #announcementDialogContainer {

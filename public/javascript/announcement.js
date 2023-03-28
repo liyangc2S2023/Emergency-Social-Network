@@ -1,6 +1,6 @@
 // click to hide the announcement box
 function hideAnnouncement() {
-    $("#announcementBox").fadeOut("slow");
+    $("#announcementContainer").fadeOut("slow");
 }
 
 function sendAnnouncement() {
@@ -24,5 +24,9 @@ function sendAnnouncement() {
 socket.on('newAnnouncement', (newAncm) => {
     //scroll to the latest post
     $("#announcementDialog").append(newAncm)
+    $("#announcementContainer").show();
     scrollDown('announcementContent');
+    setTimeout(function(){
+        $("#announcementContainer").fadeOut("slow");;
+    }, 5000);
   });
