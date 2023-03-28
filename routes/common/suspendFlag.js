@@ -23,7 +23,8 @@ class SuspendFlag {
     this.testID = testID;
   }
 
-  stopSuspend(){
+  // eslint-disable-next-line class-methods-use-this
+  stopSuspend() {
     SuspendFlag.getInstance().isSuspend = false;
     SuspendFlag.getInstance().testID = '';
   }

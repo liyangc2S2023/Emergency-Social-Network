@@ -26,7 +26,7 @@ router.post('/', async (req, res, next) => {
     // start test
     await speedRecordController.startTest(req.body.testID);
     // response the result when test finish
-    res.send(Result.success())
+    res.send(Result.success());
   }
 });
 

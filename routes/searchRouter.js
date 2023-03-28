@@ -1,7 +1,6 @@
 const express = require('express');
+
 const router = express.Router();
-const userController = require('../controller/userController');
-const renderOnePage = require('./common/renderOnePage');
 const searchController = require('../controller/searchController');
 
 router.get('/search/:topic/:searchPhrase', async (req, res) => {
@@ -17,13 +16,14 @@ router.get('/search/:topic/:searchPhrase/:page', async (req, res) => {
 });
 
 router.get('/search/:topic/:searchPhrase/:sender/:receiver/:page', async (req, res) => {
-  const { topic, searchPhrase, sender, receiver, page } = req.params;
+  const {
+    topic, searchPhrase, sender, receiver, page,
+  } = req.params;
   const results = await searchController.searchContent(topic, searchPhrase, sender, receiver, page);
   res.json(results);
 });
 
 module.exports = router;
-
 
 // router.get('/', async (req, res) => { renderOnePage(req, res, 'Search'); });
 
