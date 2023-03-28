@@ -36,6 +36,16 @@ class Announcement {
       .limit(1);
     return message[0];
   }
+
+  static async searchByAnnouncement(keywords, page = 0, limit = 10) {
+    // '|' for matching either values, 'i' for case insensitive
+    const regex = new RegExp(keywords.join('|'), 'i');
+    const announcements = await AnnouncementTable.find({ content: regex })
+      .sort({ timestamp: -1 })
+      .skip(page * limit)
+      .limit(limit);
+    return announcements;
+  }
 }
 
 module.exports = Announcement;

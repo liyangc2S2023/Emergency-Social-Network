@@ -1,16 +1,15 @@
 const Message = require('../model/message');
 const User = require('../model/user');
 const Status = require('../model/status');
+const Announcement = require('../model/announcement');
 const stopWords = require('../public/search_stopWord.json').stopWord;
 
 const searchTopics = {
   // eslint-disable-next-line max-len
   username: async (searchPhrase, sender, receiver, page) => User.searchByUsername(searchPhrase, page),
   status: async (searchPhrase, sender, receiver, page) => User.searchByStatus(searchPhrase, page),
-  announcement: async () => {
-    // TODO: implement this function after setting up the announcement model.
-    // return Announcement.searchByAnnouncement(searchPhrase, page);
-  },
+  // eslint-disable-next-line max-len
+  announcement: async (searchPhrase, sender, receiver, page) => Announcement.searchByAnnouncement(searchPhrase, page),
   // eslint-disable-next-line max-len
   publicMessage: async (searchPhrase, sender, receiver, page) => Message.searchByPublicMessage(searchPhrase, page),
   privateMessage:
@@ -29,6 +28,7 @@ class searchController {
     const isStopWord = searchPhrase.every((word) => stopWords.includes(word));
     let results = [];
     if (!(topic in searchTopics) || isStopWord) {
+      console.log('invalid search context or criteria');
       return results;
     }
     const searchFunction = searchTopics[topic];
