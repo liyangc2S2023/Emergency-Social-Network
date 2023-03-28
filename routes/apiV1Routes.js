@@ -122,12 +122,10 @@ router.post('/announcements', async (req, res) => {
   return res.send(Result.success(result));
 });
 
-/* ************ Search use case router realizing methods ************** */
 router.get('/search', async (req, res) => {
   const {
     content, criteria, sender, receiver, page,
   } = req.query;
-  // TO DO: Add searchController's function and insert it in xxxx
   const searchResult = await searchController.searchContent(content, criteria.split(','), sender, receiver, page);
   res.send(Result.success(searchResult));
 });
