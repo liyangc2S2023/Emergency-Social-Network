@@ -1,8 +1,7 @@
-const { default: axios } = require('axios');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const SpeedRecord = require('../model/speedRecord');
-const SuspendFlag = require('../routes/common/suspendFlag')
+const SuspendFlag = require('../routes/common/suspendFlag');
+
 let mongoServer;
 
 beforeAll(async () => {
@@ -17,8 +16,8 @@ afterAll(async () => {
   await mongoServer.stop();
 });
 
-test('test suspend flag',()=>{
-    SuspendFlag.getInstance().startSuspend("123")
-    expect(SuspendFlag.getInstance().isSuspend).toBe(true)
-    expect(SuspendFlag.getInstance().testID).toBe("123")
-})
+test('test suspend flag', () => {
+  SuspendFlag.getInstance().startSuspend('123');
+  expect(SuspendFlag.getInstance().isSuspend).toBe(true);
+  expect(SuspendFlag.getInstance().testID).toBe('123');
+});

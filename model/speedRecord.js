@@ -1,6 +1,7 @@
 const mongoose = require('mongoose');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const setupDB = require('../database');
+
 class SpeedRecord {
   static instance;
 

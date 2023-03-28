@@ -81,11 +81,10 @@ test('test search information by private message and get no more than 10 matchin
   await Status.updateUserStatus('noreen', 'ok');
   await Status.updateUserStatus('noreen', 'ok');
   await Status.updateUserStatus('noreen', 'emergency');
-  //more than 10
+  // more than 10
   await Status.updateUserStatus('noreen', 'help');
   await Status.updateUserStatus('noreen', 'ok');
   await Status.updateUserStatus('noreen', 'help');
   const res = await Status.searchHistoryStatus('noreen');
   expect(res.length).toBe(10);
 });
-

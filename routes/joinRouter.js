@@ -1,7 +1,7 @@
 const express = require('express');
+const pug = require('pug');
 const joinController = require('../controller/joinController');
 const userController = require('../controller/userController');
-const pug = require('pug');
 const config = require('../config');
 
 const router = express.Router();
@@ -56,8 +56,8 @@ router.post('/confirm', async (req, res, next) => {
   // succussful register the user
   if (confirmResult.successflag) {
     const user = {
-      username: username,
-      statusStyle: config.statusMap['undefined'],
+      username,
+      statusStyle: config.statusMap.undefined,
       online: false,
     };
     // emit a socket to update directory ui
