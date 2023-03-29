@@ -3,12 +3,19 @@ const mongoose = require('mongoose');
 const Message = require('../model/message');
 
 let mongoServer;
+let dbConnection;
 
-beforeEach(async () => {
-  // assuming mongoose@6.x
+beforeAll(async () => {
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
+  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const { connection } = mongoose;
+  dbConnection = connection;
+});
+
+beforeEach(async () => {
+  await dbConnection.db.dropDatabase();
+
   // add some private messages
   await Message.addMessage('t1', 't2', 'status', 'content');
   await Message.addMessage('t1', 't2', 'status', 'content');
@@ -16,7 +23,7 @@ beforeEach(async () => {
   await Message.addMessage('t1', 'all', 'status', 'content');
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
