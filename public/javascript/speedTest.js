@@ -164,6 +164,8 @@ function startSpeedTest(){
             }).then(()=>{
                 // start test
                 testPostRequests(duration/2,interval,testID)
+            }).catch((err)=>{
+                console.log(err)
             })
         }
     }
