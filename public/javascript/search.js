@@ -12,7 +12,7 @@ function searchKeywords() {
         receiver: $('#chatPrivateReceiver').val(),
         page: $('#pageNumber').val()
     };
-    axios.get('/api/v1/search', { params }).then(res => {
+    axios.get('/search', { params }).then(res => {
         const results = res.data.data.renderedResult;
         const resultsLength = res.data.data.resultsLength;
         if (resultsLength === 0) {

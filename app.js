@@ -52,6 +52,8 @@ app.use('/directory', require('./routes/directoryRouter'));
 
 app.use('/logout', require('./routes/logoutRouter'));
 
+app.use('/search', require('./routes/searchRouter'));
+
 // page not found
 app.use((req, res, next) => {
   next(createError(404, `${req.url} page not found`));
