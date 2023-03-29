@@ -104,21 +104,18 @@ test('can get a user by id', async () => {
   });
 });
 
-test('test user login',async()=>{
-  await axios.put(`${HOST}/login`,{username:"fail",password:"fail"})
-  .then((res)=>{
-    expect(res.status).toBe(400)
-  }).catch((err)=>{
-    expect(err)
-  })
-})
-
-
+test('test user login', async () => {
+  await axios.put(`${HOST}/login`, { username: 'fail', password: 'fail' })
+    .then((res) => {
+      expect(res.status).toBe(400);
+    }).catch((err) => {
+      expect(err);
+    });
+});
 
 // test('test user current',async()=>{
 
 // })
-
 
 // post integration test
 test('can post announcement', async () => {
