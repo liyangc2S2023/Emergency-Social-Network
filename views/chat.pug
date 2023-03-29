@@ -1,8 +1,6 @@
 //- change to localstorage
 .ui.container.chatRoomComments#chat
-    #dialog.ui.comments
-        for msg in messages
-            include message.pug
+    include messageList.pug
     #inputBox.ui
         #inputText.ui.input.chatInput
             input#inputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
