@@ -50,6 +50,7 @@ router.post('/messages', async (req, res) => {
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
 router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
+  const { senderId, receiverId } = req.params;
   const result = await messageController.getPrivateMessagesBetween(senderId, receiverId);
   res.send(Result.success(result));
 });
