@@ -65,10 +65,23 @@ router.post('/messages', async (req, res) => {
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
 router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
-  const { senderId, receiverId } = req.params;
   const result = await messageController.getPrivateMessagesBetween(senderId, receiverId);
   res.send(Result.success(result));
 });
+
+const renderMessageHTML = (msg) => {
+  const { sender, receiver, status, content, timestamp } = msg;
+  const messageHTML = pug.renderFile('./views/message.pug', {
+    msg: {
+      sender,
+      receiver,
+      statusStyle: config.statusMap[status],
+      content,
+      time: date2Str(timestamp),
+    },
+  });
+  return messageHTML;
+};
 
 router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
   const {
@@ -77,15 +90,7 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
   // save to database
   const result = await messageController.addMessage(sender, receiver, status, content);
   // render html
-  const messageHTML = pug.renderFile('./views/message.pug', {
-    msg: {
-      sender,
-      receiver,
-      statusStyle: config.statusMap[status],
-      content,
-      time: date2Str(result.timestamp),
-    },
-  });
+  const messageHTML = renderMessageHTML(result);
 
   // send back to sender over socket. when send to self, prevent render
   if (receiver !== sender) {
@@ -122,12 +127,46 @@ router.post('/announcements', async (req, res) => {
   return res.send(Result.success(result));
 });
 
+// const renderMessageListHTML = (msgList) => {
+//   let messageListHTML = '';
+//   msgList.forEach((msg) => {
+//     messageListHTML += renderMessageHTML(msg);
+//   });
+//   return messageListHTML;
+// };
+
+const transformMessage = (msg) => {
+  const { sender, receiver, status, content, timestamp } = msg;
+  return {
+    sender,
+    receiver,
+    statusStyle: config.statusMap[status],
+    content,
+    time: date2Str(timestamp),
+  };
+};
+
+const transformMessageList = (msgList) => {
+  const transformedList = [];
+  msgList.forEach((msg) => {
+    transformedList.push(transformMessage(msg));
+  });
+  return transformedList;
+};
+
 router.get('/search', async (req, res) => {
   const {
-    content, criteria, sender, receiver, page,
+    context, criteria, sender, receiver, page,
   } = req.query;
-  const searchResult = await searchController.searchContent(content, criteria.split(','), sender, receiver, page);
-  res.send(Result.success(searchResult));
+  const searchResult = await searchController.searchContent(context, criteria.split(','), sender, receiver, page);
+  let renderedResult = '';
+  console.log(context);
+  console.log(searchResult);
+  if (context.indexOf('Message') !== -1) {
+    console.log("rendering message");
+    renderedResult = pug.renderFile('./views/messageList.pug', { messages: transformMessageList(searchResult) });
+  }
+  res.send(Result.success(renderedResult));
 });
 
 module.exports = router;
