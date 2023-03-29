@@ -20,7 +20,6 @@ router.get('/users/current', async (req, res) => {
   if (user) {
     return res.send(Result.success({ username, status: user.status }));
   }
-
   return res.status(400).send(Result.fail(username, ''));
 });
 
@@ -35,7 +34,7 @@ router.post('/messages', async (req, res) => {
     content: req.body.content,
     receiver: req.body.receiver,
   };
-  const result = await messageController.addMessage(
+  await messageController.addMessage(
     req.body.sender,
     req.body.receiver,
     req.body.status,
@@ -44,7 +43,7 @@ router.post('/messages', async (req, res) => {
   msg.time = date2Str(new Date(result.timestamp));
   const messageListHTML = pug.renderFile('./views/message.pug', { msg });
   req.io.emit('newMessage', messageListHTML, req.body.sender);
-  res.send(Result.success(result));
+  res.send(Result.success(req.body));
 });
 
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));

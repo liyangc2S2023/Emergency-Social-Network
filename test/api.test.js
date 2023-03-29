@@ -114,15 +114,40 @@ test('can get a user by id', async () => {
 
 test('test user login', async () => {
   await axios.put(`${HOST}/login`, { username: 'fail', password: 'fail' })
-    .then((res) => {
-      expect(res.status).toBe(400);
-    }).catch((err) => {
-      expect(err);
-    });
+  .catch((err) => {
+      expect(err.response.status).toBe(400);
+  });
 });
 
-// test('test user current',async()=>{
+test('test user current',async()=>{
+  var newToken;
+  await User.addUser('testusercurrent', '12345');
+  // add a current user
+  await axios.put(`${HOST}/login`, {username:"testusercurrent",password:"12345"}).then((response) => {
+    newToken = response.data.token;
+  });
 
+  await axios.get(`${HOST}/users/current`,{headers:{authorization:newToken}})
+  .then((res)=>{
+    expect(res.data.data.username).toBe('testusercurrent')
+  })
+})
+
+// // message integration test
+// test('post new message',async(req,res)=>{
+//   var msg = {
+//     sender:"abc",
+//     status:"undefined",
+//     content:"haha",
+//     receiver:"cba"
+//   }
+//   await axios.post(`${HOST}/messages`,msg,{headers:{authorization:userToken}}).then((res)=>{
+//     expect(res.status).toBe(200)
+//     expect(res.data.data.sender).toBe(msg.sender)
+//     expect(res.data.data.status).toBe(msg.status)
+//     expect(res.data.data.receiver).toBe(msg.receiver)
+//     expect(res.data.data.content).toBe(msg.content)
+//   })
 // })
 
 // post integration test
