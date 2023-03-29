@@ -114,41 +114,24 @@ test('can get a user by id', async () => {
 
 test('test user login', async () => {
   await axios.put(`${HOST}/login`, { username: 'fail', password: 'fail' })
-  .catch((err) => {
+    .catch((err) => {
       expect(err.response.status).toBe(400);
-  });
+    });
 });
 
-test('test user current',async()=>{
-  var newToken;
+test('test user current', async () => {
+  let newToken;
   await User.addUser('testusercurrent', '12345');
   // add a current user
-  await axios.put(`${HOST}/login`, {username:"testusercurrent",password:"12345"}).then((response) => {
+  await axios.put(`${HOST}/login`, { username: 'testusercurrent', password: '12345' }).then((response) => {
     newToken = response.data.token;
   });
 
-  await axios.get(`${HOST}/users/current`,{headers:{authorization:newToken}})
-  .then((res)=>{
-    expect(res.data.data.username).toBe('testusercurrent')
-  })
-})
-
-// // message integration test
-// test('post new message',async(req,res)=>{
-//   var msg = {
-//     sender:"abc",
-//     status:"undefined",
-//     content:"haha",
-//     receiver:"cba"
-//   }
-//   await axios.post(`${HOST}/messages`,msg,{headers:{authorization:userToken}}).then((res)=>{
-//     expect(res.status).toBe(200)
-//     expect(res.data.data.sender).toBe(msg.sender)
-//     expect(res.data.data.status).toBe(msg.status)
-//     expect(res.data.data.receiver).toBe(msg.receiver)
-//     expect(res.data.data.content).toBe(msg.content)
-//   })
-// })
+  await axios.get(`${HOST}/users/current`, { headers: { authorization: newToken } })
+    .then((res) => {
+      expect(res.data.data.username).toBe('testusercurrent');
+    });
+});
 
 // post integration test
 test('can post announcement', async () => {
@@ -203,6 +186,36 @@ test('can post a public message', async () => {
 
 test('can get message between two user', async () => {
   await axios.get(`${HOST}/messages/private/:${sampleUser.username}/:${smapleCoordinator.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get message by sender', async () => {
+  await axios.get(`${HOST}/messages/:${sampleUser.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get all message', async () => {
+  await axios.get(`${HOST}/messages`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can post private message', async () => {
+  const message = {
+    sender: 'test',
+    content: 'test',
+    status: USER_STATUS.OK,
+    receiver: 'test2',
+  };
+  await axios.post(`${HOST}/messages/private/${message.sender}/${message.receiver}`, message, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
     expect(error).toBeUndefined();

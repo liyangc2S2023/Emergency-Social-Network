@@ -34,7 +34,7 @@ router.post('/messages', async (req, res) => {
     content: req.body.content,
     receiver: req.body.receiver,
   };
-  await messageController.addMessage(
+  const result = await messageController.addMessage(
     req.body.sender,
     req.body.receiver,
     req.body.status,
@@ -43,7 +43,7 @@ router.post('/messages', async (req, res) => {
   msg.time = date2Str(new Date(result.timestamp));
   const messageListHTML = pug.renderFile('./views/message.pug', { msg });
   req.io.emit('newMessage', messageListHTML, req.body.sender);
-  res.send(Result.success(req.body));
+  res.send(Result.success(result));
 });
 
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
@@ -79,7 +79,8 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
 
   // send back to sender over socket. when send to self, prevent render
   if (receiver !== sender) {
-    socketMap.getInstance().getSocket(sender).emit('newPrivateMessage', messageHTML, sender);
+    const senderSocket = socketMap.getInstance().getSocket(sender);
+    if (senderSocket) senderSocket.emit('newPrivateMessage', messageHTML, sender);
   }
   // send to receiver
   const receiverSocket = socketMap.getInstance().getSocket(receiver);
