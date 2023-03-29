@@ -170,6 +170,13 @@ displayStatus = () => {
   setActiveItem('statusMenu');
 }
 
+function initialSearchPage() {
+  // set default page number to be 0.
+  $('#pageNumber').val(0);
+  $('#hasResult').val(false);
+  $('#pageMenu').hide();
+}
+
 function displaySearch() {
   const currentPage = $("#currentPage").val();
   const searchOptions = $('.searchInfo');
@@ -192,13 +199,6 @@ function displaySearch() {
   // clearContent
   const resultsContainer = $('.container.searchResults');
   resultsContainer.empty(); // clear any previous search results
-}
-
-function initialSearchPage() {
-  // set default page number to be 0.
-  $('#pageNumber').val(0);
-  $('#hasResult').val(false);
-  $('#pageMenu').hide();
 }
 
 socket.on('statusChange', (data) => {

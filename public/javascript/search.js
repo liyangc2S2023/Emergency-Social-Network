@@ -14,11 +14,11 @@ function searchKeywords() {
     };
     axios.get('/api/v1/search', { params }).then(res => {
         const results = res.data.data.renderedResult;
-        const hasResult = res.data.data.hasResult;
-        if (hasResult) {
-            $('#hasResult').val(true);
-        } else {
+        const resultsLength = res.data.data.resultsLength;
+        if (resultsLength === 0) {
             $('#hasResult').val(false);
+        } else {
+            $('#hasResult').val(true);
         }
         const resultsContainer = $('.container.searchResults');
         resultsContainer.empty(); // clear any previous search results
