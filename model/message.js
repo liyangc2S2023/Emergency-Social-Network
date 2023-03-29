@@ -103,7 +103,14 @@ class Message {
   static async searchByPrivateMessage(keywords, sender, receiver, page = 0, limit = 10) {
     // '|' for matching either values, 'i' for case insensitive
     const regex = new RegExp(keywords.join('|'), 'i');
-    const messages = await MessageTable.find({ content: regex, sender, receiver })
+    const messages = await MessageTable
+      .find({
+        content: regex,
+        $or: [
+          { sender, receiver },
+          { sender: receiver, receiver: sender },
+        ],
+      })
       .sort({ timestamp: -1 })
       .skip(page * limit)
       .limit(limit);
