@@ -185,12 +185,20 @@ function displaySearch() {
       }
     }
   });
+  initialSearchPage();
   hideOtherDisplay("searchContent");
   window.scrollTo(0, 0);
   scrollDown("searchContent");
   // clearContent
   const resultsContainer = $('.container.searchResults');
   resultsContainer.empty(); // clear any previous search results
+}
+
+function initialSearchPage() {
+  // set default page number to be 0.
+  $('#pageNumber').val(0);
+  $('#hasResult').val(false);
+  $('#pageMenu').hide();
 }
 
 socket.on('statusChange', (data) => {
