@@ -31,6 +31,8 @@ app.get('/', (req, res) => {
 app.use('/join', require('./routes/joinRouter'));
 app.use('/welcome', require('./routes/welcomeRouter'));
 
+app.use('/api/v1', require('./routes/unauthorizedAPIV1Routes'));
+
 // Middleware: JWT(Json Web Token) Authentication
 app.use(require('./middleware/jwtMW'));
 

@@ -64,6 +64,7 @@ afterEach(async () => {
   await mongoServer.stop();
 });
 
+// user integration test
 test('Can post a new user', async () => {
   const UserData = {
     username: 'testA',
@@ -103,6 +104,23 @@ test('can get a user by id', async () => {
   });
 });
 
+test('test user login',async()=>{
+  await axios.put(`${HOST}/login`,{username:"fail",password:"fail"})
+  .then((res)=>{
+    expect(res.status).toBe(400)
+  }).catch((err)=>{
+    expect(err)
+  })
+})
+
+
+
+// test('test user current',async()=>{
+
+// })
+
+
+// post integration test
 test('can post announcement', async () => {
   const announcement = {
     content: 'test',
@@ -126,3 +144,5 @@ test('user cannot post announcement', async () => {
     expect(error).toBeUndefined();
   });
 });
+
+//

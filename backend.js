@@ -6,6 +6,7 @@ const socketServer = require('socket.io');
 
 // const createError = require('http-errors');
 const apiRoute = require('./routes/apiV1Routes');
+const unauthorizedAPIV1Routes = require('./routes/unauthorizedAPIV1Routes');
 const jwtMW = require('./middleware/jwtMW');
 const setupSocket = require('./socket');
 
@@ -33,8 +34,9 @@ class App {
   }
 
   setupRestfulRoutes = () => {
-    this.app.use('/api/v1', apiRoute);
+    this.app.use('/api/v1', unauthorizedAPIV1Routes);
     this.app.use(jwtMW);
+    this.app.use('/api/v1', apiRoute);
   };
 }
 
