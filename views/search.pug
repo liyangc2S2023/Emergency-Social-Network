@@ -9,5 +9,13 @@
       option.searchInfo(value='privateMessage' data-page='privateChatContent') Private Message
     input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword')
   button.btn-confirm(onclick='searchKeywords()') Search
-  h2.searchTitle Search Results
-    .container.searchResults
+
+  .ui.borderless.secondary.menu
+    .ui.container#pageButton
+      a.item#leftPageButton(onclick="")
+        .ui.icon
+          i.angle.left.icon
+      a.item#rightPageButton(onclick="") 
+        .ui.icon
+          i.angle.right.icon 
+  .container.searchResults

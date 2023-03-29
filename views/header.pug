@@ -3,11 +3,11 @@
         a.item(onclick="mainPageBack()") 
             i.chevron.left.icon#main-page-back
         h1.ui.center.aligned.header#title #{pageView}
-        .right.item
-            a.item#searchButton(onclick="displaySearch()") 
+        a.right.item
+            a.right.item#searchButton(onclick="displaySearch()") 
                 .ui.icon
                     i.search.icon  
-            a.item#speedTest(onclick="speedTestModalDisplayAndHideOther()") 
+            a.right.item#speedTest(onclick="speedTestModalDisplayAndHideOther()") 
                 .ui.icon#speedPopup(data-content="Speed Test")
                     i.bolt.icon  
             a.right.item#logout(href="/logout") logout
