@@ -221,3 +221,62 @@ test('can post private message', async () => {
     expect(error).toBeUndefined();
   });
 });
+
+const queryFunction = async (query) => {
+  await axios.get(`${HOST}/search`, {
+    headers: { authorization: userToken },
+    params: query,
+  }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+};
+
+test('can search content', async () => {
+  const query = {
+    context: 'username',
+    criteria: 'test',
+    sender: 'test',
+    receiver: 'test',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});
+
+test('can query announcement', async () => {
+  const query = {
+    context: 'announcement',
+    criteria: 'test',
+    sender: 'test',
+    receiver: 'test',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});
+
+test('can query public message', async () => {
+  const query = {
+    context: 'publicMessage',
+    criteria: 'test',
+    sender: 'test',
+    receiver: 'test',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});
+
+test('can query private message', async () => {
+  const query = {
+    context: 'privateMessage',
+    criteria: 'test',
+    sender: 'test',
+    receiver: 'test',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});

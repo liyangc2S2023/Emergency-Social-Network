@@ -18,30 +18,6 @@ class Result {
   static fail(msg, data) {
     return new Result(false, msg, data);
   }
-
-  getSuccess() {
-    return this.success;
-  }
-
-  getMessage() {
-    return this.message;
-  }
-
-  getData() {
-    return this.data;
-  }
-
-  setSuccess(success) {
-    this.success = success;
-  }
-
-  setMessage(message) {
-    this.message = message;
-  }
-
-  setData(data) {
-    this.data = data;
-  }
 }
 
 module.exports = Result;

@@ -118,7 +118,6 @@ router.get('/search', async (req, res) => {
     context, criteria, sender, receiver, page,
   } = req.query;
   const searchResult = await searchController.searchContent(context, criteria.split(','), sender, receiver, page);
-  const resultsLength = searchResult.length;
   res.send(Result.success(searchResult));
 });
 
