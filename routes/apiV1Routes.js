@@ -20,7 +20,6 @@ router.get('/users/current', async (req, res) => {
   if (user) {
     return res.send(Result.success({ username, status: user.status }));
   }
-
   return res.status(400).send(Result.fail(username, ''));
 });
 
@@ -80,7 +79,8 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
 
   // send back to sender over socket. when send to self, prevent render
   if (receiver !== sender) {
-    socketMap.getInstance().getSocket(sender).emit('newPrivateMessage', messageHTML, sender);
+    const senderSocket = socketMap.getInstance().getSocket(sender);
+    if (senderSocket) senderSocket.emit('newPrivateMessage', messageHTML, sender);
   }
   // send to receiver
   const receiverSocket = socketMap.getInstance().getSocket(receiver);
