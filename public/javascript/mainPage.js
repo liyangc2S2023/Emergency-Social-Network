@@ -14,7 +14,7 @@ const statusMap = {
 };
 
 function setCurrentPage(componentId) {
-    $("#currentPage").val(componentId);
+  $("#currentPage").val(componentId);
 }
 
 function hideOtherDisplay(componentId) {
@@ -83,21 +83,21 @@ alertPrivateMessage = (sender) => {
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
 }
 
-directoryGetisOnline= (a)=>{
-  return $(a).find('.online').length>0
+directoryGetisOnline = (a) => {
+  return $(a).find('.online').length > 0
 }
 
-reorderDirectory = ()=>{
+reorderDirectory = () => {
   var elements = $("div[id^=directory-user-block-]")
   var parent = elements.parent()
-  elements.detach().sort(function(a,b){
+  elements.detach().sort(function (a, b) {
     var isAOnline = directoryGetisOnline(a)
     var isBOnline = directoryGetisOnline(b)
     return isAOnline == isBOnline ? a.id.localeCompare(b.id) : isBOnline - isAOnline;
   }).appendTo(parent)
 }
 
-handleUserStateChange =async (username, state) => {
+handleUserStateChange = async (username, state) => {
   // this function handles UI changes when user state changes
   // eg. login or logout
   const userElement = $('#directory-user-block-' + username);
@@ -188,6 +188,9 @@ function displaySearch() {
   hideOtherDisplay("searchContent");
   window.scrollTo(0, 0);
   scrollDown("searchContent");
+  // clearContent
+  const resultsContainer = $('.container.searchResults');
+  resultsContainer.empty(); // clear any previous search results
 }
 
 socket.on('statusChange', (data) => {
