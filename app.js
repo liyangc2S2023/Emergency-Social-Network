@@ -1,7 +1,7 @@
 const createError = require('http-errors');
 
 const APP = require('./backend');
-const setupDB = require('./database');
+const DB = require('./database');
 
 const { app, server } = new APP();
 // const server = http.createServer(app);
@@ -13,7 +13,8 @@ const { app, server } = new APP();
 
 const port = 3000;
 
-setupDB();
+const db = new DB('production');
+db.connect();
 
 app.set('view engine', 'pug');
 app.set('views', './views');

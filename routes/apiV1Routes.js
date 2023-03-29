@@ -55,7 +55,9 @@ router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
 });
 
 const renderMessageHTML = (msg) => {
-  const { sender, receiver, status, content, timestamp } = msg;
+  const {
+    sender, receiver, status, content, timestamp,
+  } = msg;
   const messageHTML = pug.renderFile('./views/message.pug', {
     msg: {
       sender,
