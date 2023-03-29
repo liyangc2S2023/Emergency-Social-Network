@@ -155,6 +155,7 @@ router.get('/search', async (req, res) => {
     context, criteria, sender, receiver, page,
   } = req.query;
   const searchResult = await searchController.searchContent(context, criteria.split(','), sender, receiver, page);
+  const resultsLength = searchResult.length;
   let renderedResult = '';
   if (context.indexOf('Message') !== -1) {
     renderedResult = pug.renderFile('./views/messageList.pug', { messages: transformMessageList(searchResult) });
@@ -163,7 +164,7 @@ router.get('/search', async (req, res) => {
   } else if (['username', 'status'].includes(context)) {
     renderedResult = pug.renderFile('./views/directory.pug', { users: transfromUserList(searchResult) });
   }
-  res.send(Result.success(renderedResult));
+  res.send(Result.success({ renderedResult, resultsLength }));
 });
 
 module.exports = router;

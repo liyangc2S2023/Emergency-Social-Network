@@ -1,4 +1,6 @@
 .container.searchFrame
+  #pageNumber(hidden)
+  #hasResult(hidden)
   .container.search
     select.searchDropdown(id='searchDropdown')
       option.searchInfo.default(selected)
@@ -8,14 +10,12 @@
       option.searchInfo(value='publicMessage' data-page='publicChatContent') Public Message
       option.searchInfo(value='privateMessage' data-page='privateChatContent') Private Message
     input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword')
-  button.btn-confirm(onclick='searchKeywords()') Search
-
-  .ui.borderless.secondary.menu
-    .ui.container#pageButton
-      a.item#leftPageButton(onclick="")
-        .ui.icon
-          i.angle.left.icon
-      a.item#rightPageButton(onclick="") 
-        .ui.icon
-          i.angle.right.icon 
+  button.btn-confirm(onclick='clickSearchButton()') Search
+  .ui.borderless.secondary.menu#pageMenu
+    a.item#leftPageButton(onclick="searchPrevPage()")
+      .ui.icon
+        i.angle.left.icon
+    a.item#rightPageButton(onclick="searchNextPage()") 
+      .ui.icon
+        i.angle.right.icon 
   .container.searchResults

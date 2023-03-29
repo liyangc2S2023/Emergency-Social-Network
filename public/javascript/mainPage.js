@@ -170,6 +170,13 @@ displayStatus = () => {
   setActiveItem('statusMenu');
 }
 
+function initialSearchPage() {
+  // set default page number to be 0.
+  $('#pageNumber').val(0);
+  $('#hasResult').val(false);
+  $('#pageMenu').hide();
+}
+
 function displaySearch() {
   const currentPage = $("#currentPage").val();
   const searchOptions = $('.searchInfo');
@@ -185,6 +192,7 @@ function displaySearch() {
       }
     }
   });
+  initialSearchPage();
   hideOtherDisplay("searchContent");
   window.scrollTo(0, 0);
   scrollDown("searchContent");
