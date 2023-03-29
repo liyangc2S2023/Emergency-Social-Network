@@ -1,5 +1,6 @@
 const express = require('express');
 const Result = require('./common/result');
+
 const router = express.Router();
 const pug = require('pug');
 

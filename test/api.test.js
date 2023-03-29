@@ -1,10 +1,10 @@
 const axios = require('axios');
-const { MongoMemoryServer } = require('mongodb-memory-server');
+// const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
 const config = require('../config');
-// const db = require('../database');
+const DB = require('../database');
 
 const PORT = 3000;
 const HOST = `http://localhost:${PORT}/api/v1`;
@@ -16,24 +16,27 @@ const { USER_STATUS } = require('../config');
 const { server, setupRestfulRoutes } = new APP();
 
 // let server;
-let mongoServer;
+// let mongoServer;
 let userToken;
 let coordinatorToken;
-let dbConnection;
+let db;
 
 beforeAll(async () => {
   setupRestfulRoutes();
   server.listen(PORT);
   // await mongoose.disconnect();
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
-  const { connection } = mongoose;
-  dbConnection = connection;
+  db = new DB('test');
+  await db.connect();
+  // mongoServer = await MongoMemoryServer.create();
+  // const mongoUri = mongoServer.getUri();
+  // await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  // const { connection } = mongoose;
+  // dbConnection = connection;
 });
 
 afterAll(async () => {
-  server.close();
+  await db.disconnect();
+  await server.close();
 });
 
 const sampleUser = {
@@ -49,7 +52,8 @@ const smapleCoordinator = {
 };
 
 beforeEach(async () => {
-  await dbConnection.db.dropDatabase();
+  // await dbConnection.db.dropDatabase();
+  await db.freshTables();
 
   // await db.connect(mongoUri, '');
   await User.addUser('test1', 'tttt');
@@ -65,11 +69,6 @@ beforeEach(async () => {
   await axios.put(`${HOST}/login`, smapleCoordinator).then((response) => {
     coordinatorToken = response.data.token;
   });
-});
-
-afterAll(async () => {
-  await mongoose.disconnect();
-  await mongoServer.stop();
 });
 
 // user integration test
