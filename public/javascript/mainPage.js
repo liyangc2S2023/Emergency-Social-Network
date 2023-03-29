@@ -177,7 +177,7 @@ function displaySearch() {
   let hasSelected;
   // show the option corresponding to current page
   searchOptions.each((_index, option) => {
-    if ($(option).val() === currentPage) {
+    if ($(option).data('page') === currentPage) {
       $(option).show();
       if (!hasSelected) {
         $(option).prop('selected', true);

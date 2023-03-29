@@ -2,12 +2,12 @@
   .container.search
     select.searchDropdown(id='searchDropdown')
       option.searchInfo.default(selected)
-      option.searchInfo(value='directoryContent') Username
-      option.searchInfo(value='directoryContent') Status
-      option.searchInfo(value='announcementContent') Announcement
-      option.searchInfo(value='publicChatContent') Public Message
-      option.searchInfo(value='privateChatContent') Private Message
+      option.searchInfo(value='username' data-page='directoryContent') Username
+      option.searchInfo(value='status' data-page='directoryContent') Status
+      option.searchInfo(value='announcement' data-page='announcementContent') Announcement
+      option.searchInfo(value='publicMessage' data-page='publicChatContent') Public Message
+      option.searchInfo(value='privateMessage' data-page='privateChatContent') Private Message
     input.searchInput#inputSearchInfo(type='text' placeholder='Enter search keyword')
   button.btn-confirm(onclick='searchKeywords()') Search
-  .container.searchResults
-    h2.searchTitle Search Results
+  h2.searchTitle Search Results
+    .container.searchResults
