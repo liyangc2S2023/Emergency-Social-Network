@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
 const config = require('../config');
+// const db = require('../database');
 
 const PORT = 3000;
 const HOST = `http://localhost:${PORT}/api/v1`;
@@ -18,11 +19,17 @@ const { server, setupRestfulRoutes } = new APP();
 let mongoServer;
 let userToken;
 let coordinatorToken;
+let dbConnection;
 
 beforeAll(async () => {
   setupRestfulRoutes();
   server.listen(PORT);
-  await mongoose.disconnect();
+  // await mongoose.disconnect();
+  mongoServer = await MongoMemoryServer.create();
+  const mongoUri = mongoServer.getUri();
+  await mongoose.connect(mongoUri, { useNewUrlParser: true, useUnifiedTopology: true });
+  const { connection } = mongoose;
+  dbConnection = connection;
 });
 
 afterAll(async () => {
@@ -42,9 +49,9 @@ const smapleCoordinator = {
 };
 
 beforeEach(async () => {
-  mongoServer = await MongoMemoryServer.create();
-  const mongoUri = mongoServer.getUri();
-  await mongoose.connect(mongoUri);
+  await dbConnection.db.dropDatabase();
+
+  // await db.connect(mongoUri, '');
   await User.addUser('test1', 'tttt');
   await User.addUser('test2', 'tttt', config.USER_ROLE.COORDINATOR);
   await User.addUser('test3', 'tttt');
@@ -60,7 +67,7 @@ beforeEach(async () => {
   });
 });
 
-afterEach(async () => {
+afterAll(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
