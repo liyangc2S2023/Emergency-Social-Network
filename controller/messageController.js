@@ -9,9 +9,9 @@ class MessageController {
     return Message.getBySender(sender);
   }
 
-  // static async getMessageByReceiverOrRoom(receiver) {
-  //   return Message.getMessageByReceiverOrRoom(receiver);
-  // }
+  static async getMessageByReceiverOrRoom(receiver) {
+    return Message.getMessageByReceiverOrRoom(receiver);
+  }
 
   static async getPrivateMessagesBetween(sender, receiver) {
     return Message.getPrivateMessagesBetween(sender, receiver);
