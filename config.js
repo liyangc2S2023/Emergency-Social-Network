@@ -3,6 +3,13 @@ class config {
 
   static USER_ROLE = { COORDINATOR: 'coordinator', USER: 'user', ADMIN: 'admin' };
 
+  static USER_STATUS = {
+    UNDEFINED: 'undefined',
+    OK: 'ok',
+    HELP: 'help',
+    EMERGENCY: 'emergency',
+  };
+
   static SPEED_TEST_WAIT_TIME = 1000;
 
   static statusMap = {

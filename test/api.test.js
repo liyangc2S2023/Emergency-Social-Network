@@ -10,6 +10,7 @@ const HOST = `http://localhost:${PORT}/api/v1`;
 
 // Initiate Server
 const APP = require('../backend');
+const { USER_STATUS } = require('../config');
 
 const { server, setupRestfulRoutes } = new APP();
 
@@ -142,4 +143,36 @@ test('user cannot post announcement', async () => {
   });
 });
 
-//
+test('can change the status of user', async () => {
+  const statusChange = {
+    username: sampleUser.username,
+    status: USER_STATUS.OK,
+  };
+  await axios.post(`${HOST}/status`, statusChange, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can post a public message', async () => {
+  const message = {
+    sender: 'test',
+    content: 'test',
+    status: USER_STATUS.OK,
+    receiver: 'all',
+  };
+  await axios.post(`${HOST}/messages`, message, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get message between two user', async () => {
+  await axios.get(`${HOST}/messages/private/:${sampleUser.username}/:${smapleCoordinator.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
