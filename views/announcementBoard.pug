@@ -1,7 +1,5 @@
 .ui.container.chatRoomComments#announcementBoard
-    .ui.comments#announcementDialog
-        for ancm in announcements
-            include announcement.pug
+    include announcementList.pug
     .ui#inputBox
         .ui.input.chatInput
             input#announcementInputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")
