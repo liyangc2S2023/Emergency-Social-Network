@@ -24,13 +24,14 @@ function hideOtherDisplay(componentId) {
   $("#statusContent").hide();
   $("#privateChatContent").hide();
   $("#searchContent").hide();
+  $("#discoverContent").hide();
   $("#" + componentId).show()
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
   } else {
     $("#main-page-back").hide();
   }
-  if (componentId === "statusContent") {
+  if (componentId === "statusContent" | componentId === "discoverContent") {
     $("#searchButton").hide();
   } else {
     $("#searchButton").show();
@@ -167,6 +168,13 @@ displayStatus = () => {
   setCurrentPage("statusContent");
   hideOtherDisplay("statusContent")
   setActiveItem('statusMenu');
+}
+
+displayDiscover = () => {
+  changeTitle("Discover");
+  setCurrentPage("discoverContent");
+  hideOtherDisplay("discoverContent")
+  setActiveItem('discoverMenu');
 }
 
 function initialSearchPage() {
