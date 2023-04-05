@@ -87,6 +87,7 @@ directoryGetisOnline = (a) => {
   return $(a).find('.online').length > 0
 }
 
+
 reorderDirectory = () => {
   var elements = $("div[id^=directory-user-block-]")
   var parent = elements.parent()

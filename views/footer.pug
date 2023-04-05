@@ -1,5 +1,5 @@
 div.main-footer
-    div.ui.four.item.menu#menu
+    div.ui.five.item.menu#menu
         a.item.menuItem(class = (pageView == "Directory" ? "active" : "") id = "directoryMenu" onclick="displayDirectory()")
             i.address.book.outline.icon
             br
@@ -11,6 +11,9 @@ div.main-footer
             i.clipboard.icon
             br
             p Announce
+        a.item.menuItem(class = (pageView == "status" ? "active" : "") id = "statusMenu" onclick="displayStatus()")
+            i.compass.icon
+            p Status
         a.item.menuItem(class = (pageView == "Discover" ? "active" : "") id = "discoverMenu" onclick="displayDiscover()")
             i.compass.icon
             p Discover
