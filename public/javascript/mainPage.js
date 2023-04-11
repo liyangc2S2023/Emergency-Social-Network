@@ -216,9 +216,7 @@ function setEmergencyContactSearch() {
     // $('#privateDialog').html(res.data);
     // scrollDown("privateChatContent");
     const userList = res.data.data;
-    console.log(userList)
     const transformedUserList = transformUserList(userList);
-    console.log(transformedUserList)
     emergencyContactSearch.search({
       source: transformedUserList,
     })
