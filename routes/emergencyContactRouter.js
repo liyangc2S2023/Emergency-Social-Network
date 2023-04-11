@@ -27,3 +27,5 @@ router.post('/', async (req, res) => {
   });
   res.send(Result.success({ contactsHTML }));
 });
+
+module.exports = router;
