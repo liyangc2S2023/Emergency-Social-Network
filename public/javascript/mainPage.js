@@ -200,6 +200,31 @@ function displaySearch() {
   resultsContainer.empty(); // clear any previous search results
 }
 
+const transformUserList = (userList) => {
+  return userList.map((user) => {
+    return {
+      title: user.username,
+      value: user.username,
+    };
+  });
+}
+
+function setEmergencyContactSearch() {
+  // get userlist through axios
+  const emergencyContactSearch = $('#emergencyContactSearch');
+  axios.get(`/api/v1/users`,).then((res) => {
+    // $('#privateDialog').html(res.data);
+    // scrollDown("privateChatContent");
+    const userList = res.data.data;
+    console.log(userList)
+    const transformedUserList = transformUserList(userList);
+    console.log(transformedUserList)
+    emergencyContactSearch.search({
+      source: transformedUserList,
+    })
+  });
+}
+
 socket.on('statusChange', (data) => {
   updateUserStatusUI(data.username, data.status);
 });
@@ -230,4 +255,5 @@ socket.on('updateAlert', (unreadUserSet) => {
 
 $(document).ready(() => {
   setCurrentPage("directoryContent");
+  setEmergencyContactSearch()
 });
