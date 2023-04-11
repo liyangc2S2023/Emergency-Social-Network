@@ -78,3 +78,16 @@
   margin: auto auto;
   margin-bottom: 40px;
 }
+
+.emergencyContactFrame {
+  margin: auto auto;
+  margin-top: 45px;
+}
+
+.ecTitle {
+  text-align: center;
+}
+
+.ecInput {
+  width: 100%;
+}
