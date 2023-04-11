@@ -1,7 +1,11 @@
-.container
-    .ui.icon.input
-        input(type='text', placeholder='Search Contacts...', id='emergencyNameSerach')
-        i.search.icon
+.container.emergencyContactFrame
+    h1.ecTitle Emergency Contacts
+    .ui.search#emergencyContactSearch
+      .ui.icon.input.ecInput
+          input.prompt(type='text', placeholder='Add Contacts...', id='emergencyNameSerach')
+          i.search.icon
+      .results
+    button.btn-confirm(onclick='') ADD CONTACT
     .ui.relaxed.divided.list 
         .item
             i.large.close.icon

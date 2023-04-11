@@ -18,5 +18,8 @@
         label.status(for='emergency') EMERGENCY
             img.statusImg(src='/icons/emergencyIcon.png')
             p.statusDescription I need help now: this is a life threatening emergency!
+            .ui.checkbox 
+                input(type='checkbox', name='example')
+                label Notify My Emergency Contacts
     button.btn-confirm(onclick='changeStatus()') UPDATE
     include emergencyContact.pug
