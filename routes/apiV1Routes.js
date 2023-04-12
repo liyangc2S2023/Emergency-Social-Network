@@ -123,4 +123,9 @@ router.get('/search', async (req, res) => {
   res.send(Result.success(searchResult));
 });
 
+router.get('/emergencyContacts', async (req, res) => {
+  const { username } = req;
+  res.send(Result.success(await userController.getEmergencyContacts(username)));
+});
+
 module.exports = router;

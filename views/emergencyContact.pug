@@ -1,0 +1,12 @@
+.container.emergencyContactFrame
+    h1.ecTitle Emergency Contacts
+    .ui.search#emergencyContactSearch
+      .ui.icon.input.ecInput
+          input.prompt(type='text', placeholder='Add Contacts...', id='emergencyNameSerach')
+          i.search.icon
+      .results
+    button.btn-confirm(onclick='clickAddEmergencyContactButton()') ADD CONTACT
+    .ui.relaxed.divided.list#emergencyContactList
+        each contact in emergencyContacts
+            include emergencyContactItem
+

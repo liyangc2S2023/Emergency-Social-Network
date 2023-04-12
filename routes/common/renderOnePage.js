@@ -2,6 +2,7 @@ const messageController = require('../../controller/messageController');
 const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
 const announcementController = require('../../controller/announcementController');
+const emergencyContactController = require('../../controller/emergencyContactController');
 const date2Str = require('../../utils/dateUtil');
 const config = require('../../config');
 
@@ -29,12 +30,18 @@ async function renderOnePage(req, res, pageView) {
 
   // current user status
   let status = await statusController.getStatus(req.username);
+  const emergencyContacts = await emergencyContactController.getEmergencyContact(req.username);
   // if status is undefined, set it to 'undefined'
   status = status || 'undefined';
 
   // render main page with all data
   res.render('mainPage', {
-    pageView, users: userList, messages: messageList, status, announcements: announcementList,
+    pageView,
+    users: userList,
+    messages: messageList,
+    status,
+    announcements: announcementList,
+    emergencyContacts,
   });
 }
 
