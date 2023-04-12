@@ -21,7 +21,6 @@ router.post('/', async (req, res) => {
   // console.log('adding', username, usernameOther);
   await emergencyContactController.addEmergencyContact(username, usernameOther);
   const contacts = await emergencyContactController.getEmergencyContact(username);
-  // console.log('returning', contacts);
   let contactsHTML = '';
   contacts.forEach((contact) => {
     contactsHTML += pug.renderFile('./views/emergencyContactItem.pug', { contact });
@@ -31,11 +30,8 @@ router.post('/', async (req, res) => {
 
 router.delete('/', async (req, res) => {
   const { username, usernameOther } = req.query;
-  // console.log(req); 
-  // console.log('deleting', username, usernameOther);
   await emergencyContactController.deleteEmergencyContact(username, usernameOther);
   const contacts = await emergencyContactController.getEmergencyContact(username);
-  // console.log('returning', contacts);
   let contactsHTML = '';
   contacts.forEach((contact) => {
     contactsHTML += pug.renderFile('./views/emergencyContactItem.pug', { contact });
