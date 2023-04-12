@@ -1,5 +1,5 @@
 .item
-    i.large.close.icon
+    i.large.close.icon(onclick='clickDeleteEmergencyContactButton("' + contact.contact + '")')
     .content
-        a.header #{contact.name}
+        .header #{contact.contact}
         .description 

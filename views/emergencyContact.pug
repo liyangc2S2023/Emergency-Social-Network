@@ -6,19 +6,7 @@
           i.search.icon
       .results
     button.btn-confirm(onclick='clickAddEmergencyContactButton()') ADD CONTACT
-    .ui.relaxed.divided.list 
-        .item
-            i.large.close.icon
-            .content
-                a.header User1
-                .description 
-        .item
-            i.large.close.icon
-            .content
-                a.header User2
-                .description 
-        .item
-            i.large.close.icon
-            .content
-                a.header User3
-                .description 
+    .ui.relaxed.divided.list#emergencyContactList
+        each contact in emergencyContacts
+            include emergencyContactItem
+

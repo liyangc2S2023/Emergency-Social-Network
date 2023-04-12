@@ -12,6 +12,11 @@ const EmergencyContactsTable = mongoose.model('EmergencyContact', emergencyConta
 class EmergencyContacts {
   // add another user to this uer's emergencyContacts list
   static async addEmergencyContact(username, usernameOther, timestamp = Date.now()) {
+    // check if the user is adding himself as a contact
+    if (username === usernameOther) {
+      return undefined;
+    }
+
     // check if the contact already exists
     const exist = await EmergencyContactsTable.find({ username, contact: usernameOther });
     if (exist.length > 0) {
