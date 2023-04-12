@@ -213,8 +213,6 @@ function setEmergencyContactSearch() {
   // get userlist through axios
   const emergencyContactSearch = $('#emergencyContactSearch');
   axios.get(`/api/v1/users`,).then((res) => {
-    // $('#privateDialog').html(res.data);
-    // scrollDown("privateChatContent");
     const userList = res.data.data;
     const transformedUserList = transformUserList(userList);
     emergencyContactSearch.search({
