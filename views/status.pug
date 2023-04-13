@@ -19,10 +19,28 @@
             img.statusImg(src='/icons/emergencyIcon.png')
             p.statusDescription I need help now: this is a life threatening emergency!
             .ui.checkbox 
-                input(type='checkbox', name='example')
+                input#emergencyCheck(type='checkbox', name='emergencyCheck')
                 label Notify My Emergency Contacts
     .notifyEmergencyContacts 
-        h3 You're about to notify your emergency contacts
-        p Notify your emergency contacts that you need help.
-    button.btn-confirm(onclick='changeStatus()') UPDATE
+        h3 You're about to notify your emergency contacts below
+        p#emergencyContactMessage
+        .container.eReasonChoice
+          input(type="checkbox", name='eReason', value='food')
+          label.status(for='food') Food.
+              p.statusDescription I am hungry. I need some food
+              br
+          input(type="checkbox", name='eReason', value='shelter')
+          label.status(for='shelter') Shelter.
+              p.statusDescription I do not have a place to live. I need shelter.
+              br
+          input(type="checkbox", name='eReason', value='medicine', id='medicine')
+          label.status(for='medicine') Medicine.
+              p.statusDescription I am not felling well. I need some medicine
+              br
+        .ui.grid
+          .eight.wide.column
+            button.btn-confirm(onclick="resetStatusPage()") CANCEL
+          .eight.wide.column
+            button.btn-confirm(onclick="") NEXT
+    button.btn-confirm#changeStatusButton(onclick='changeStatus()') UPDATE
     include emergencyContact.pug

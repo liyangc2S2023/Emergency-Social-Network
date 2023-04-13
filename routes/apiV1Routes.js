@@ -9,6 +9,7 @@ const announcementController = require('../controller/announcementController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
+const EmergencyContactController = require('../controller/emergencyContactController');
 
 const router = express.Router();
 
@@ -125,7 +126,7 @@ router.get('/search', async (req, res) => {
 
 router.get('/emergencyContacts', async (req, res) => {
   const { username } = req;
-  res.send(Result.success(await userController.getEmergencyContacts(username)));
+  res.send(Result.success(await EmergencyContactController.getEmergencyContact(username)));
 });
 
 module.exports = router;
