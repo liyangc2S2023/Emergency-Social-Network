@@ -10,6 +10,7 @@ const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
 const EmergencyContactController = require('../controller/emergencyContactController');
+const EmergencyGroupController = require('../controller/emergencyGroupController');
 
 const router = express.Router();
 
@@ -127,6 +128,16 @@ router.get('/search', async (req, res) => {
 router.get('/emergencyContacts', async (req, res) => {
   const { username } = req;
   res.send(Result.success(await EmergencyContactController.getEmergencyContact(username)));
+});
+
+router.post('/emergencyGroupChat', async (req, res) => {
+  const { username } = req;
+  const contacts = await EmergencyContactController.getEmergencyContact(username);
+  const groupname = `${username}-${Date.now()}`;
+  const members = contacts.map((contact) => contact.contact);
+  console.log(username, groupname, members);
+  const result = await EmergencyGroupController.createEmergencyGroup(groupname, username, members);
+  res.send(Result.success(result));
 });
 
 module.exports = router;

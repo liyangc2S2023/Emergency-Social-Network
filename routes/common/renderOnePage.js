@@ -3,6 +3,7 @@ const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
 const announcementController = require('../../controller/announcementController');
 const emergencyContactController = require('../../controller/emergencyContactController');
+const emergencyGroupController = require('../../controller/emergencyGroupController');
 const date2Str = require('../../utils/dateUtil');
 const config = require('../../config');
 
@@ -28,6 +29,10 @@ async function renderOnePage(req, res, pageView) {
     user.statusStyle = config.statusMap[user.status];
   });
 
+  // emergency groups
+  const emergencyGroups = await emergencyGroupController.getEmergencyGroupByUser(req.username);
+  console.log('emergencyGroups', emergencyGroups);
+
   // current user status
   let status = await statusController.getStatus(req.username);
   const emergencyContacts = await emergencyContactController.getEmergencyContact(req.username);
@@ -38,6 +43,7 @@ async function renderOnePage(req, res, pageView) {
   res.render('mainPage', {
     pageView,
     users: userList,
+    emergencyGroups,
     messages: messageList,
     status,
     announcements: announcementList,

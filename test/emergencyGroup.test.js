@@ -47,6 +47,8 @@ test('test getEmergencyGroup by member', async () => {
   await EmergencyGroup.createEmergencyGroup('group2', 'user2', ['user1', 'user3', 'user4']);
   const emergencyGroups2 = await EmergencyGroup.getEmergencyGroupByUser('user2');
   expect(emergencyGroups2.length).toBe(2);
+  expect(emergencyGroups2[0].groupName).toBe('group1');
+  expect(emergencyGroups2[1].groupName).toBe('group2');
 });
 
 test('test addMember', async () => {

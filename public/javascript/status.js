@@ -67,6 +67,17 @@ function resetStatusPage() {
   $('.emergencyContactFrame').show();
 }
 
+function createEmergencyGroupChat() {
+  const username = $('#currentUsername').val();
+  axios.post('/api/v1/emergencyGroupChat', {
+    "username": username,
+  }).then(function (res) {
+    resetStatusPage();
+    console.log(res);
+    alert('Emergency group chat created. You can find it in the directory page.');
+  });
+}
+
 function notifyEmergencyContacts() {
 
   //change status to emergency
