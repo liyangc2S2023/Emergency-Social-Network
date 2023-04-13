@@ -33,6 +33,7 @@ html
             #currentUserStatus(hidden)
             #searchInfo(hidden)
             #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
+                include emergencyGroup.pug 
                 include directory.pug
             #publicChatContent(style=pageView=="Public"?"display:block":"display:none")
                 include chat.pug
