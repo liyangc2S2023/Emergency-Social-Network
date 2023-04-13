@@ -55,7 +55,7 @@ class EmergencyGroup {
   }
 
   static async isInitiator(groupName, username) {
-    const res = await EmergencyGroupTable.findOne({ groupName, initiator: username })
+    const res = await EmergencyGroupTable.findOne({ groupName, initiator: username });
     return !!res;
   }
 
