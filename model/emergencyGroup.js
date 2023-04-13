@@ -40,6 +40,11 @@ class EmergencyGroup {
     return EmergencyGroupMemberTable.find({ username });
   }
 
+  static async getOpenEmergencyGroupByUser(username) {
+    const emergencyGroupNames = EmergencyGroupMemberTable.find({ username });
+    return EmergencyGroupTable.find({ groupName: { $in: emergencyGroupNames }, isClosed: false });
+  }
+
   static async getMembers(groupName) {
     return EmergencyGroupMemberTable.find({ groupName });
   }

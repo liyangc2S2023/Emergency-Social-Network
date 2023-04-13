@@ -13,6 +13,10 @@ class EmergencyGroupController {
     return EmergencyGroup.getEmergencyGroupByUser(username);
   }
 
+  static async getOpenEmergencyGroupByUser(username) {
+    return EmergencyGroup.getOpenEmergencyGroupByUser(username);
+  }
+
   static async getMembers(groupName) {
     return EmergencyGroup.getMembers(groupName);
   }
