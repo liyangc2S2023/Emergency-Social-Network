@@ -303,6 +303,10 @@ socket.on('groupChatContentUpdate', (groupChatContent) => {
   updateGroupChatList(groupChatContent);
 });
 
+socket.on('setToDirectoryPage', () => {
+  displayDirectory();
+});
+
 $(document).ready(() => {
   setCurrentPage("directoryContent");
   setEmergencyContactSearch()

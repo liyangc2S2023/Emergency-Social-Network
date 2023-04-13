@@ -83,20 +83,36 @@ router.post('/messages/private/:senderId/:receiverId', async (req, res) => {
     sender, receiver, status, content,
   } = req.body;
   // save to database
+  console.log(sender, receiver, status, content);
   const result = await messageController.addMessage(sender, receiver, status, content);
   // render html
   const messageHTML = renderMessageHTML(result);
 
-  // send back to sender over socket. when send to self, prevent render
-  if (receiver !== sender) {
-    const senderSocket = socketMap.getInstance().getSocket(sender);
-    if (senderSocket) senderSocket.emit('newPrivateMessage', messageHTML, sender);
+  // check if it is a group message
+  // parse receiver to get groupId
+  const isGroupMessage = receiver.split('-')[0] === 'group';
+  if (isGroupMessage) {
+    // send to all members
+    const groupName = receiver.split('-').slice(1).join('-');
+    const members = await EmergencyGroupController.getMembers(groupName);
+    console.log('memerber', members);
+    members.forEach((member) => {
+      const memberSocket = socketMap.getInstance().getSocket(member.username);
+      if (memberSocket) memberSocket.emit('newPrivateMessage', messageHTML, receiver);
+    });
+  } else {
+    // send back to sender over socket. when send to self, prevent render
+    if (receiver !== sender) {
+      const senderSocket = socketMap.getInstance().getSocket(sender);
+      if (senderSocket) senderSocket.emit('newPrivateMessage', messageHTML, sender);
+    }
+    // send to receiver
+    const receiverSocket = socketMap.getInstance().getSocket(receiver);
+    if (receiverSocket) {
+      receiverSocket.emit('newPrivateMessage', messageHTML, sender);
+    }
   }
-  // send to receiver
-  const receiverSocket = socketMap.getInstance().getSocket(receiver);
-  if (receiverSocket) {
-    receiverSocket.emit('newPrivateMessage', messageHTML, sender);
-  }
+
   res.send(Result.success());
 });
 
@@ -136,6 +152,21 @@ router.get('/emergencyContacts', async (req, res) => {
   res.send(Result.success(await EmergencyContactController.getEmergencyContact(username)));
 });
 
+const updateGroupChatContent = async (username) => {
+  const memberSocket = socketMap.getInstance().getSocket(username);
+  if (!memberSocket) return;
+  console.log('update group chat content for', username);
+  const emergencyGroups = await EmergencyGroupController.getOpenEmergencyGroupByUser(username);
+  const groupsHTML = pug.renderFile('./views/emergencyGroup.pug', { emergencyGroups });
+  if (memberSocket) memberSocket.emit('groupChatContentUpdate', groupsHTML);
+};
+
+const setToDirectoryPage = async (username) => {
+  const memberSocket = socketMap.getInstance().getSocket(username);
+  if (!memberSocket) return;
+  if (memberSocket) memberSocket.emit('setToDirectoryPage');
+};
+
 router.post('/emergencyGroupChat', async (req, res) => {
   const { username } = req;
   const contacts = await EmergencyContactController.getEmergencyContact(username);
@@ -143,6 +174,13 @@ router.post('/emergencyGroupChat', async (req, res) => {
   const members = contacts.map((contact) => contact.contact);
   console.log(username, groupname, members);
   const result = await EmergencyGroupController.createEmergencyGroup(groupname, username, members);
+
+  // send group chat update to all members
+  members.forEach(async (member) => {
+    await updateGroupChatContent(member);
+  });
+  await updateGroupChatContent(username);
+
   res.send(Result.success(result));
 });
 
@@ -151,6 +189,15 @@ router.put('/emergencyGroupChat', async (req, res) => {
   const { username } = req;
   const { groupname } = req.body;
   const result = await EmergencyGroupController.closeEmergencyGroup(groupname, username);
+
+  // send group chat update to all members
+  const members = await EmergencyGroupController.getMembers(groupname);
+  console.log('members', members);
+  members.forEach(async (memberObj) => {
+    await updateGroupChatContent(memberObj.username);
+    await setToDirectoryPage(memberObj.username);
+  });
+
   res.send(Result.success(result));
 });
 

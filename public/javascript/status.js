@@ -67,14 +67,39 @@ function resetStatusPage() {
   $('.emergencyContactFrame').show();
 }
 
+function getEmergencyMessage() {
+  message = "I need some help on ";
+  checkedOptions = $('input[name="eReason"]:checked')
+  for (let i = 0; i < checkedOptions.length; i++) {
+    message += checkedOptions[i].value + " ";
+  }
+  return message
+}
+
 function createEmergencyGroupChat() {
   const username = $('#currentUsername').val();
+  const newStatus = $('input[name="status"]:checked').val();
+
   axios.post('/api/v1/emergencyGroupChat', {
     "username": username,
   }).then(function (res) {
-    resetStatusPage();
     console.log(res);
     alert('Emergency group chat created. You can find it in the directory page.');
+    // add a initial message to the group chat
+    const message = {
+      sender: username,
+      receiver: `group-${res.data.data.groupName}`,
+      status: 'emergency',
+      content: getEmergencyMessage(),
+    };
+
+    axios.post(`/api/v1/messages/private/${username}/${message.receiver}`, message).then((res) => {
+      console.log(res);
+    });
+
+    changeToStatus(username, newStatus);
+    resetStatusPage();
+
   });
 }
 
