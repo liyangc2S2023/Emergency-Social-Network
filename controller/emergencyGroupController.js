@@ -14,7 +14,8 @@ class EmergencyGroupController {
   }
 
   static async getOpenEmergencyGroupByUser(username) {
-    return EmergencyGroup.getOpenEmergencyGroupByUser(username);
+    const groups = await EmergencyGroup.getOpenEmergencyGroupByUser(username);
+    return groups;
   }
 
   static async getMembers(groupName) {

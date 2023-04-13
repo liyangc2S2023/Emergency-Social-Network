@@ -81,3 +81,13 @@ test('test close group', async () => {
   emergencyGroup = await EmergencyGroup.isClosed('group1');
   expect(emergencyGroup).toBe(true);
 });
+
+test('test getOpenEmergencyGroupByUser', async () => {
+  let emergencyGroup = await EmergencyGroup.getOpenEmergencyGroupByUser('user1');
+  expect(emergencyGroup.length).toBe(1);
+  expect(emergencyGroup[0].groupName).toBe('group1');
+
+  await EmergencyGroup.closeEmergencyGroup('group1', 'user1');
+  emergencyGroup = await EmergencyGroup.getOpenEmergencyGroupByUser('user1');
+  expect(emergencyGroup.length).toBe(0);
+});

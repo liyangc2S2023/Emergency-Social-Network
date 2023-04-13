@@ -1,5 +1,9 @@
 .ui.container
-    .ui.comments.chatRoomComments#privateDialog
+    #emergency-group(hidden)
+    #emergency-group-initiator(hidden)
+    button.btn-confirm#closeEmgergencyGroup(onclick='closeGroupChat()', hidden) CLOSE
+    .ui.comments.chatRoomComments
+        #privateDialog
     .ui#inputBox
         .ui.input.chatInput#privateInputText
             input#privateInputContent(type="text" placeholder="Message..." onkeydown="oneKeyPress(event)")

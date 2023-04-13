@@ -41,7 +41,9 @@ class EmergencyGroup {
   }
 
   static async getOpenEmergencyGroupByUser(username) {
-    const emergencyGroupNames = EmergencyGroupMemberTable.find({ username });
+    const emergencyGroup = await EmergencyGroupMemberTable.find({ username });
+    const emergencyGroupNames = emergencyGroup.map((group) => group.groupName);
+    console.log(emergencyGroupNames);
     return EmergencyGroupTable.find({ groupName: { $in: emergencyGroupNames }, isClosed: false });
   }
 
@@ -65,6 +67,7 @@ class EmergencyGroup {
   }
 
   static async closeEmergencyGroup(groupName, username) {
+    console.log("model closeEmergencyGroup", groupName, username);
     return EmergencyGroupTable.updateOne({ groupName, initiator: username }, { isClosed: true });
   }
 
