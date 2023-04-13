@@ -30,8 +30,8 @@ async function renderOnePage(req, res, pageView) {
   });
 
   // emergency groups
-  const emergencyGroups = await emergencyGroupController.getEmergencyGroupByUser(req.username);
-  console.log('emergencyGroups', emergencyGroups);
+  const emergencyGroups = await emergencyGroupController.getOpenEmergencyGroupByUser(req.username);
+  // console.log('emergencyGroups', emergencyGroups);
 
   // current user status
   let status = await statusController.getStatus(req.username);

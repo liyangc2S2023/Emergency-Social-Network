@@ -140,4 +140,12 @@ router.post('/emergencyGroupChat', async (req, res) => {
   res.send(Result.success(result));
 });
 
+router.put('/emergencyGroupChat', async (req, res) => {
+  // close the group
+  const { username } = req;
+  const { groupname } = req.body;
+  const result = await EmergencyGroupController.closeEmergencyGroup(groupname, username);
+  res.send(Result.success(result));
+});
+
 module.exports = router;
