@@ -26,4 +26,21 @@ router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
   res.send(messageHTML);
 });
 
+router.get('/messages/group/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+  const messageList = await messageController.getMessageByReceiverOrRoom(groupId);
+  // also mark the message as read
+  await messageController.markAsRead(groupId);
+  let messageHTML = '';
+
+  messageList.forEach((msg) => {
+    msg.statusStyle = config.statusMap[msg.status];
+    msg.time = date2Str(msg.timestamp);
+    msg.isSender = msg.sender === groupId;
+    messageHTML += pug.renderFile('./views/message.pug', { msg });
+  });
+  // render to HTML
+  res.send(messageHTML);
+});
+
 module.exports = router;

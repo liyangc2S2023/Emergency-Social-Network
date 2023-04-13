@@ -83,6 +83,10 @@ alertPrivateMessage = (sender) => {
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
 }
 
+updateGroupChatList = (groupChatListHTML) => {
+  $('#groupChatContent').html(groupChatListHTML);
+}
+
 directoryGetisOnline = (a) => {
   return $(a).find('.online').length > 0
 }
@@ -127,6 +131,20 @@ function displayPublic() {
 
 function displayPrivateMessage(receiver) {
   changeTitle(`${receiver}`);
+  receiver_parts = receiver.split("-");
+  $("#closeEmgergencyGroup").hide();
+
+  if (receiver_parts[0] == "group") {
+    // this is a group chat
+    $("#emergency-group").val(true);
+    $("#emergency-group-initiator").val(receiver_parts[1]);
+
+    if (receiver_parts[1] == getCurrentUsername()) {
+      $("#closeEmgergencyGroup").show();
+    } else {
+      $("#closeEmgergencyGroup").hide();
+    }
+  }
 
   // clear current page
   const privateDialog = document.querySelector('#privateDialog');
@@ -137,14 +155,37 @@ function displayPrivateMessage(receiver) {
   $('#chatPrivateReceiver').val(receiver);
   const sender = $('#currentUsername').val();
 
-  axios.get(`chat/messages/private/${sender}/${receiver}`).then((res) => {
-    $('#privateDialog').html(res.data);
-    scrollDown("privateChatContent");
-  });
+  if (receiver_parts[0] == "group") {
+    // this is a group chat
+    axios.get(`chat/messages/group/${receiver}`).then((res) => {
+      // console.log(res.data)
+      $('#privateDialog').html(res.data);
+      scrollDown("privateChatContent");
+    });
+  } else {
+    axios.get(`chat/messages/private/${sender}/${receiver}`).then((res) => {
+      $('#privateDialog').html(res.data);
+      scrollDown("privateChatContent");
+    });
+  }
 
   setCurrentPage("privateChatContent");
   // show private chat page
   hideOtherDisplay("privateChatContent")
+}
+
+function closeGroupChat() {
+  // const group = $("#emergency-group-initiator").val;
+  let groupname = $("#chatPrivateReceiver").val();
+  groupname = groupname.split("-").slice(1).join("-");
+  console.log(groupname)
+  const params = {
+    groupname,
+  };
+  axios.put(`/api/v1/emergencyGroupChat`, params).then((res) => {
+    console.log(res.data);
+    displayDirectory();
+  });
 }
 
 function displayAnnouncement() {
@@ -256,6 +297,10 @@ socket.on('updateAlert', (unreadUserSet) => {
   unreadUserSet.forEach((user) => {
     alertPrivateMessage(user);
   });
+});
+
+socket.on('groupChatContentUpdate', (groupChatContent) => {
+  updateGroupChatList(groupChatContent);
 });
 
 $(document).ready(() => {

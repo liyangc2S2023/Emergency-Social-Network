@@ -56,6 +56,12 @@ router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
   res.send(Result.success(result));
 });
 
+router.get('/messages/group/:groupId', async (req, res) => {
+  const { groupId } = req.params;
+  const result = await messageController.getMessageByReceiverOrRoom(groupId);
+  res.send(Result.success(result));
+});
+
 const renderMessageHTML = (msg) => {
   const {
     sender, receiver, status, content, timestamp,
