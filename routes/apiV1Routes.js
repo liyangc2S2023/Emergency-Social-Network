@@ -147,9 +147,16 @@ router.get('/search', async (req, res) => {
   res.send(Result.success(searchResult));
 });
 
-router.get('/emergencyContacts', async (req, res) => {
+router.get('/emergencyContact', async (req, res) => {
   const { username } = req;
   res.send(Result.success(await EmergencyContactController.getEmergencyContact(username)));
+});
+
+router.post('/emergencyContact', async (req, res) => {
+  const { username } = req;
+  const { contact } = req.body;
+  const result = await EmergencyContactController.addEmergencyContact(username, contact);
+  res.send(Result.success(result));
 });
 
 const updateGroupChatContent = async (username) => {
@@ -181,6 +188,12 @@ router.post('/emergencyGroupChat', async (req, res) => {
   });
   await updateGroupChatContent(username);
 
+  res.send(Result.success(result));
+});
+
+router.get('/emergencyOpenGroupChat', async (req, res) => {
+  const { username } = req;
+  const result = await EmergencyGroupController.getOpenEmergencyGroupByUser(username);
   res.send(Result.success(result));
 });
 
