@@ -101,6 +101,26 @@ test('test user role', async () => {
   expect((await User.getOne('testUserRole2')).role).toBe(config.USER_ROLE.ADMIN);
 });
 
+test('test update role', async() => {
+  await User.addUser('Star Trek', '123456', config.USER_ROLE.USER);
+  await User.addUser('John Wick', '123456', config.USER_ROLE.ELE);
+  await User.addUser('Hyun Bin', '123456', config.USER_ROLE.ADMELEIN);
+  await User.updateRole('Hyun Bin', config.USER_ROLE.ELE);
+  expect(await User.getUserRole('Star Trek')).toBe('user');
+  expect(await User.getUserRole('Hyun Bin')).toBe('electrician');
+});
+
+test('test can get user role', async() => {
+  await User.addUser('Harry Potter', '123456', config.USER_ROLE.ELE);
+  const res = await User.getUserRole('Harry Potter')
+  expect(res).toBe('electrician');
+});
+
+test('test can not get role of a non-exsit user', async() => {
+  const res = await User.getUserRole('app')
+  expect(res).toBe(null);
+});
+
 test('test search information by username and get no result', async () => {
   // search for a not valid username
   const res = await User.searchByUsername('app');

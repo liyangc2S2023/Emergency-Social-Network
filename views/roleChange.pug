@@ -1,0 +1,17 @@
+.container.statusFrame
+    .container.currentStatus
+        h2.statusTitle Your current role is
+        h2.currentStatus#userRole #{role}
+    h3.statusDisplay Change your role to:
+    .container.statusChoice
+        input(type="radio", name='role', value='electrician', id='electrician')
+        label.status(for='electrician') Electrician
+            img.statusImg(src='/icons/fixIcon.png')
+            p.statusDescription You obtain the skills to solve power issue! Many thanks for your contribution!
+            br
+        input(type="radio", name='role', value='user', id='user')
+        label.status(for='user') User
+            img.statusImg(src='/icons/userIcon.png')
+            p.statusDescription You can report a power issue. Don’t worry! Experts will help you~
+            br
+    button.btn-confirm(onclick='changeRole()') UPDATE

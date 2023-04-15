@@ -6,6 +6,7 @@ const supplyController = require('../../controller/supplyController');
 const blogController = require('../../controller/blogController');
 const emergencyContactController = require('../../controller/emergencyContactController');
 const emergencyGroupController = require('../../controller/emergencyGroupController');
+const fixOrderController = require('../../controller/fixOrderController');
 const date2Str = require('../../utils/dateUtil');
 const config = require('../../config');
 const ExchangeController = require('../../controller/exchangeController');
@@ -53,15 +54,32 @@ async function renderOnePage(req, res, pageView) {
   // if status is undefined, set it to 'undefined'
   status = status || 'undefined';
 
+  // current user role. Initially, role = user, and the role will transmit to MainPage.js
+
+  const powerStatus = await fixOrderController.getFixOrderStatus(req.username);
+
+  const unfixedOrderList = await fixOrderController.getUnfixOrders();
+
+  // current user role. Initially, role = user, and the role will transmit to MainPage.js
+  let role = await fixOrderController.getUserRole(req.username);
+  role = role || 'user';
+
   console.log(req.role);
   // render main page with all data
   res.render('mainPage', {
     currentUsername: req.username,
     pageView,
+
     users: userList,
+
     messages: messageList,
+
     status,
+
     announcements: announcementList,
+    role,
+    powerStatus: powerStatus,
+    unfixedOrderLists: unfixedOrderList,
     supplies: supplyList,
     exchanges: exchangeList,
     emergencyContacts,

@@ -190,6 +190,61 @@ test('can change the status of user', async () => {
   });
 });
 
+test('can get the role of user', async () => {
+  await axios.get(`${HOST}/initialrole`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can change the role of user', async () => {
+  const roleChange = {
+    username: sampleUser.username,
+    role: config.USER_ROLE.ELE,
+  };
+  await axios.post(`${HOST}/role`, roleChange, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can report power status of a user', async () => {
+  const powerReport = {
+    username: sampleUser.username,
+    description: 'no power for 1 hr.',
+    address: '1625 Plymouth St, Mountain View, CA 94043',
+    powerStatus: config.FIX_ORDER_STATUS.NEEDFIX,
+  };
+  await axios.post(`${HOST}/powerreport`, powerReport, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can update fix order by electricians', async () => {
+  const updateFixOrder = {
+    sender: 'Sheldon Cooper',
+    helper: 'Star Treck',
+    powerStatus: config.FIX_ORDER_STATUS.FIXING,
+  };
+  await axios.post(`${HOST}/fixorder`, updateFixOrder, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get power issue list', async () => {
+  await axios.get(`${HOST}/powerIssueList`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
 test('can post a public message', async () => {
   const message = {
     sender: 'test',

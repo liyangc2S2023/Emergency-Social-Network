@@ -1,0 +1,22 @@
+.container.statusFrame
+    .container.currentStatus
+        h2.statusTitle Your current power status is
+        h2.currentStatus#userPowerStatus #{powerStatus}
+    h3.statusDisplay Report power status:
+    .container.statusChoice
+        input(type="radio", name='status', value='needFix', id='needFix')
+        label.status(for='needFix') Power Outage
+            img.statusImg(src='/icons/outageIcon.png')
+            br
+        input(type="radio", name='status', value='normal', id='normal')
+        label.status(for='normal') Power Restore
+            img.statusImg(src='/icons/restoreIcon.png')
+            br
+    h3.statusDisplay Add a description
+    .container.search
+        input.searchInput#inputDescription(type='text' placeholder='Enter any description on current power or your condition')
+    br
+    h3.statusDisplay Type your address
+    .container.search
+        input.searchInput#inputAddress(type='text' placeholder='Enter your address (Stree, Apt No., City, State, Zip Code)')
+    button.btn-confirm(onclick='changePowerStatus()') SUBMIT

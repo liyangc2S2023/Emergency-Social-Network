@@ -27,9 +27,13 @@ class UserController {
     return User.logout(username);
   }
 
-  // static async updateCurrentStatus(username, status) {
-  //   return User.updateCurrentStatus(username, status);
-  // }
+  static async getUserRole(username) {
+    return User.getUserRole(username);
+  }
+
+  static async updateRole(username){
+    return User.updateRole(username);
+  }
 }
 
 // const userController = new UserController();

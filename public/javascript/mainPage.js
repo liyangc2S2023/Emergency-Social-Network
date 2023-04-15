@@ -6,6 +6,15 @@ function getCurrentUsername() {
 function getCurrentStatus() {
   return $("#currentUserStatus").val()
 }
+
+function getCurrentRole() {
+  return $("#currentUserRole").val();
+}
+
+function getCurrentPowerStatus() {
+  return $("#currentUserPowerStatus").val()
+}
+
 const statusMap = {
   undefined: 'circle outline purple icon',
   ok: 'circle green icon ',
@@ -22,6 +31,8 @@ function hideOtherDisplay(componentId) {
   $("#publicChatContent").hide();
   $("#announcementContent").hide();
   $("#statusContent").hide();
+  $("#roleContent").hide();
+  $("#powerContent").hide();
   $("#privateChatContent").hide();
   $("#searchContent").hide();
   $("#blogContent").hide();
@@ -31,6 +42,7 @@ function hideOtherDisplay(componentId) {
   $("#supplyContent").hide();
   $("#exchangeContent").hide();
   $("#mapContent").hide();
+  $("#powerIssueContent").hide();
   $("#" + componentId).show()
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
@@ -77,6 +89,26 @@ updateUserStatusUI = (username, status) => {
     userStatus.classList = classList;
   }
 }
+// this function handles UI changes when user role changes
+updateUserRoleUI = (username, role) => {
+  // update the hidden UI on page
+  if ($("#currentUsername").val() == username) {
+    $("#currentUserRole").val(role);
+  }
+}
+
+// this function handles UI changes when user power status changes
+updateUserPowerReportUI = (username, description, address, powerStatus) => {
+  // update the hidden UI on page
+  if ($("#currentUsername").val() == username) {
+    $("#currentUserPowerStatus").val(powerStatus);
+    $("#currentUserDescription").val(description);
+    $("#currentUseAddress").val(address);
+  }
+  const userStatus = $('#powerStatus').val();
+}
+
+// updatePowerIssueList = ()
 
 appendPrivateMessage = (msg) => {
   // TODO: render sender avatar
@@ -210,6 +242,32 @@ function displayDirectory() {
   setActiveItem('directoryMenu');
 }
 
+displayPowerIssue = () => {
+  changeTitle("Power Issue List");
+  setCurrentPage("powerIssueContent");
+  hideOtherDisplay("powerIssueContent")
+  setActiveItem('powerIssueMenu');
+  // // use socket to add latest fix order, client(fixOrder,js) -> server(apiV1Routes.js)
+  socket.on('userPowerReport', (updateContent) => {
+    console.log("socket enter" + updateContent);
+    $('#fixOrderItems').append(updateContent);
+  });
+}
+
+displayRole = () => {
+  changeTitle("Role");
+  setCurrentPage("roleContent");
+  hideOtherDisplay("roleContent")
+  setActiveItem('roleMenu');
+}
+
+displayPower = () => {
+  changeTitle("Power");
+  setCurrentPage("powerContent");
+  hideOtherDisplay("powerContent")
+  setActiveItem('powerMenu');
+}
+
 displayStatus = () => {
   changeTitle("Status");
   setCurrentPage("statusContent");
@@ -238,6 +296,21 @@ function displayExchange() {
   setActiveItem('discoverMenu');
 }
 
+function initialPowerPage() {
+  console.log("enter initialPowerPage");
+  const username = $("#currentUsername").val();
+  axios.get('/api/v1/initialrole', { username }).then(res => {
+    const results = res.data.data.role;
+    $("#currentUserRole").val(results);
+    const role = $("#currentUserRole").val();
+    if (role === 'user') {
+      displayPower();
+    } else if (role === 'electrician') {
+      displayPowerIssue();
+    }
+  });
+}
+
 function initialSearchPage() {
   // set default page number to be 0.
   $('#pageNumber').val(0);
@@ -246,6 +319,7 @@ function initialSearchPage() {
 }
 
 function displaySearch() {
+  // fetch current page, for example, if I am in directory, current page = directory
   const currentPage = $("#currentPage").val();
   const searchOptions = $('.searchInfo');
   $(searchOptions).hide();
@@ -324,6 +398,18 @@ function setEmergencyContactSearch() {
 socket.on('statusChange', (data) => {
   updateUserStatusUI(data.username, data.status);
 });
+
+socket.on('roleChange', (data) => {
+  updateUserRoleUI(data.username, data.role);
+});
+
+socket.on('userPowerReport', (data) => {
+  updateUserPowerReportUI(data.username, data.description, data.address, data.powerStatus);
+});
+
+// socket.on('powerIssueList', (data) => {
+//   updatePowerIssueList(data.sender, data.helper, data.description, data.address, data.powerStatus);
+// });
 
 socket.on('newPrivateMessage', (messageHTML, sender) => {
   if (getCurrentUsername() !== sender) {

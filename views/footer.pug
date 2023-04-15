@@ -11,6 +11,12 @@ div.main-footer
             i.clipboard.icon
             br
             p Announce
+        a.item.menuItem(class = (pageView == "Role" ? "active" : "") id = "RoleMenu" onclick="displayRole()")
+            i.chess.pawn.icon
+            p Role
+        a.item.menuItem(class = (pageView == "Power" ? "active" : "") id = "PowerMenu" onclick="initialPowerPage()")
+            i.lightbulb.icon
+            p Power
         a.item.menuItem(class = (pageView == "Status" ? "active" : "") id = "statusMenu" onclick="displayStatus()")
             i.compass.icon
             p Status

@@ -1,7 +1,7 @@
 class config {
   static JWT_KEY = 'secret';
 
-  static USER_ROLE = { COORDINATOR: 'coordinator', USER: 'user', ADMIN: 'admin' };
+  static USER_ROLE = { COORDINATOR: 'coordinator', USER: 'user', ADMIN: 'admin', ELE: 'electrician' };
 
   static USER_STATUS = {
     UNDEFINED: 'undefined',
@@ -45,6 +45,12 @@ class config {
     OFFERING: 'offering',
     REQUESTING: 'requesting',
     NONE: 'none',
+  };
+
+  static FIX_ORDER_STATUS = {
+    NORMAL: 'normal',
+    NEEDFIX: 'needFix',
+    FIXING: 'fixing',
   };
 }
 

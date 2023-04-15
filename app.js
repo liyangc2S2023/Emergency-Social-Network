@@ -28,6 +28,12 @@ app.set('views', './views');
 app.get('/', (req, res) => {
   res.redirect('/welcome');
 });
+
+// Test role change Static UI
+app.get('/powerIssueList', (req, res) => {
+  res.render('powerIssueList');
+});
+
 // app.use("/login", require("./routes/login"));
 app.use('/join', require('./routes/joinRouter'));
 app.use('/welcome', require('./routes/welcomeRouter'));
