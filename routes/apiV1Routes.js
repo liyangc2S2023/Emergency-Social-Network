@@ -6,6 +6,7 @@ const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
 const searchController = require('../controller/searchController');
 const announcementController = require('../controller/announcementController');
+const emergencyRecordController = require('../controller/emergencyRecordController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
@@ -211,6 +212,75 @@ router.put('/emergencyGroupChat', async (req, res) => {
     await setToDirectoryPage(memberObj.username);
   });
 
+  res.send(Result.success(result));
+});
+
+// emergency request
+router.get('/emergencyRequests/:id', async (req, res) => {
+  const { id } = req.params;
+  res.send(Result.success(await emergencyRecordController.getById(id)));
+});
+
+router.get('/emergencyRequests', async (req, res) => {
+  res.send(Result.success(await emergencyRecordController.getAllHelpRequest()));
+});
+
+router.post('/emergencyRequests', async (req, res) => {
+  const name = req.username;
+  const { location, formResult } = req.body;
+  const result = await emergencyRecordController.startReqShareAndSaveRecord(req, name, location, formResult);
+  res.send(Result.success(result));
+});
+
+router.put('/emergencyRequests/:id/done', async (req, res) => {
+  const { id } = req.params;
+  const result = await emergencyRecordController.receiveLocationShare(req, id);
+  res.send(Result.success(result));
+});
+
+router.put('/emergencyRequests/:id', async (req, res) => {
+  const { id } = req.params;
+  const { location } = req.body;
+  const result = await emergencyRecordController.updateLocation(req, id, location);
+  res.send(Result.success(result));
+});
+
+router.delete('/emergencyRequests/:id', async (req, res) => {
+  const { id } = req.params;
+  const result = await emergencyRecordController.cancelLocationShare(req, id);
+  res.send(Result.success(result));
+});
+
+// emergency response
+router.post('/emergencyResponses', async (req, res) => {
+  const name = req.username;
+  const { location, target } = req.body;
+  const result = await emergencyRecordController.startResShareAndSaveRecord(req, name, location, target);
+  res.send(Result.success(result));
+});
+
+router.put('/emergencyResponses/:id/done', async (req, res) => {
+  const { id } = req.params;
+  const result = await emergencyRecordController.receiveLocationShare(req, id);
+  res.send(Result.success(result));
+});
+
+router.put('/emergencyResponses/:id', async (req, res) => {
+  const { id } = req.params;
+  const { location } = req.body;
+  const result = await emergencyRecordController.updateLocation(req, id, location);
+  res.send(Result.success(result));
+});
+
+router.delete('/emergencyResponses/:id', async (req, res) => {
+  const { id } = req.params;
+  const result = await emergencyRecordController.cancelLocationShare(req, id);
+  res.send(Result.success(result));
+});
+
+router.get('/emergencyResponses/target/:id', async (req, res) => {
+  const { id } = req.params;
+  const result = await emergencyRecordController.getHelpResponseOf(id);
   res.send(Result.success(result));
 });
 

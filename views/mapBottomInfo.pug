@@ -1,0 +1,82 @@
+#mapBottomInfo(style = "display:none")
+    #mapBottomForm.ui.container
+        .ui.form#mapForm
+            .grouped.fields
+                label(for="q1") What type of dangers do you faces?
+                .field
+                    .ui.radio.checkbox.checked
+                        input(type="radio" name="q1" checked="checked" value="vehicle broken")
+                        label vehicle broken
+                .field
+                    .ui.radio.checkbox
+                        input(type="radio" name="q1" value="trapped")
+                        label trapped
+                .field
+                    .ui.radio.checkbox
+                        input(type="radio" name="q1" value="condemned building")
+                        label condemned building 
+                .field
+                    .ui.radio.checkbox#otherRadio
+                        input(type="radio" name="q1" value="other")
+                        label other
+                    input#otherRadioInput(type="text" name="q1" placeholder="Please specify" hidden)
+            .inline.fields
+                label(for="q2") Can you move?
+                .field
+                    .ui.radio.checkbox.checked
+                        input(type="radio" name="q2" checked="checked" value="Yes")
+                        label Yes
+                .field
+                    .ui.radio.checkbox
+                        input(type="radio" name="q2" value="No")
+                        label No
+            .inline.fields
+                label(for="q3") Are you hurt?
+                .field
+                    .ui.radio.checkbox.checked
+                        input(type="radio" name="q3" checked="checked" value="Yes")
+                        label Yes
+                .field
+                    .ui.radio.checkbox
+                        input(type="radio" name="q3" value="No")
+                        label No
+            .inline.fields
+                label(for="q4") Are you bleeding?
+                .field
+                    .ui.radio.checkbox.checked
+                        input(type="radio" name="q4" checked="checked" value="Yes")
+                        label Yes
+                .field
+                    .ui.radio.checkbox
+                        input(type="radio" name="q4" value="No")
+                        label No
+            button(class="ui red button" onclick="onMapFormConfirmClick()") Confirm
+            button(class="ui black button" onclick="displayEmergencyHelpBottom()") Cancel
+
+#mapOfferHelpBottom.mapBottomButton(style = "display:none")
+    #mapBottomHelpRequest.ui.container
+        button(class="ui blue button" onclick="onOfferHelpClick()") Offer Help
+
+#offerHelpDetail.emergencyDetail(style = "display:none")
+    #offerProgress.ui.container
+        .detailInfo.ui.container
+            div Thank you for your kindness. Please go to this location as soon as possible!
+            br
+            div There are <label id="offerNo"> 0 </label> other person trying to be that location
+        button.ui.container(class="ui black button" onclick="offerCancel()") Cancel
+
+#EmergencyHelpDetail.emergencyDetail(style = "display:none")
+    #helpProgress.ui.container
+        .detailInfo.ui.container
+            div Send Help Requests
+            br
+            div Waiting for Helper
+            br
+            div Helpers is Comming
+            br
+            div Received Help
+        #helpProgressAction.ui.two.column.stackable.grid
+            .column#helpProgressActionReceived
+                button(class="ui blue button" onclick="helpRecived()") Received
+            .column#helpProgressActionCancel
+                button(class="ui black button" onclick="helpCancel()") Cancel

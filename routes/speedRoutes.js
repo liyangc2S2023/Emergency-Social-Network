@@ -20,10 +20,10 @@ router.use(async (req, res, next) => {
 });
 
 router.post('/', async (req, res, next) => {
-    // start test
-    await speedRecordController.startTest(req.body.testID);
-    // response the result when test finish
-    res.send(Result.success());
+  // start test
+  await speedRecordController.startTest(req.body.testID);
+  // response the result when test finish
+  res.send(Result.success());
 });
 
 router.delete('/', async (req, res, next) => {

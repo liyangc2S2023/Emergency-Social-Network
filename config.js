@@ -18,6 +18,17 @@ class config {
     help: 'circle yellow icon',
     emergency: 'circle red icon',
   };
+
+  static EMERGENCY_TYPE = {
+    REQUEST: 'request',
+    RESPONSE: 'response',
+  };
+
+  static EMERGENCY_CITIZEN_STATUS = {
+    OFFERING: 'offering',
+    REQUESTING: 'requesting',
+    NONE: 'none',
+  };
 }
 
 module.exports = config;
