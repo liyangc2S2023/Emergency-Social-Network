@@ -1,0 +1,14 @@
+.item(class="active" id=`directory-group-block-${group.groupName}` onclick=`displayPrivateMessage('group-${group.groupName}')`) 
+    .content 
+        a.header 
+            .ui.circular.avatar.image 
+                img(src="/icons/emergency.png")
+            span.main-page-name #{group.groupName}
+            
+            i(class=`${group.statusStyle}` id=`directoryStatus-${group.groupName}`)
+            .new-message-alert(id=`directoryNewMessage-${group.groupName}` )
+                i.certificate.icon.new-message-alert-icon
+        if group.joined
+            .meta.online joined
+        else
+            .meta waiting

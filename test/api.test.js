@@ -279,3 +279,39 @@ test('can query private message', async () => {
 
   await queryFunction(query);
 });
+
+test('can add emergency contact', async () => {
+  const params = {
+    username: 'test1',
+    usernameOther: 'test2',
+  };
+  axios.post(`${HOST}/emergencyContact`, params, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get emergency contact', async () => {
+  axios.get(`${HOST}/emergencyContact`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can get all emergency groups', async () => {
+  axios.get(`${HOST}/emergencyOpenGroupChat`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('can create new emergency group', async () => {
+  axios.post(`${HOST}/emergencyGroupChat`, { username: 'test2' }, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});

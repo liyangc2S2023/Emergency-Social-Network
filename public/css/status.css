@@ -91,3 +91,8 @@
 .ecInput {
   width: 100%;
 }
+
+.notifyEmergencyContacts {
+  margin-bottom: 15px;
+  display: none;
+}
