@@ -73,6 +73,25 @@ beforeEach(async () => {
   });
 });
 
+test('can post a supply', async () => {
+  const supply = {
+    name: 'test_supply',
+    quantity: 10,
+    category: 'test_category',
+  };
+  await axios.post(`${HOST}/supplies`, supply, {
+    headers: { authorization: userToken },
+  }).then((response) => {
+    expect(response.status).toBe(200);
+    // expect(response.data.name).toBe(supply.name);
+    // expect(response.data.quantity).toBe(supply.quantity);
+    // expect(response.data.category).toBe(supply.category);
+    // expect(response.data.owner).toBe(supply.owner);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
 // user integration test
 test('Can post a new user', async () => {
   const UserData = {

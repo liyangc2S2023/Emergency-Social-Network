@@ -80,3 +80,28 @@
 #announcementDialogContainer {
     padding-bottom: 1em;
 }
+
+#addSupplyButton {
+    position: fixed;
+    bottom: 8%;
+    /* at the middle */
+    /* transform: translateX(-50%); */
+    /* left: 40%; */
+}
+
+.exchangeTitle {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.exchangeAccepted{
+    color: green;
+}
+
+.exchangeRejected{
+    color: red;
+}
+
+.exchangeCancelled{
+    color: grey;
+}

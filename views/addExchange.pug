@@ -1,0 +1,33 @@
+.ui.modal#exchangeModal
+    .header Request Exchange
+    .content 
+        .card
+            .content
+                .header#supplyDeal 
+                .meta#quantityDeal 
+                .description#owner 
+                #categoryDeal(hidden)
+                //- #currentSupplyID(hidden)
+        .ui.form#exchangeForm
+            .field
+                label How much do you want?
+                input#supplyDealQuantityInput(type="text",placeholder="Quantity")
+            .field
+                label What can you provide?
+                input#supplyReqNameInput(type="text",placeholder="Supply Name")
+            .field
+                label How much can you provide?
+                input#supplyReqQuantityInput(type="text",placeholder="Quantity")
+            .field
+                label Category:
+                select#supplyCategoryInput
+                    option(value="Fruit") Fruit
+                    option(value="Vegetable") Vegetable
+                    option(value="Meat") Meat
+                    option(value="Water") Water
+                    option(value="Medicine") Medicine
+                    option(value="Clothing") Clothing
+                    option(value="Other") Other
+    .actions#speedTestActions
+        .ui.cancel.button Cancel
+        .ui.green.button(onclick="submitExchange()") Submit

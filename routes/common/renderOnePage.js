@@ -2,11 +2,13 @@ const messageController = require('../../controller/messageController');
 const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
 const announcementController = require('../../controller/announcementController');
+const supplyController = require('../../controller/supplyController');
 const blogController = require('../../controller/blogController');
 const emergencyContactController = require('../../controller/emergencyContactController');
 const emergencyGroupController = require('../../controller/emergencyGroupController');
 const date2Str = require('../../utils/dateUtil');
 const config = require('../../config');
+const ExchangeController = require('../../controller/exchangeController');
 
 async function renderOnePage(req, res, pageView) {
   // make user online
@@ -36,6 +38,11 @@ async function renderOnePage(req, res, pageView) {
     user.statusStyle = config.statusMap[user.status];
   });
 
+  // supply list
+  const supplyList = await supplyController.getAllRemainingSupplies();
+
+  const exchangeList = await ExchangeController.getExchangesByUser(req.username);
+
   // emergency groups
   const emergencyGroups = await emergencyGroupController.getOpenEmergencyGroupByUser(req.username);
   // console.log('emergencyGroups', emergencyGroups);
@@ -49,11 +56,14 @@ async function renderOnePage(req, res, pageView) {
   console.log(req.role);
   // render main page with all data
   res.render('mainPage', {
+    currentUsername: req.username,
     pageView,
     users: userList,
     messages: messageList,
     status,
     announcements: announcementList,
+    supplies: supplyList,
+    exchanges: exchangeList,
     emergencyContacts,
     currentRole: req.role,
     emergencyGroups,

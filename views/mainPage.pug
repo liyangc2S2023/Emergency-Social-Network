@@ -25,9 +25,12 @@ html
         //- map
         link(rel='stylesheet' href='/css/map.css')
         script(src='/javascript/map.js')
+        script(src='/javascript/exchangeSupply.js')
     body
         // header
-        include speedTestModal.pug 
+        include speedTestModal.pug
+        include addSupply.pug 
+        include addExchange.pug
         include profileEditer.pug
         include header.pug
         // page content
@@ -54,6 +57,10 @@ html
                 include search.pug
             #discoverContent(style=pageView=="Discover"?"display:block":"display:none")
                 include discover.pug
+            #supplyContent(style=pageView=="Supply"?"display:block":"display:none")
+                include supply.pug
+            #exchangeContent(style=pageView=="Exchange"?"display:block":"display:none")
+                include exchange.pug
             #blogContent(style=pageView=="Blog"?"display:block":"display:none")
                 include blogboard.pug
             #editBlogContent(style=pageView=="Blog"?"display:block":"display:none")

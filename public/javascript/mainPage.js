@@ -28,6 +28,8 @@ function hideOtherDisplay(componentId) {
   $("#editBlogContent").hide();
   $("#viewBlogContent").hide();
   $("#discoverContent").hide();
+  $("#supplyContent").hide();
+  $("#exchangeContent").hide();
   $("#mapContent").hide();
   $("#" + componentId).show()
   if (componentId === "privateChatContent") {
@@ -35,7 +37,7 @@ function hideOtherDisplay(componentId) {
   } else {
     $("#main-page-back").hide();
   }
-  if (componentId === "statusContent" | componentId === "discoverContent") {
+  if (componentId === "statusContent" | componentId === "discoverContent" | componentId === "supplyContent" | componentId === "exchangeContent") {
     $("#searchButton").hide();
   } else {
     $("#searchButton").show();
@@ -219,6 +221,20 @@ displayDiscover = () => {
   changeTitle("Discover");
   setCurrentPage("discoverContent");
   hideOtherDisplay("discoverContent")
+  setActiveItem('discoverMenu');
+}
+
+displaySupply = () => {
+  changeTitle("Supply");
+  setCurrentPage("supplyContent");
+  hideOtherDisplay("supplyContent")
+  setActiveItem('discoverMenu');
+}
+
+function displayExchange() {
+  changeTitle("Exchange");
+  setCurrentPage("exchangeContent");
+  hideOtherDisplay("exchangeContent")
   setActiveItem('discoverMenu');
 }
 
