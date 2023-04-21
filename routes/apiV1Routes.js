@@ -107,12 +107,17 @@ router.post('/announcements', async (req, res) => {
   const result = await announcementController.addAnnouncement(
     req.body.sender,
     req.body.content,
-    config.USER_ROLE.COORDINATOR,
+    req.role,
   );
-  ancm.time = date2Str(new Date(req.body.timestamp));
-  const announcementHTML = pug.renderFile('./views/announcement.pug', { ancm });
-  req.io.emit('newAnnouncement', announcementHTML);
-  return res.send(Result.success(result));
+  if(req.role == config.USER_ROLE.COORDINATOR || req.role == config.USER_ROLE.ADMIN) {
+    ancm.time = date2Str(new Date(req.body.timestamp));
+    const announcementHTML = pug.renderFile('./views/announcement.pug', { ancm });
+    req.io.emit('newAnnouncement', announcementHTML);
+    return res.send(Result.success(result));
+  }
+  else{
+    return res.send(Result.fail("You are not authorized to post announcements"));
+  }
 });
 
 router.get('/search', async (req, res) => {

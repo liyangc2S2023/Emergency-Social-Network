@@ -165,7 +165,12 @@ function startSpeedTest(){
                 // start test
                 testPostRequests(duration/2,interval,testID)
             }).catch((err)=>{
-                console.log(err)
+                if(err.response.status==401){
+                    alert("You are not authorized to perform speed test")
+                }
+                else{
+                    console.log(err)
+                }
             })
         }
     }
