@@ -55,6 +55,8 @@ app.use('/logout', require('./routes/logoutRouter'));
 
 app.use('/search', require('./routes/searchRouter'));
 
+app.use('/map', require('./routes/mapRouter'));
+
 app.use('/emergencyContact', require('./routes/emergencyContactRouter'));
 
 // page not found

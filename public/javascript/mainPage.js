@@ -25,6 +25,7 @@ function hideOtherDisplay(componentId) {
   $("#privateChatContent").hide();
   $("#searchContent").hide();
   $("#discoverContent").hide();
+  $("#mapContent").hide();
   $("#" + componentId).show()
   if (componentId === "privateChatContent") {
     $("#main-page-back").show();
@@ -79,7 +80,6 @@ appendPrivateMessage = (msg) => {
 
 alertPrivateMessage = (sender) => {
   //TODO: remove console log after feature complete
-  console.log('received new message from ' + sender)
   $('#directoryNewMessage-' + sender).attr('style', 'display: inline-block');
 }
 

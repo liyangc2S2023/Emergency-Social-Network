@@ -1,0 +1,69 @@
+#map,#mapContent {
+    height: 100%;
+}
+
+/* fixed map bottom info */
+#mapBottomInfo {
+    position: fixed;
+    bottom: 0em;
+    width: 100%;
+    height: 25em;
+    padding-top: 1em;
+    color: black;
+    background-color: white;
+    z-index: 100;
+    display: flex;
+    justify-content: center;
+    overflow-y:auto;
+    overflow-x:auto;
+}
+#mapBottomHelpRequest,#mapBottomForm,#offerProgress,#helpProgress,#helpProgressActionReceived,#helpProgressActionCancel{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.detailInfo{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 50%;
+}
+
+#helpProgressAction{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+}
+.mapBottomButton{
+    position: fixed;
+    bottom: 0em;
+    width: 100%;
+    height: 8em;
+    overflow-y:auto;
+    overflow-x:auto;
+    color: black;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emergencyDetail {
+    position: fixed;
+    bottom: 0em;
+    width: 100%;
+    height: 15em;
+    padding-top: 1em;
+    color: black;
+    background-color: white;
+    z-index: 1000;
+    display: flex;
+    justify-content: center;
+    overflow-y:auto;
+    overflow-x:auto;
+}
