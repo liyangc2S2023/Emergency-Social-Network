@@ -15,6 +15,9 @@ function sendAnnouncement() {
             content: inputContent,
         };
         axios.post(`/api/v1/announcements`, announcement).then((res) => {
+            if(!res.data.success){
+                alert(res.data.message);
+            }
             $('#announcementInputContent').val('');
         });
     }

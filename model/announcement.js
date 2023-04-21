@@ -19,7 +19,7 @@ class Announcement {
   }
 
   static async addAnnouncement(sender, content, role) {
-    if (role === USER_ROLE.COORDINATOR) {
+    if (role === USER_ROLE.COORDINATOR || role === USER_ROLE.ADMIN) {
       return AnnouncementTable.create(
         {
           sender,
