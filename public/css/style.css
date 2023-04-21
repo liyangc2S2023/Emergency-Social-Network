@@ -209,3 +209,8 @@
 .ui.celled.table{
     background-color: whitesmoke;
 }
+
+.exchangeTitle {
+    font-weight: bold;
+    font-size: 24px;
+}

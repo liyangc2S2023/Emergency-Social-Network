@@ -1,0 +1,12 @@
+.item(class="active" id=`supplyItem-${supply.id}`)
+    .content 
+        .ui.tiny.image 
+            img(src="/icons/cloud-off.svg")
+        a.header(id=`supplyName-${supply.id}`) #{supply.name}
+            .meta(id=`supplyQuantity-${supply.id}`) remaing: #{supply.quantity}
+        #supplyOwner(hidden) #{supply.owner}
+        #supplyId(hidden) #{supply.id}
+        if supply.owner === currentUsername
+            .ui.right.floated.green.button(onclick=`editSupplyForm('${supply.name}','${supply.quantity}','${supply.id}')`) edit 
+        else
+            .ui.right.floated.primary.button(onclick=`displayExchangeForm('${supply.name}','${supply.quantity}','${supply.owner}','${supply.id}')`) request 

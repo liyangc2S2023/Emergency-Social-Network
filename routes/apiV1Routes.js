@@ -17,6 +17,8 @@ const emergencyRecordController = require('../controller/emergencyRecordControll
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
+const SupplyController = require('../controller/supplyController');
+const ExchangeController = require('../controller/exchangeController');
 const EmergencyContactController = require('../controller/emergencyContactController');
 const EmergencyGroupController = require('../controller/emergencyGroupController');
 
@@ -143,15 +145,13 @@ router.post('/announcements', async (req, res) => {
     req.body.content,
     req.role,
   );
-  if(req.role == config.USER_ROLE.COORDINATOR || req.role == config.USER_ROLE.ADMIN) {
+  if (req.role === config.USER_ROLE.COORDINATOR || req.role === config.USER_ROLE.ADMIN) {
     ancm.time = date2Str(new Date(req.body.timestamp));
     const announcementHTML = pug.renderFile('./views/announcement.pug', { ancm });
     req.io.emit('newAnnouncement', announcementHTML);
     return res.send(Result.success(result));
   }
-  else{
-    return res.send(Result.fail("You are not authorized to post announcements"));
-  }
+  return res.send(Result.fail('You are not authorized to post announcements'));
 });
 
 router.get('/search', async (req, res) => {
@@ -160,6 +160,88 @@ router.get('/search', async (req, res) => {
   } = req.query;
   const searchResult = await searchController.searchContent(context, criteria.split(','), sender, receiver, page);
   res.send(Result.success(searchResult));
+});
+
+router.post('/supplies', async (req, res) => {
+  const {
+    name, quantity, category,
+  } = req.body;
+  const result = await SupplyController.createSupply(name, quantity, category, req.username);
+  const supplyHTML = pug.renderFile('./views/supplyItem.pug', { supply: result });
+  const selfSupplyHTML = pug.renderFile('./views/supplyItem.pug', { supply: result, currentUsername: req.username });
+
+  const senderSocket = socketMap.getInstance().getSocket(req.username);
+  if (senderSocket) { senderSocket.emit('selfNewSupply', selfSupplyHTML); }
+
+  req.io.emit('newSupply', supplyHTML, req.username);
+
+  return res.send(Result.success(result));
+});
+
+router.get('/supplies', async (req, res) => {
+  const result = await SupplyController.getAllRemainingSupplies();
+  return res.send(Result.success(result));
+});
+
+router.post('/supplies/:supplyId', async (req, res) => {
+  const { supplyId } = req.params;
+  const { name, quantity, category } = req.body;
+  const result = await SupplyController.updateSupply(supplyId, name, quantity, category);
+
+  req.io.emit('changeSupply', result);
+
+  return res.send(Result.success(result));
+});
+
+router.post('/exchange/:senderId/:receiverId', async (req, res) => {
+  const result = await ExchangeController.createExchange(req.body);
+  const exchangeHtml = pug.renderFile('./views/exchangeItem.pug', { exchange: result, currentUser: req.username });
+  // eslint-disable-next-line max-len
+  const selfExchangeHtml = pug.renderFile('./views/exchangeItem.pug', { exchange: result, currentUser: req.username, currentUsername: req.username });
+
+  // send to sender
+  const senderSocket = socketMap.getInstance().getSocket(req.params.senderId);
+  if (senderSocket) { senderSocket.emit('newExchange', selfExchangeHtml); }
+
+  // send to receiver
+  const receiverSocket = socketMap.getInstance().getSocket(req.params.receiverId);
+  if (receiverSocket) { receiverSocket.emit('newExchange', exchangeHtml); }
+
+  return res.send(Result.success(result));
+});
+
+router.post('/exchange/rejection', async (req, res) => {
+  const result = await ExchangeController.rejectExchange(req.body.id);
+
+  // send to sender
+  const requesterSocket = socketMap.getInstance().getSocket(req.body.requester);
+  if (requesterSocket) { requesterSocket.emit('exchangeRejected', req.body.id); }
+  return res.send(Result.success(result));
+});
+
+router.post('/exchange/cancellation', async (req, res) => {
+  const result = await ExchangeController.cancelExchange(req.body.id);
+
+  // send to receiver
+  const dealerSocket = socketMap.getInstance().getSocket(req.body.dealer);
+  if (dealerSocket) { dealerSocket.emit('exchangeCancelled', req.body.id); }
+  return res.send(Result.success(result));
+});
+
+router.post('/exchange/acception', async (req, res) => {
+  const ifSufficent = await ExchangeController.hasSufficientQuantity(req.body.id);
+  if (ifSufficent < 0) {
+    return res.send(Result.fail('Insufficient quantity', ifSufficent));
+  }
+  const result = await ExchangeController.acceptExchange(req.body.id);
+
+  // send to sender
+  const requesterSocket = socketMap.getInstance().getSocket(req.body.requester);
+  if (requesterSocket) { requesterSocket.emit('exchangeAccepted', req.body.id); }
+
+  req.io.emit('supplyQuantityChange', result.supplyID, ifSufficent);
+
+  return res.send(Result.success(result));
 });
 
 /**

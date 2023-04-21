@@ -19,6 +19,14 @@ class config {
     emergency: 'circle red icon',
   };
 
+  // status: pending, accepted, rejected, canceled
+  static exchangeStatus = {
+    PENDING: 'pending',
+    ACCEPTED: 'accepted',
+    REJECTED: 'rejected',
+    CANCELLED: 'cancelled',
+  };
+
   static S3 = {
     accessKeyId: 'AKIA2USN5UESPKU35PDH',
     secretAccessKey: '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',

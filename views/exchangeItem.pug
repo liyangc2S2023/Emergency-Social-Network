@@ -1,0 +1,28 @@
+.card
+    #exchangeID(hidden value=`${exchange.id}`)
+    .content
+        .two.column.row
+            .left.floated.column
+                p.exchangeTitle#requesterName #{exchange.requester}
+                .description#requestSupply #{exchange.supplyReq}
+                .meta#requestQuantity quantity #{exchange.quantityReq}
+            .right.floated.column
+                p.exchangeTitle#dealName #{exchange.dealer}
+                .description#dealSupply #{exchange.supplyDeal}
+                .meta#dealQuantity quantity #{exchange.quantityDeal}
+    .extra.content(style='margin-top: 10px;' id = `exchangeExtraInfo-${exchange.id}`)
+        case exchange.status
+            when 'pending'
+                if exchange.requester === currentUsername
+                    p.exchangePending The exchange is pending
+                        .ui.basic.grey.small.button(onclick=`cancelExchange('${exchange.id}','${exchange.dealer}')`) Cancel
+                else
+                    .ui.two.buttons(id = `exchangeTwoBtns-${exchange.id}`)
+                        .ui.basic.green.button(onclick=`acceptExchange('${exchange.id}','${exchange.requester}')`) Accept
+                        .ui.basic.red.button(onclick=`rejectExchange('${exchange.id}', '${exchange.requester}')`) Reject
+            when 'accepted'
+                p.exchangeAccepted The exchange has been accepted                    
+            when 'rejected'
+                p.exchangeRejected The exchange has been rejected
+            when 'cancelled'
+                p.exchangeCancelled The exchange has been cancelled

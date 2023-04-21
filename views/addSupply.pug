@@ -1,0 +1,23 @@
+.ui.modal#supplyModal
+    .header Add Supply
+    .content 
+        .ui.form#addSupplyForm 
+            .field
+                label Supply Name: 
+                input#supplyNameInput(type="text",placeholder="Supply Name")
+            .field
+                label Supply Quantity: 
+                input#supplyQuantityInput(type="text",placeholder="Quantity")
+            .field
+                label Category:
+                select#supplyCategoryInput
+                    option Fruit
+                    option Vegetable
+                    option Meat
+                    option Water
+                    option Medicine
+                    option Clothing
+                    option Other
+    .actions#speedTestActions
+        .ui.cancel.button Cancel
+        .ui.green.button(onclick="submitSupply()") Submit

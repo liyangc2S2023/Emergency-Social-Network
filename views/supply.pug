@@ -1,0 +1,7 @@
+.ui.container
+    #currentSupplyID(hidden)
+    .ui.relaxed.divided.items#supplyItemList
+        for supply in supplies
+            include supplyItem.pug
+
+include supplyButtons.pug
