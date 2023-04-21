@@ -26,7 +26,7 @@ function changeStatus() {
 
   if (newStatus === 'emergency' && emergencyCheck.checked) {
     //check if user has emergency contact set
-    axios.get('/api/v1/emergencyContacts').then(function (res) {
+    axios.get('/api/v1/emergencyContact').then(function (res) {
       const contacts = res.data.data;
       if (contacts.length === 0) {
         alert('You have not set any emergency contact yet. Please set one before you set your status to emergency.');
