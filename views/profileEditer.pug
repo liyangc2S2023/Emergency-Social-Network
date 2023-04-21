@@ -1,0 +1,24 @@
+.ui.modal#editProfileModal
+    .header Edit Profile
+    .content 
+        .ui.form#editProfileForm 
+            .field
+                label Username:
+                input#profileUsernameInput(type="text",placeholder="Username")
+            .field
+                label Password: 
+                input#profilePasswordInput(type="password",placeholder="New Password")
+            .field
+                label Privilege Level:
+                select#privilegeSelect
+                    option(value = "user") Citizen
+                    option(value = "coordinator") Coordinator 
+                    option(value = "admin") Admin
+            .field
+                label Account Status:
+                select#accountStatusSelect
+                    option(value = true) Active
+                    option(value = false) Inactive
+    .actions
+        .ui.cancel.button Cancel
+        .ui.green.button(onclick="submitEditFile()") Submit

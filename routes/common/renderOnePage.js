@@ -46,6 +46,7 @@ async function renderOnePage(req, res, pageView) {
   // if status is undefined, set it to 'undefined'
   status = status || 'undefined';
 
+  console.log(req.role);
   // render main page with all data
   res.render('mainPage', {
     pageView,
@@ -54,6 +55,7 @@ async function renderOnePage(req, res, pageView) {
     status,
     announcements: announcementList,
     emergencyContacts,
+    currentRole: req.role,
     emergencyGroups,
     blogs: blogList,
   });

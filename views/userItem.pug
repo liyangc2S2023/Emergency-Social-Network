@@ -1,5 +1,5 @@
-.item(class="active" id=`directory-user-block-${user.username}` onclick=`displayPrivateMessage('${user.username}')`) 
-    .content 
+.item(class="active" id=`directory-user-block-${user.username}`) 
+    .content(onclick=`displayPrivateMessage('${user.username}')`)
         a.header 
             .ui.circular.avatar.image 
                 img(src="/icons/cloud-off.svg")
@@ -8,6 +8,8 @@
             i(class=`${user.statusStyle}` id=`directoryStatus-${user.username}`)
             .new-message-alert(id=`directoryNewMessage-${user.username}` )
                 i.certificate.icon.new-message-alert-icon
+        if currentRole === 'admin'
+            .ui.right.floated.green.button(onclick=`editProfile('${user.username}'); event.stopPropagation()`) edit 
         if user.online
             .meta.online online
         else
