@@ -1,0 +1,32 @@
+.item
+  .ui.small.image
+    img(src=`${blog.image}`)
+  .content
+    .header #{blog.title}
+    .meta
+      a.ui Author: #{blog.author}
+      a.ui.right.floated #{blog.time}
+    .ui.label #{blog.tag}
+    .description #{blog.content}
+    .extra
+      .ui.labeled.button(tabindex="0")
+        .ui.button#likeButton(onclick="likeClick()" data-liked="false")
+          i.heart.icon#likeIcon
+          | Like
+        a.ui.basic.label(id=`blog-like-count-${blog.id}`)
+          | #{blog.likes}
+      button.ui.right.floated.icon.button#addCommentButton(onclick="addCommentClick()")
+        i.comment.icon
+    .ui.comments
+      h3.ui.dividing.header Comments
+      for comment in blog.comments
+          include blogComment.pug
+      form.ui.reply.form#blogCommentForm(hidden)
+        #replyTo(hidden)
+        .field
+          textarea#blogCommentInput
+        .ui.error.message#blogCommentError(hidden)
+          .text Please fill in the comment
+        .ui.blue.labeled.submit.icon.button(onclick="submitCommentClick()")
+          i.icon.edit
+          | Add Reply

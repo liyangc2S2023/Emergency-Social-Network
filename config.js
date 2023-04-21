@@ -19,6 +19,15 @@ class config {
     emergency: 'circle red icon',
   };
 
+  static S3 = {
+    accessKeyId: 'AKIA2USN5UESPKU35PDH',
+    secretAccessKey: '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',
+    region: 'us-east-2',
+    bucketName: 'fse-snowboard-image',
+  };
+
+  static DEFAULT_BLOG_IMAGE = 'https://fse-snowboard-image.s3.us-east-2.amazonaws.com/default.jpeg';
+
   static EMERGENCY_TYPE = {
     REQUEST: 'request',
     RESPONSE: 'response',

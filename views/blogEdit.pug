@@ -1,0 +1,26 @@
+.ui.container
+  input#editBlogId(hidden)
+  .ui.header title
+  .ui.fluid.icon.input
+    input#blogTitleInput(type="text" placeholder="Title")
+  .ui.error.message#blogTitleError(hidden)
+    .text Please fill in the blog title
+  .ui.header tag 
+  select.ui.fluid.dropdown#blogTagDropdown
+    option(value="General" selected) General
+    option(value="First-aid Skills") First-aid Skills
+    option(value="Power Outage") Power Outage
+    option(value="Road Accidents") Road Accidents
+    option(value="Supply & Shelters") Supply (&amp;) Shelters
+  .ui.header content
+  form.ui.form
+    textarea#blogContentInput(cols="30" rows="15")
+  .ui.error.message#blogContentError(hidden)
+    .text Please fill in the blog content
+  .ui.header image (optional)
+  input#blogImageInput(type="file" class="inputfile" onchange="uploadImageClick()")
+  .ui.text#imageUploadMessage
+  #blogImageURL(hidden)
+  .ui.tiny.image#uploadedImage
+    img
+  button.ui.blue.fluid.large.button#postBlogButton(onclick="postBlogClick()") Post

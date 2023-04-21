@@ -3,6 +3,8 @@ const axios = require('axios');
 const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
+const Blog = require('../model/blog');
+const Comment = require('../model/comment');
 const config = require('../config');
 const DB = require('../database');
 
@@ -278,6 +280,178 @@ test('can query private message', async () => {
   };
 
   await queryFunction(query);
+});
+
+/**
+ * test for get all blogs
+ */
+test('can get all blogs', async () => {
+  await axios.get(`${HOST}/blogs`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.length).toBe(0);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for post blog
+ */
+test('can post blog', async () => {
+  const blog = {
+    author: 'author', title: 'title', tag: 'tag', content: 'content',
+  };
+  await axios.post(`${HOST}/blogs`, blog, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.title).toBe('title');
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for get blog by id
+ */
+test('can get blog by id', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  await axios.get(`${HOST}/blogs/${blog.id}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.title).toBe(blog.title);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for update blog by author
+ */
+test('can update blog by author', async () => {
+  // the author of the blog is the sampleUser
+  const blog = await Blog.addBlog(sampleUser.username, 'title', 'tag', 'content');
+  const newBlog = {
+    title: 'title1', tag: 'tag1', content: 'content1',
+  };
+  // login by the sampleUser
+  await axios.put(`${HOST}/blogs/${blog.id}`, newBlog, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.title).toBe(newBlog.title);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for update blog not by author
+ */
+test('cannot update blog not by author', async () => {
+  // the author of the blog is not the sampleUser
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  const newBlog = {
+    title: 'title1', tag: 'tag1', content: 'content1',
+  };
+  // login by the sampleUser
+  await axios.put(`${HOST}/blogs/${blog.id}`, newBlog, { headers: { authorization: userToken } }).then(() => {
+  }).catch((error) => {
+    expect(error.response.status).toBe(400);
+  });
+});
+
+/**
+ * test for delete blog by author
+ */
+test('can delete blog by author', async () => {
+  // the author of the blog is the sampleUser
+  const blog = await Blog.addBlog(sampleUser.username, 'title', 'tag', 'content');
+  // login by the sampleUser
+  await axios.delete(`${HOST}/blogs/${blog.id}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.acknowledged).toBe(true);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for delete blog not by author
+ */
+test('cannot delete blog not by author', async () => {
+  // the author of the blog is not the sampleUser
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  // login by the sampleUser
+  await axios.delete(`${HOST}/blogs/${blog.id}`, { headers: { authorization: userToken } }).then(() => {
+  }).catch((error) => {
+    expect(error.response.status).toBe(400);
+  });
+});
+
+/**
+ * test for update blog likes
+ */
+test('can update blog likes', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  const body = { likes: 10 };
+  await axios.put(`${HOST}/blogs/${blog.id}/likes`, body, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.likes).toBe(10);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for get comments by replyTo
+ */
+test('can get comments by replyTo', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  await Comment.addComment(blog.id, blog.id, 'author', 'comment');
+  await axios.get(`${HOST}/blogs/comments/${blog.id}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.data.data.length).toBe(1);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for post comment to a blog
+ */
+test('can post comment to a blog', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  const comment = { blogId: blog.id, replyTo: blog.id, content: 'comment' };
+  await axios.post(`${HOST}/blogs/comments`, comment, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.comment).toBe(comment.comment);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for post reply to a comment
+ */
+test('can post reply to a comment', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  const comment = await Comment.addComment(blog.id, blog.id, 'author', 'comment');
+  const reply = { blogId: blog.id, replyTo: comment.id, content: 'content' };
+  await axios.post(`${HOST}/blogs/comments`, reply, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.content).toBe(reply.content);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+/**
+ * test for delete comment by comment id
+ */
+test('can delete comment by comment id', async () => {
+  const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
+  const comment = await Comment.addComment(blog.id, blog.id, 'author', 'comment');
+  await axios.delete(`${HOST}/blogs/comments/${comment.id}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+    expect(response.data.data.acknowledged).toBe(true);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
 });
 
 test('can add emergency contact', async () => {

@@ -66,11 +66,6 @@ function sendMessage(isPublic = true) {
   }
 }
 
-function mainPageBack() {
-  displayDirectory();
-  $("#main-page-back").hide();
-}
-
 $(document).ready(() => {
   axios.get('api/v1/users/current').then((res) => {
     const { username } = res.data.data;

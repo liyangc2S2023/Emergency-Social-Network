@@ -1,0 +1,13 @@
+.comment
+  a.avatar
+    if reply.isAuthor
+      img(src='/image/senderPhoto.jpeg')
+    else 
+      img(src='/image/photo.jpeg')
+  .content
+    a.author #{reply.author}
+    .metadata
+      span.date #{reply.time}
+    .text @#{reply.replyToUser} #{reply.content}
+    //- .actions(data-comment-id=reply.id onclick="replyReplyClick(this)")
+    //-   a.reply Reply
