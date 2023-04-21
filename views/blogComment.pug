@@ -1,0 +1,17 @@
+.comment
+  a.avatar
+    if comment.isAuthor
+        img(src='/image/senderPhoto.jpeg')
+    else 
+        img(src='/image/photo.jpeg')
+  .content
+    a.author #{comment.author}
+    .metadata
+      span.date #{comment.time}
+    .text #{comment.content}
+    .actions#replyCommentButton(data-comment-id=comment.id onclick="replyCommentClick(this)")
+      a.reply Reply
+  .comments(id=`commentReplies-${comment.id}`)
+    if comment.replies
+      for reply in comment.replies
+        include blogReply.pug

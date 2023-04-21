@@ -1,0 +1,19 @@
+.item(id=`blog-item-${blog.id}`)
+  input#blogId(type="hidden" value=`${blog.id}`)
+  .ui.small.image#blogImage
+    img(src=`${blog.image}`)
+  .content
+    .header #{blog.title}
+    .meta
+      a.ui Author: #{blog.author}
+    .meta
+      a #{blog.time}
+    .extra
+      .ui.label #{blog.tag}
+      if blog.isAuthor
+        button.ui.right.floated.icon.button#blogDeleteButton(onclick="deleteBlogClick()")
+          i.delete.icon
+        button.ui.right.floated.icon.button#blogEditButton(onclick="editBlogClick()")
+          i.edit.icon
+      button.ui.right.floated.button(data-blog-id=blog.id onclick="viewDetailsClick(this)") View Details
+        i.right.chevron.icon

@@ -1,0 +1,9 @@
+.ui.center.aligned.container
+  h2.ui.header#blogboard Snowstorm Blog Board
+  button.ui.large.primary.button(onclick="postNewBlogClick()") Post a blog
+.ui.container
+  .ui.relaxed.divided.items#blogList
+    .item#startline
+    for blog in blogs
+      include blogBrief.pug
+    .item#endline

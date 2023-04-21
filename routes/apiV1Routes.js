@@ -1,11 +1,18 @@
 const express = require('express');
 const pug = require('pug');
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+const upload = multer({ storage });
+const s3 = require('../s3');
 const Result = require('./common/result');
 const messageController = require('../controller/messageController');
 const userController = require('../controller/userController');
 const statusController = require('../controller/statusController');
 const searchController = require('../controller/searchController');
 const announcementController = require('../controller/announcementController');
+const blogController = require('../controller/blogController');
+const commentController = require('../controller/commentController');
 const emergencyRecordController = require('../controller/emergencyRecordController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
@@ -26,6 +33,7 @@ router.get('/users/current', async (req, res) => {
   return res.status(400).send(Result.fail(username, ''));
 });
 
+// eslint-disable-next-line max-len
 router.get('/users/:userId', async (req, res) => res.send(Result.success(await userController.getOne(req.params.userId))));
 
 router.get('/messages', async (req, res) => res.send(Result.success(await messageController.getAll())));
@@ -49,6 +57,7 @@ router.post('/messages', async (req, res) => {
   res.send(Result.success(result));
 });
 
+// eslint-disable-next-line max-len
 router.get('/messages/:senderId', async (req, res) => res.send(Result.success(await messageController.getBySender(req.params.senderId))));
 
 router.get('/messages/private/:senderId/:receiverId', async (req, res) => {
@@ -146,6 +155,196 @@ router.get('/search', async (req, res) => {
   } = req.query;
   const searchResult = await searchController.searchContent(context, criteria.split(','), sender, receiver, page);
   res.send(Result.success(searchResult));
+});
+
+/**
+ * get all blogs
+ */
+router.get('/blogs', async (req, res) => {
+  const result = await blogController.getAllBlogs();
+  res.send(Result.success(result));
+});
+
+/**
+ * get a blog by id
+ */
+router.get('/blogs/:blogId', async (req, res) => {
+  const blog = await blogController.getBlogById(req.params.blogId);
+  // set attributes for ui rendering
+  blog.time = date2Str(new Date(blog.timestamp));
+  blog.isAuthor = (req.username === blog.author);
+  blog.comments = await commentController.getCommentsByReplyTo(req.params.blogId);
+  if (blog.comments) {
+    blog.comments.forEach(async (comment) => {
+      comment.time = date2Str(new Date(comment.timestamp));
+      comment.isAuthor = (comment.author === blog.author);
+    });
+  }
+  // send a socket to update blog view ui
+  const blogViewHTML = pug.renderFile('./views/blogDetails.pug', { blog });
+  const userSocket = socketMap.getInstance().getSocket(req.username);
+  if (userSocket) userSocket.emit('viewBlog', blogViewHTML);
+  // update commnet reply ui
+  if (blog.comments) {
+    blog.comments.forEach(async (comment) => {
+      const replies = await commentController.getCommentsByReplyTo(comment.id);
+      replies.forEach((reply) => {
+        userSocket.emit('updateReplyTo', reply.replyTo);
+        reply.time = date2Str(new Date(reply.timestamp));
+        reply.isAuthor = (reply.author === blog.author);
+        reply.replyToUser = comment.author;
+        const replyHTML = pug.renderFile('./views/blogReply.pug', { reply });
+        if (userSocket) userSocket.emit('postReply', replyHTML, blog.id, reply.replyTo);
+      });
+    });
+  }
+  res.send(Result.success(blog));
+});
+
+/**
+ * post a blog
+ */
+router.post('/blogs', async (req, res) => {
+  const input = req.body;
+  if (!input.image || input.image.trim() === '') input.image = config.DEFAULT_BLOG_IMAGE;
+  // eslint-disable-next-line max-len
+  const blog = await blogController.addBlog(req.username, input.title, input.tag, input.content, input.image);
+  blog.time = date2Str(new Date(blog.timestamp));
+  blog.isAuthor = (req.username === blog.author);
+  // send a socket to update blog board ui
+  const blogBriefHTML = pug.renderFile('./views/blogBrief.pug', { blog });
+  req.io.emit('postBlog', blogBriefHTML, blog);
+  res.send(Result.success(blog));
+});
+
+/**
+ * update a blog by the author
+ */
+router.put('/blogs/:blogId', async (req, res) => {
+  const input = req.body;
+  if (!input.image || input.image.trim() === '') input.image = config.DEFAULT_BLOG_IMAGE;
+  try {
+    // eslint-disable-next-line max-len
+    const blog = await blogController.updateBlog(req.params.blogId, req.username, input.title, input.tag, input.content, input.image);
+    blog.time = date2Str(new Date(blog.timestamp));
+    blog.isAuthor = (req.username === blog.author);
+    // send a socket to update blog board ui
+    const blogBriefHTML = pug.renderFile('./views/blogBrief.pug', { blog });
+    req.io.emit('editBlog', blogBriefHTML, blog);
+    res.send(Result.success(blog));
+  } catch (error) {
+    res.status(400);
+    res.send(Result.fail());
+  }
+});
+
+/**
+ * delete a blog
+ */
+router.delete('/blogs/:blogId', async (req, res) => {
+  try {
+    const blog = await blogController.getBlogById(req.params.blogId);
+    // delete blog
+    const result = await blogController.deleteBlog(req.params.blogId, req.username);
+    // delete comments of the blog
+    await commentController.deleteCommentsByBlogId(req.params.blogId);
+    // delete image from s3
+    if (blog.image && blog.image !== config.DEFAULT_BLOG_IMAGE) {
+      const params = {
+        Bucket: config.S3.bucketName,
+        Key: blog.image,
+      };
+      s3.deleteObject(params, (err) => {
+        if (err) {
+          console.log('Error deleting file from S3: ', err);
+        } else {
+          console.log('File deleted from S3 successfully.');
+        }
+      });
+    }
+    req.io.emit('deleteBlog', req.params.blogId);
+    res.send(Result.success(result));
+  } catch (error) {
+    res.status(400);
+    res.send(Result.fail());
+  }
+});
+
+/**
+ * upload a file to AWS S3
+ */
+router.post('/uploadImage', upload.single('file'), (req, res) => {
+  const params = {
+    Bucket: config.S3.bucketName,
+    Key: req.file.originalname,
+    Body: req.file.buffer,
+    ACL: 'public-read',
+  };
+  s3.upload(params, (err, data) => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Error uploading file');
+    } else {
+      console.log(`File uploaded successfully. URL: ${data.Location}`);
+      res.send(Result.success(data));
+    }
+  });
+});
+
+/**
+ * update likes to a blog
+ */
+router.put('/blogs/:blogId/likes', async (req, res) => {
+  const blog = await blogController.updateLikes(req.params.blogId, req.body.likes);
+  req.io.emit('updateBlogLikes', blog.id, blog.likes);
+  res.send(Result.success(blog));
+});
+
+/**
+ * get all comments of a blog or a comment
+ */
+router.get('/blogs/comments/:replyTo', async (req, res) => {
+  const result = await commentController.getCommentsByReplyTo(req.params.replyTo);
+  res.send(Result.success(result));
+});
+
+/**
+ * post a comment to a blog or a comment
+ */
+router.post('/blogs/comments', async (req, res) => {
+  // add a comment
+  // eslint-disable-next-line max-len
+  const comment = await commentController.addComment(req.body.blogId, req.body.replyTo, req.username, req.body.content);
+  // set params to render a comment html
+  const blog = await blogController.getBlogById(req.body.blogId);
+  const replyToComment = await commentController.getCommentById(comment.replyTo);
+  const replyToBlog = await blogController.getBlogById(comment.replyTo);
+  comment.time = date2Str(new Date(comment.timestamp));
+  comment.isAuthor = comment.author === blog.author;
+  // send a socket to update comment ui
+  if (replyToBlog) {
+    const commentHTML = pug.renderFile('./views/blogComment.pug', { comment });
+    // const userSocket = socketMap.getInstance().getSocket(req.username);
+    // if (userSocket) userSocket.emit('postComment', commentHTML, blog.id);
+    req.io.emit('postComment', commentHTML, blog.id);
+  }
+  if (replyToComment) {
+    const reply = comment;
+    reply.replyToUser = replyToComment.author;
+    const replyHTML = pug.renderFile('./views/blogReply.pug', { reply });
+    // const userSocket = socketMap.getInstance().getSocket(req.username);
+    // if (userSocket) userSocket.emit('postReply', replyHTML);
+    req.io.emit('postReply', replyHTML, blog.id, reply.replyTo);
+  }
+  res.send(Result.success(comment));
+});
+
+/**
+ * delete a comment
+ */
+router.delete('/blogs/comments/:commentId', async (req, res) => {
+  const result = await commentController.deleteComment(req.params.commentId);
+  res.send(Result.success(result));
 });
 
 router.get('/emergencyContact', async (req, res) => {

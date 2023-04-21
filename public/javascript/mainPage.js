@@ -24,6 +24,9 @@ function hideOtherDisplay(componentId) {
   $("#statusContent").hide();
   $("#privateChatContent").hide();
   $("#searchContent").hide();
+  $("#blogContent").hide();
+  $("#editBlogContent").hide();
+  $("#viewBlogContent").hide();
   $("#discoverContent").hide();
   $("#mapContent").hide();
   $("#" + componentId).show()
@@ -248,6 +251,37 @@ function displaySearch() {
   // clearContent
   const resultsContainer = $('.container.searchResults');
   resultsContainer.empty(); // clear any previous search results
+}
+
+function displayBlogboard() {
+  changeTitle("Blog");
+  setCurrentPage("blogContent");
+  hideOtherDisplay("blogContent");
+  $("#searchButton").hide();
+}
+
+function displayEditBlogPage() {
+  hideOtherDisplay("editBlogContent");
+  setCurrentPage("editBlogContent");
+  $("#main-page-back").show();
+  $("#searchButton").hide();
+}
+
+function displayViewBlogPage() {
+  hideOtherDisplay("viewBlogContent");
+  setCurrentPage("viewBlogContent");
+  $("#main-page-back").show();
+  $("#searchButton").hide();
+}
+
+function goBack() {
+  if ($('#currentPage').val() === 'privateChatContent') {
+    displayDirectory();
+  }
+  if ($('#currentPage').val() === 'blogContent' || $('#currentPage').val() === 'editBlogContent' || $('#currentPage').val() === 'viewBlogContent') {
+    displayBlogboard();
+  }
+  $("#main-page-back").hide();
 }
 
 const transformUserList = (userList) => {

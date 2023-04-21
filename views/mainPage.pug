@@ -19,6 +19,8 @@ html
         script(src='/javascript/status.js')
         script(src='/javascript/search.js')
         script(src='/javascript/emergencyContact.js')
+        link(rel='stylesheet' href='/css/blog.css')
+        script(src='/javascript/blog.js')
         //- map
         link(rel='stylesheet' href='/css/map.css')
         script(src='/javascript/map.js')
@@ -50,6 +52,12 @@ html
                 include search.pug
             #discoverContent(style=pageView=="Discover"?"display:block":"display:none")
                 include discover.pug
+            #blogContent(style=pageView=="Blog"?"display:block":"display:none")
+                include blogboard.pug
+            #editBlogContent(style=pageView=="Blog"?"display:block":"display:none")
+                include blogEdit.pug
+            #viewBlogContent(style=pageView=="Blog"?"display:block":"display:none")
+                include blogView.pug
             #mapContent(style=pageView=="Map"?"display:block":"display:none")
                 include map.pug
         // map bottom information

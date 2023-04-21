@@ -2,6 +2,7 @@ const messageController = require('../../controller/messageController');
 const userController = require('../../controller/userController');
 const statusController = require('../../controller/statusController');
 const announcementController = require('../../controller/announcementController');
+const blogController = require('../../controller/blogController');
 const emergencyContactController = require('../../controller/emergencyContactController');
 const emergencyGroupController = require('../../controller/emergencyGroupController');
 const date2Str = require('../../utils/dateUtil');
@@ -21,6 +22,12 @@ async function renderOnePage(req, res, pageView) {
   const announcementList = await announcementController.getAll();
   announcementList.forEach((ancm) => {
     ancm.time = date2Str(new Date(ancm.timestamp));
+  });
+
+  const blogList = await blogController.getAllBlogs();
+  blogList.forEach(async (blog) => {
+    blog.time = date2Str(new Date(blog.timestamp));
+    blog.isAuthor = (req.username === blog.author);
   });
 
   // data preparation for directory page
@@ -43,11 +50,12 @@ async function renderOnePage(req, res, pageView) {
   res.render('mainPage', {
     pageView,
     users: userList,
-    emergencyGroups,
     messages: messageList,
     status,
     announcements: announcementList,
     emergencyContacts,
+    emergencyGroups,
+    blogs: blogList,
   });
 }
 
