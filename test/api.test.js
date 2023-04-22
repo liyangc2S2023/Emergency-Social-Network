@@ -563,3 +563,99 @@ test('can create new emergency group', async () => {
     expect(error).toBeUndefined();
   });
 });
+
+test('test can update user profile information by Admin', async () => {
+  // create a sample user
+  const newUser = await User.addUser('DWAYNE JOHNSON', '1234');
+  const updatedUserProfile = {
+    username: 'NICOLAS CAGE', password: '5678', role: config.USER_ROLE.COORDINATOR, active: false,
+  };
+  // get updated user profile
+  await axios.put(`${HOST}/users/${newUser.username}`, updatedUserProfile, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
+});
+
+test('test for updating the username that already existed ', async () => {
+  // create sample users
+  const newUser = await User.addUser('DWAYNE JOHNSON', '1234');
+  const user = await User.addUser('LEONARDO', '1234');
+  const updatedUserProfile = {
+    username: 'LEONARDO', password: '5678', role: config.USER_ROLE.COORDINATOR, active: false,
+  };
+  // expect error when desired updated username is already existed
+  await axios.put(`${HOST}/users/${newUser.username}`, updatedUserProfile, { headers: { authorization: userToken } }).then(() => {
+  }).catch((error) => {
+    expect(error.response.status).toBe(400);
+  });
+});
+
+
+test("test can return error when updating an admin user to a non-admin role if there is only one admin", async () => {
+  // create sample users
+  const newUser = await User.addUser('aaa', '1234');
+  var updatedOwnProfile = {
+    newUsername: "ANGELINA",
+    password: "5668",
+    active: true,
+    role: config.USER_ROLE.ADMIN,
+  };
+  const updatedUserInfo = await User.updateInfo('aaa', updatedOwnProfile.newUsername, updatedOwnProfile.password, updatedOwnProfile.active, updatedOwnProfile.role);
+  // update admin user to non-admin role
+  updatedOwnProfile.role = config.USER_ROLE.COORDINATOR;
+  // expect error when trying to update admin user to non-admin role
+  await axios.put(`${HOST}/users/${newUser.username}`, updatedOwnProfile, { headers: { authorization: userToken } 
+    }).catch((error) => {
+      expect(error.response.status).toBe(400);
+      expect(error.response.data.message).toBe(
+        "There must be at least one admin"
+      );
+    });
+});
+
+
+test('test updating user info successfully with inactive status & log the user out', async () => {
+    // create sample users
+    const newUser = await User.addUser('JESSICA', '1234');
+    const updatedOwnInfo = {
+      newUsername: "JESSICAaaa",
+      password: "5668",
+      active: false,
+      role: config.USER_ROLE.COORDINATOR,
+    };
+    const updatedUserInfo = await User.updateInfo('JESSICA', updatedOwnInfo.newUsername, updatedOwnInfo.password, updatedOwnInfo.active, updatedOwnInfo.role);
+  // make request to update user info
+  await axios.put(`${HOST}/users/${newUser.username}`, updatedUserInfo, { headers: { authorization: userToken } })
+    .then((response) => {
+      expect(response.status).toBe(200);
+    })
+    .catch((error) => {
+      expect(error.response.status).toBe(400);
+    });
+});
+
+test('test for setting user active and inactive', async () => {
+  // create a sample user
+  const user = await User.addUser('John Doe', '1234');
+
+  // set user active
+  await axios.put(`${HOST}/users/${user.username}/active`, {}, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.data.success).toBe(true);
+  }).catch((error) => {
+    // console.log(error);
+  });
+  // verify user is active
+  const updatedUser = await User.getOne(user.username);
+  expect(updatedUser.active).toBe(true);
+  // set user inactive
+  await axios.put(`${HOST}/users/${user.username}/inactive`, {}, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.data.success).toBe(true);
+  }).catch((error) => {
+    
+  });
+  // verify user is inactive
+  const updatedUserAgain = await User.getOne(user.username);
+  expect(updatedUserAgain.active).toBe(false);
+});
