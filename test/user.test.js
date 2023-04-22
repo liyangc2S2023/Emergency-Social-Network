@@ -7,14 +7,14 @@ const config = require('../config');
 
 let mongoServer;
 
-beforeAll(async () => {
+beforeEach(async () => {
   // assuming mongoose@6.x
   mongoServer = await MongoMemoryServer.create();
   const mongoUri = mongoServer.getUri();
   await mongoose.connect(mongoUri);
 });
 
-afterAll(async () => {
+afterEach(async () => {
   await mongoose.disconnect();
   await mongoServer.stop();
 });
@@ -173,5 +173,36 @@ test('test search information by status and get a matching user list', async () 
   expect(res[0].username).toBe('linxi');
   expect(res[1].username).toBe('lisa');
   expect(res[2].username).toBe('noreen');
-  // TODO: test the result order by online
 });
+
+test('test can set user account from "Inactive" to "Active", verse same', async () => {
+  await User.addUser('Harry', '1234');
+  await User.addUser('Tom Cruise', '1234');
+  await User.addUser('Leon', '1234');
+  await User.addUser('John Wick', '1234');
+  await User.addUser('Jennifer Lawrance', '1234');
+  await User.addUser('Bella', '1234');
+  await User.setInactive('Bella');
+  await User.setInactive('John Wick');
+  await User.setInactive('Jennifer Lawrance');
+  await User.setInactive('Leon');
+  expect(await User.getAllInactive()).toEqual(new Set(['Bella', 'Leon', 'John Wick', 'Jennifer Lawrance']));
+  await User.setActive('John Wick');
+  await User.setActive('Jennifer Lawrance');
+  expect(await User.getAllInactive()).toEqual(new Set(['Bella', 'Leon']));
+});
+
+
+test('test can update user profile information', async () => {
+  await User.addUser('CHRIS EVANS', '1234');
+  await User.addUser('ROBERT', '1234');
+  await User.addUser('JOHNNY DEPP', '1234');
+  await User.addUser('SCARLETT', '1234');
+  await User.addUser('BRAD PITT', '1234');
+  await User.updateInfo('BRAD PITT', 'CHRIS HEMSWORTH', '5678', false, config.USER_ROLE.COORDINATOR);
+  expect((await User.getOne('CHRIS HEMSWORTH')).username).toBe('CHRIS HEMSWORTH');
+  expect((await User.getOne('CHRIS HEMSWORTH')).role).toBe(config.USER_ROLE.COORDINATOR);
+  expect(await User.getOne('BRAD PITT')).toEqual(null);
+});
+
+
