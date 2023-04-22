@@ -14,18 +14,21 @@ const ExchangeController = require('../../controller/exchangeController');
 async function renderOnePage(req, res, pageView) {
   // make user online
   await userController.login(req.username);
+  var inactiveUsers = await userController.getAllInactive();
 
-  const messageList = await messageController.getMessageByReceiverOrRoom('all');
+  var messageList = await messageController.getMessageByReceiverOrRoom('all');
   messageList.forEach((msg) => {
     msg.isSender = (req.username === msg.sender);
     msg.time = date2Str(new Date(msg.timestamp));
     msg.statusStyle = config.statusMap[msg.status];
   });
+  messageList = messageList.filter((msg) => !(inactiveUsers.has(msg.sender) || inactiveUsers.has(msg.receiver)))
 
-  const announcementList = await announcementController.getAll();
+  var announcementList = await announcementController.getAll();
   announcementList.forEach((ancm) => {
     ancm.time = date2Str(new Date(ancm.timestamp));
   });
+  announcementList = announcementList.filter((ancm) => !(inactiveUsers.has(ancm.sender)))
 
   const blogList = await blogController.getAllBlogs();
   blogList.forEach(async (blog) => {
@@ -34,10 +37,13 @@ async function renderOnePage(req, res, pageView) {
   });
 
   // data preparation for directory page
-  const userList = await userController.getAll();
+  var userList = await userController.getAll();
   userList.forEach((user) => {
     user.statusStyle = config.statusMap[user.status];
   });
+  if(req.role!=config.USER_ROLE.ADMIN){
+    userList = userList.filter((user) => !(inactiveUsers.has(user.username)))
+  }
 
   // supply list
   const supplyList = await supplyController.getAllRemainingSupplies();

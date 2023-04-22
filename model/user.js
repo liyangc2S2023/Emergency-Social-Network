@@ -7,6 +7,7 @@ const userSchema = new mongoose.Schema({
   username: { type: String, required: true, unique: true },
   password: { type: String, required: true },
   online: { type: Boolean, default: false },
+  active: { type: Boolean, default: true },
   status: { type: String, default: 'undefined' },
   role: { type: String, default: config.USER_ROLE.USER },
 });
@@ -70,8 +71,8 @@ class User {
     return UserTable.findOne({ username });
   }
 
-  static async addUser(username, password, role = config.USER_ROLE.USER) {
-    return UserTable.create({ username, password: UserHelper.encrypt(password), role });
+  static async addUser(username, password, role = config.USER_ROLE.USER, status = config.USER_STATUS.UNDEFINED) {
+    return UserTable.create({ username, password: UserHelper.encrypt(password), role, status });
   }
 
   static async getUserRole(username) {
@@ -109,6 +110,28 @@ class User {
       .limit(limit);
     return users;
   }
+
+  static async setInactive(username) {
+    return UserTable.updateOne({ username }, { $set: { active: false } });
+  }
+
+  static async setActive(username) {
+    return UserTable.updateOne({ username }, { $set: { active: true } });
+  }
+
+  static async updateInfo(username, newUsername, password, active, role){
+    return UserTable.updateOne({ username }, { $set: { username: newUsername, password: UserHelper.encrypt(password), active, role }});
+  }
+
+  static async getAllInactive() {
+    var usernames = new Set();;
+    var inactiveUsers = await UserTable.find({ active: false });
+    inactiveUsers.forEach((user) => {
+      usernames.add(user.username);
+    });
+    return usernames;
+  }
+
 }
 
 module.exports = User;
