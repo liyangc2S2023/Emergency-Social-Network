@@ -7,6 +7,7 @@ const pug = require('pug');
 const date2Str = require('../utils/dateUtil');
 const config = require('../config');
 const searchController = require('../controller/searchController');
+const UserController = require('../controller/userController');
 
 const transformMessage = (msg) => {
   const {
@@ -21,21 +22,27 @@ const transformMessage = (msg) => {
   };
 };
 
-const transformMessageList = (msgList) => {
+const transformMessageList = async (msgList) => {
+  var inactiveUsers = await UserController.getAllInactive()
   const transformedList = [];
   msgList.forEach((msg) => {
-    transformedList.push(transformMessage(msg));
+    if(!inactiveUsers.has(msg.sender) && !inactiveUsers.has(msg.receiver)){
+      transformedList.push(transformMessage(msg));
+    }
   });
   return transformedList;
 };
 
-const transfromUserList = (userList) => {
+const transfromUserList = async (userList) => {
+  var inactiveUsers = await UserController.getAllInactive()
   const transformedList = [];
   userList.forEach((user) => {
-    transformedList.push({
-      username: user.username,
-      statusStyle: config.statusMap[user.status],
-    });
+    if(!inactiveUsers.has(user.username)){
+      transformedList.push({
+        username: user.username,
+        statusStyle: config.statusMap[user.status],
+      });
+    }
   });
   return transformedList;
 };
@@ -48,11 +55,12 @@ router.get('/', async (req, res) => {
   let renderedResult = '';
   const resultsLength = searchResult.length;
   if (context.indexOf('Message') !== -1) {
-    renderedResult = pug.renderFile('./views/messageList.pug', { messages: transformMessageList(searchResult) });
+    renderedResult = pug.renderFile('./views/messageList.pug', { messages: await transformMessageList(searchResult) });
   } else if (['announcement'].includes(context)) {
-    renderedResult = pug.renderFile('./views/announcementList.pug', { announcements: searchResult });
+    var inactiveUsers = await UserController.getAllInactive()
+    renderedResult = pug.renderFile('./views/announcementList.pug', { announcements: searchResult.filter((ancm) => !inactiveUsers.has(ancm.sender)) });
   } else if (['username', 'status'].includes(context)) {
-    renderedResult = pug.renderFile('./views/directory.pug', { users: transfromUserList(searchResult) });
+    renderedResult = pug.renderFile('./views/directory.pug', { users: await transfromUserList(searchResult) });
   }
   res.send(Result.success({ renderedResult, resultsLength }));
 });

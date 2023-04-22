@@ -9,7 +9,11 @@ socket.on('electricianFix', (updateContent) => {
 
 $(document).ready(() => {
   axios.get('/api/v1/powerIssueList').then(res => {
-    const results = res.data.data.powerStatus.status;
+    const powerStatus = res.data.data.powerStatus;
+    var results = '';
+    if(powerStatus){
+      results = powerStatus.status;
+    }
     $('#fixOrderItems').append(results);
   });
 });

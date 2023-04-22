@@ -443,6 +443,12 @@ socket.on('setToDirectoryPage', () => {
   displayDirectory();
 });
 
+socket.on('logout', (id) => {
+  if (id === getCurrentUsername()) {
+    window.location.href = '/logout';
+  }
+});
+
 $(document).ready(() => {
   setCurrentPage("directoryContent");
   setEmergencyContactSearch()

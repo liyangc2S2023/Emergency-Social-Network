@@ -22,6 +22,8 @@ const SupplyController = require('../controller/supplyController');
 const ExchangeController = require('../controller/exchangeController');
 const EmergencyContactController = require('../controller/emergencyContactController');
 const EmergencyGroupController = require('../controller/emergencyGroupController');
+const JoinController = require('../controller/joinController');
+const User = require('../model/user');
 
 const router = express.Router();
 
@@ -38,6 +40,33 @@ router.get('/users/current', async (req, res) => {
 
 // eslint-disable-next-line max-len
 router.get('/users/:userId', async (req, res) => res.send(Result.success(await userController.getOne(req.params.userId))));
+
+router.put('/users/:userId/active', async (req, res) => res.send(Result.success(await userController.setActive(req.params.userId))));
+
+router.put('/users/:userId/inactive', async (req, res) => res.send(Result.success(await userController.setInactive(req.params.userId))));
+
+router.put('/users/:userId/', async (req, res) => {
+  username=req.body.username;
+  password=req.body.password;
+  var { successflag, joinErr } = User.nameRuleCheck(username, password);
+  if(req.params.userId !== req.body.username){
+    const usernameExistsCheck = await User.usernameExists(username);
+    successflag = successflag && usernameExistsCheck.successFlag;
+    if (usernameExistsCheck.err) joinErr.push(usernameExistsCheck.err);
+  }
+  if (!successflag) {
+    res.send(Result.fail(joinErr));
+  }
+  else if(!(await userController.checkAtLeastOneAdmin(req.params.userId))){
+    res.send(Result.fail('There must be at least one admin'));
+  }
+  else{
+    if(!req.body.active){
+      req.io.emit('logout', req.params.userId);
+    }
+    res.send(Result.success(await userController.updateInfo(req.params.userId, req.body.username, req.body.password, req.body.active, req.body.role)));
+  }
+});
 
 router.get('/messages', async (req, res) => res.send(Result.success(await messageController.getAll())));
 

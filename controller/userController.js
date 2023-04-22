@@ -1,3 +1,4 @@
+const config = require('../config');
 const User = require('../model/user');
 
 class UserController {
@@ -34,6 +35,50 @@ class UserController {
   static async updateRole(username){
     return User.updateRole(username);
   }
+  static async isActive(username) {
+    var user = await User.getOne(username)
+    if (user) {
+      return user.active;
+    }
+    else{
+      return true;
+    }
+  }
+  
+  static async setActive(username) {
+    return User.setActive(username);
+  }
+
+  static async setInactive(username) {
+    return User.setInactive(username);
+  }
+
+  static async updateInfo(username, newUsername, password, active, role) {
+    return User.updateInfo(username, newUsername, password, active, role);
+  }
+
+  static async getAllInactive() {
+    return User.getAllInactive();
+  }
+
+  static async checkAtLeastOneAdmin(username) {
+    if((await User.getOne(username)).role === config.USER_ROLE.ADMIN){
+      var allUsers = (await User.getAll()).filter(user => user.active).filter(user => user.role === config.USER_ROLE.ADMIN);
+      if(allUsers.length === 1){
+        return false;
+      }
+      else{
+        return true;
+      }
+    }
+    else{
+      return true
+    }
+  }
+
+  // static async updateCurrentStatus(username, status) {
+  //   return User.updateCurrentStatus(username, status);
+  // }
 }
 
 // const userController = new UserController();
