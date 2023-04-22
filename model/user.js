@@ -79,8 +79,11 @@ class User {
     if (user) {
       return user.role;
     }
-
     return null;
+  }
+
+  static async updateRole(username, role){
+    return UserTable.updateOne({ username }, { $set: { role: role } });
   }
 
   static async updateCurrentStatus(username, status) {

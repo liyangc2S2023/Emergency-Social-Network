@@ -63,6 +63,8 @@ router.post('/confirm', async (req, res, next) => {
     // emit a socket to update directory ui
     const newUserHTML = pug.renderFile('./views/userItem.pug', { user });
     req.io.emit('userRegistered', newUserHTML);
+    // const role = 'user';
+    // req.io.emit('userRoleInitial', role);
     token = await userController.login(username);
     res.status(200);
     res.cookie('user_token', token, { maxAge: 24 * 60 * 60 * 1000 });

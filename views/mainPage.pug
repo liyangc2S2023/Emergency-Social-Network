@@ -11,13 +11,17 @@ html
         link(rel='stylesheet' href='/css/directoryPageStyle.css')
         script(src='/javascript/directory.js')
         script(src='/javascript/chat.js')
+        script(src='/javascript/status.js')
+        script(src='/javascript/search.js')
+        script(src='/javascript/roleChange.js')
+        script(src='/javascript/powerReport.js')
         script(src='/javascript/announcement.js')
         script(src='/javascript/speedTest.js')
+        script(src='/javascript/fixOrder.js')
         link(rel='stylesheet' href='/css/chat.css')
         link(rel='stylesheet' href='/css/status.css')
         link(rel='stylesheet' href='/css/search.css')
-        script(src='/javascript/status.js')
-        script(src='/javascript/search.js')
+        link(rel='stylesheet' href='/css/fixorder.css')
         script(src='/javascript/emergencyContact.js')
         script(src='/javascript/profile.js')
         link(rel='stylesheet' href='/css/blog.css')
@@ -40,6 +44,8 @@ html
             #chatPrivateReceiver(hidden)
             #currentUsername(hidden)
             #currentUserStatus(hidden)
+            #currentUserRole(hidden)
+            #currentUserPowerStatus(hidden)
             #searchInfo(hidden)
             #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
                 #groupChatContent
@@ -51,6 +57,12 @@ html
                 include chatPrivate.pug  
             #announcementContent(style=pageView=="Announcement"?"display:block":"display:none")
                 include announcementBoard.pug 
+            #powerIssueContent(style=pageView=="PowerIssue"?"display:block":"display:none")
+                include powerIssueList.pug
+            #roleContent(style=pageView=="Role"?"display:block":"display:none")
+                include roleChange.pug
+            #powerContent(style=pageView=="Power"?"display:block":"display:none")
+                include powerReport.pug
             #statusContent(style=pageView=="Status"?"display:block":"display:none")
                 include status.pug
             #searchContent(style=pageView=="Search"?"display:block":"display:none")

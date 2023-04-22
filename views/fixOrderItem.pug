@@ -1,0 +1,19 @@
+.item(class="active" id=`directory-user-block-${unfixedOrder.sender}`)
+    .content
+        a.header
+            .ui.circular.avatar.image
+                img(src="/icons/cloud-off.svg")
+            span.fix-order-name #{unfixedOrder.sender}
+            i(class=`${unfixedOrder.status}` id=`directoryStatus-${unfixedOrder.sender}`)
+            br
+            p.userDetail#userAddress Address: #{unfixedOrder.address}
+            .container.powerdescription
+                p.userDetail#userDescription Description: #{unfixedOrder.comment}
+            if unfixedOrder.helper
+                p.userDetail#showHelper Helper: #{unfixedOrder.helper}
+        br
+        p#powerStatus Power Status: #{unfixedOrder.status}
+        if unfixedOrder.status === 'needFix'
+            .ui.primary.button#data-text(type="text" onclick=`updateFixOrderStatus('${unfixedOrder.sender}', '${unfixedOrder.status}')`) Go Fix
+        else
+            .ui.primary.button#data-text(type="button" onclick=`updateFixOrderStatus('${unfixedOrder.sender}', '${unfixedOrder.status}')`) Done

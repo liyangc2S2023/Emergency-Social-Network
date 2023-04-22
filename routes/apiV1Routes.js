@@ -14,6 +14,7 @@ const announcementController = require('../controller/announcementController');
 const blogController = require('../controller/blogController');
 const commentController = require('../controller/commentController');
 const emergencyRecordController = require('../controller/emergencyRecordController');
+const fixOrderController = require('../controller/fixOrderController');
 const socketMap = require('../utils/socketMap');
 const config = require('../config');
 const date2Str = require('../utils/dateUtil');
@@ -133,6 +134,7 @@ router.post('/status', async (req, res) => {
   req.io.emit('statusChange', { username: req.body.username, status });
   return res.send(Result.success({ status }));
 });
+
 
 router.post('/announcements', async (req, res) => {
   const ancm = {
@@ -568,6 +570,38 @@ router.get('/emergencyResponses/target/:id', async (req, res) => {
   const { id } = req.params;
   const result = await emergencyRecordController.getHelpResponseOf(id);
   res.send(Result.success(result));
+});
+
+router.post('/role', async function (req, res) {
+  const roleChangeResult = await fixOrderController.changeRole(req.body.username, req.body.role);
+  const role = await fixOrderController.getUserRole(req.body.username);
+  req.io.emit('roleChange', { username: req.body.username, role });
+  return res.send(Result.success({ role }));
+});
+
+router.post('/powerreport', async function (req, res) {
+  const userPowerStatus = await fixOrderController.createFixOrder(req.body.username, req.body.description, req.body.userAddress, req.body.powerStatus);
+  const powerStatus = await fixOrderController.getFixOrderStatus(req.body.username);
+  return res.send(Result.success({ powerStatus }));
+});
+
+
+router.get('/initialrole', async function (req, res) {
+  const role = await fixOrderController.getUserRole(req.username);
+  res.send(Result.success({ role }));
+});
+
+router.get('/powerIssueList', async function (req, res) {
+  const fixOrder = await fixOrderController.getUnfixOrders();
+  res.send(Result.success({ fixOrder }));
+});
+
+router.post('/fixorder', async function (req, res) {
+  console.log(req.body);
+  const { sender, helper, status } = req.body;
+  const userPowerStatus = await fixOrderController.updateFixOrderByElectrian(sender, helper, status);
+  const powerStatus = await fixOrderController.getFixOrderStatus(sender);
+  return res.send(Result.success({ powerStatus }));
 });
 
 module.exports = router;

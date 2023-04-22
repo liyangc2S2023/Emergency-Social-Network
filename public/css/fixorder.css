@@ -1,0 +1,16 @@
+.container.powerdescription {
+    display: flex; 
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.userDetail{
+    font-size: 15px;
+    margin-right: 100px;
+    color:black;
+}
+
+.fix-order-name {
+    margin-left: 0.5em;
+    font-size: 25px;
+}
