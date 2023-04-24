@@ -18,7 +18,7 @@ jobs: # a collection of steps
             - ./node_modules
       - run: #eslint
           name: eslint
-          command: npm run lint 
+          command: npm run lint
       - run: # run tests
           name: Run Tests
           command: npm run test
