@@ -1,0 +1,16 @@
+name: Sigrid pull request feedback
+on: [pull_request]
+
+jobs:
+  sigridci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+      - name: Sigrid CI
+        uses: Software-Improvement-Group/sigridci@main
+        with:
+          customer: cmusvfse
+          system: s23-esn-sb5
+        env:
+          SIGRID_CI_TOKEN: "eyJraWQiOiJzaWcta2V5IiwiYWxnIjoiUlMyNTYifQ.eyJqdGkiOiI3YTBmN2FiYi0zMmU1LTRmMzUtOGYyMS01YzIyYzAyMGJhYTYiLCJzdWIiOiIyYWE1MTZkZC1iNDk3LTQzNDgtOWM1ZC1hYTA5Zjc5ZTU1ZjUiLCJpc3MiOiJodHRwOi8vYXV0aGFwaTo4MDgwIiwiaWF0IjoxNjgyMzYwMjA0LCJleHAiOjE3MTM5ODI2MDQsImNvZ25pdG86Z3JvdXBzIjpbImNtdXN2ZnNlIl0sInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiIiwidXNlcm5hbWUiOiIyYWE1MTZkZC1iNDk3LTQzNDgtOWM1ZC1hYTA5Zjc5ZTU1ZjUifQ.KL6chemdARsKuwOqknkGSRHOJtQUaryIgikuyXzErscX7pysWO5Zv-pjALxtk22G0so6Ss5u0l43k2lhxGf7CpK46QLQ5egaE503kc06QlEHqtNG0Byzrax8DL7atHqkzxOFvSdHPSkj43zuY7sQimJCVLH6uokUSkOetufykackR9zKt-vIF0LrBjhESCCDz_5FDBAZgI-m4dQpvzakpxIg0l8X42mDlQsQ_8Nfobki98fBqwn_CimggvtC39SmYOCw2Tmx6TNmiMTQLuErt9IJ5D5rEn9cMtmxhn4HA-Vd9HLgkSVE2eedtN24Xvia22EylChSPWIjdyoQPrhF4Q"
