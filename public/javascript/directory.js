@@ -1,5 +1,7 @@
 // socket
 socket.on('userRegistered', (updatedContent) => {
+  
   $('#userItems').append(updatedContent);
-  reorderDirectory()
+  // reorderDirectory()
+  console.log(updatedContent);
 });

@@ -68,6 +68,7 @@ router.post('/confirm', async (req, res, next) => {
     // emit a socket to update directory ui
     const newUserHTML = pug.renderFile('./views/userItem.pug', { user });
     req.io.emit('userRegistered', newUserHTML);
+    req.io.emit('handleUserStateChange');
     // const role = 'user';
     // req.io.emit('userRoleInitial', role);
     token = await userController.login(username);
