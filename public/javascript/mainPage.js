@@ -136,7 +136,7 @@ reorderDirectory = () => {
     var isAOnline = directoryGetisOnline(a)
     var isBOnline = directoryGetisOnline(b)
     return isAOnline == isBOnline ? a.id.localeCompare(b.id) : isBOnline - isAOnline;
-  }).appendTo(parent)
+  }).appendTo(parent[0])
 }
 
 handleUserStateChange = async (username, state) => {
