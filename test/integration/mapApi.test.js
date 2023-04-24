@@ -2,15 +2,15 @@ const axios = require('axios');
 // const { MongoMemoryServer } = require('mongodb-memory-server');
 // const mongoose = require('mongoose');
 // const Message = require('../model/message');
-const User = require('../model/user');
-const config = require('../config');
-const DB = require('../database');
+const User = require('../../model/user');
+const config = require('../../config');
+const DB = require('../../database');
 
 const PORT = 3000;
 const HOST = `http://localhost:${PORT}/api/v1`;
 
 // Initiate Server
-const APP = require('../backend');
+const APP = require('../../backend');
 
 const { server, setupRestfulRoutes } = new APP();
 

@@ -1,9 +1,9 @@
 const cryptoJS = require('crypto-js');
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const User = require('../model/user');
-const UserHelper = require('../model/helper/userHelper');
-const config = require('../config');
+const User = require('../../model/user');
+const UserHelper = require('../../model/helper/userHelper');
+const config = require('../../config');
 
 let mongoServer;
 

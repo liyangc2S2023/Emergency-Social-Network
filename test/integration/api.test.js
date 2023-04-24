@@ -1,18 +1,18 @@
 const axios = require('axios');
 // const { MongoMemoryServer } = require('mongodb-memory-server');
 // const Message = require('../model/message');
-const User = require('../model/user');
-const Blog = require('../model/blog');
-const Comment = require('../model/comment');
-const config = require('../config');
-const DB = require('../database');
+const User = require('../../model/user');
+const Blog = require('../../model/blog');
+const Comment = require('../../model/comment');
+const config = require('../../config');
+const DB = require('../../database');
 
 const PORT = 3000;
 const HOST = `http://localhost:${PORT}/api/v1`;
 
 // Initiate Server
-const APP = require('../backend');
-const { USER_STATUS } = require('../config');
+const APP = require('../../backend');
+const { USER_STATUS } = require('../../config');
 
 const { server, setupRestfulRoutes } = new APP();
 
