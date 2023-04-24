@@ -47,6 +47,12 @@ router.put('/users/:userId/active', async (req, res) => res.send(Result.success(
 // eslint-disable-next-line max-len
 router.put('/users/:userId/inactive', async (req, res) => res.send(Result.success(await userController.setInactive(req.params.userId))));
 
+router.get('/role/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const result = await userController.getUserRole(userId);
+  return res.send(Result.success(result));
+});
+
 router.put('/users/:userId/', async (req, res) => {
   const { username } = req.body;
   const { password } = req.body;
@@ -631,6 +637,18 @@ router.post('/fixorder', async (req, res) => {
   await fixOrderController.updateFixOrderByElectrian(sender, helper, status);
   const powerStatus = await fixOrderController.getFixOrderStatus(sender);
   return res.send(Result.success({ powerStatus }));
+});
+
+router.get('/isAcitve/:userid', async (req, res) => {
+  const { userid } = req.params;
+  const result = await userController.isActive(userid);
+  res.send(Result.success(result));
+});
+
+router.get('/numAdmin/:userId', async (req, res) => {
+  const { userId } = req.params;
+  const result = await userController.checkAtLeastOneAdmin(userId);
+  res.send(Result.success(result));
 });
 
 module.exports = router;

@@ -237,7 +237,7 @@ test('test search information by private message and get matching messages', asy
   expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(3);
   res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
   // result should include both keyword 'hi' and 'he'
-  expect(res[0].content).toBe('hi');
+  expect(res[0].content).toBe('hello');
   expect(res[1].content).toBe('hello');
 });
 

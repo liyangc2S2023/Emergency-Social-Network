@@ -152,6 +152,37 @@ test('test user current', async () => {
     });
 });
 
+test('test get user role', async () => {
+  await axios.get(`${HOST}/role/:${sampleUser.username}`, { headers: { authorization: userToken } })
+    .then((res) => {
+      expect(res.status).toBe(200);
+    });
+});
+
+test('test at least one admin', async () => {
+  const adminUser = {
+    username: 'testadmin',
+    password: 'tttt',
+    role: 'admin',
+  };
+  const adminUser2 = {
+    username: 'testadmin2',
+    password: 'tttt',
+    role: 'admin',
+  };
+  axios.post(`${HOST}/users`, adminUser, { headers: { authorization: userToken } });
+  axios.get(`${HOST}/numAdmin/${sampleUser.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  });
+  axios.get(`${HOST}/numAdmin/${adminUser.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  });
+  axios.post(`${HOST}/users`, adminUser2, { headers: { authorization: userToken } });
+  axios.get(`${HOST}/numAdmin/${adminUser2.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  });
+});
+
 // post integration test
 test('can post announcement', async () => {
   const announcement = {
@@ -299,6 +330,17 @@ test('can post private message', async () => {
   }).catch((error) => {
     expect(error).toBeUndefined();
   });
+  const message2 = {
+    sender: 'test',
+    content: 'test',
+    status: USER_STATUS.OK,
+    receiver: 'jose-test',
+  };
+  await axios.post(`${HOST}/messages/private/${message.sender}/${message.receiver}`, message2, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  }).catch((error) => {
+    expect(error).toBeUndefined();
+  });
 });
 
 const queryFunction = async (query) => {
@@ -348,9 +390,33 @@ test('can query public message', async () => {
   await queryFunction(query);
 });
 
+test('can query status', async () => {
+  const query = {
+    context: 'privateMessage',
+    criteria: 'status',
+    sender: '',
+    receiver: '',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});
+
 test('can query private message', async () => {
   const query = {
     context: 'privateMessage',
+    criteria: 'test',
+    sender: 'test',
+    receiver: 'test',
+    page: 0,
+  };
+
+  await queryFunction(query);
+});
+
+test('cannot query with invalid context', async () => {
+  const query = {
+    context: 'invalid',
     criteria: 'test',
     sender: 'test',
     receiver: 'test',
@@ -397,6 +463,20 @@ test('can get blog by id', async () => {
     expect(response.data.data.title).toBe(blog.title);
   }).catch((error) => {
     expect(error).toBeUndefined();
+  });
+});
+
+test('test user active and inactive', async () => {
+  const nonUser = {
+    username: 'test100',
+    password: 'tttt',
+    role: 'user',
+  };
+  axios.get(`${HOST}/isAcitve/${nonUser.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
+  });
+  axios.get(`${HOST}/isAcitve/${sampleUser.username}`, { headers: { authorization: userToken } }).then((response) => {
+    expect(response.status).toBe(200);
   });
 });
 
