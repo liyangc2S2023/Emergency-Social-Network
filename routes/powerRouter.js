@@ -9,7 +9,7 @@
 // const fixOrderController = require('../controller/fixOrderController');
 
 // router.get('/', function (req, res) {
-  
+
 //   const fixOrder = {
 //     username,
 //     helper,
@@ -22,7 +22,6 @@
 //   req.io.emit('fixOrderList', newFixOrderHTML);
 // });
 
-
 // router.post('/', function(req, res) {
 //     // Check the user's role
 //     if (req.data.data.role === 'user') {
@@ -34,7 +33,7 @@
 //     }
 //     const role = fixOrderController.changeRole(req.body.username, req.body.role);
 //     req.io.emit('roleChange', { username: req.body.username, role });
-//     return res.send(Result.success({ role }));  
+//     return res.send(Result.success({ role }));
 // });
 
 // module.exports = router;

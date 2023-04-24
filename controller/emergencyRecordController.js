@@ -3,12 +3,12 @@ const EmergencyRecord = require('../model/emergencyRecord');
 
 class EmergencyRecordController {
   static async getInitStatus(name) {
-    var result = await EmergencyRecord.getRecordByName(name);
+    const result = await EmergencyRecord.getRecordByName(name);
     if (result) {
       if (result.type === config.EMERGENCY_TYPE.REQUEST) {
         return { status: config.EMERGENCY_CITIZEN_STATUS.REQUESTING, record: result };
       }
-      else if (result.type === config.EMERGENCY_TYPE.RESPONSE) {
+      if (result.type === config.EMERGENCY_TYPE.RESPONSE) {
         return { status: config.EMERGENCY_CITIZEN_STATUS.OFFERING, record: result };
       }
     }
@@ -24,39 +24,40 @@ class EmergencyRecordController {
   }
 
   static async updateLocation(req, id, location) {
-    var result = await EmergencyRecord.updateRequestLocationById(id, location);
+    const result = await EmergencyRecord.updateRequestLocationById(id, location);
     req.io.emit('updateLocation', id, location);
-    return result
+    return result;
   }
 
   static async startReqShareAndSaveRecord(req, name, location, formResult) {
-    var newRecord = await EmergencyRecord.addHelpRequest(name, location, formResult);
-    req.io.emit('startLocationShare', newRecord._id, location, "request", formResult);
+    const newRecord = await EmergencyRecord.addHelpRequest(name, location, formResult);
+    // eslint-disable-next-line no-underscore-dangle
+    req.io.emit('startLocationShare', newRecord._id, location, 'request', formResult);
     return newRecord;
   }
 
   static async getHelpResponseOf(id) {
-    return EmergencyRecord.getHelpResponseByTarget(id)
+    return EmergencyRecord.getHelpResponseByTarget(id);
   }
 
   static async receiveLocationShare(req, id) {
-    var result = await EmergencyRecord.finishRecordById(id);
+    const result = await EmergencyRecord.finishRecordById(id);
     req.io.emit('stopLocationShare', id);
-    return result
+    return result;
   }
 
   static async cancelLocationShare(req, id) {
-    var result = await EmergencyRecord.deleteEmergencyRecordById(id);
+    const result = await EmergencyRecord.deleteEmergencyRecordById(id);
     req.io.emit('stopLocationShare', id);
-    return result
+    return result;
   }
 
   static async startResShareAndSaveRecord(req, name, location, target) {
-    var newRecord = await EmergencyRecord.addHelpResponse(name, location, target);
-    req.io.emit('startLocationShare', newRecord._id, location, "respond");
+    const newRecord = await EmergencyRecord.addHelpResponse(name, location, target);
+    // eslint-disable-next-line no-underscore-dangle
+    req.io.emit('startLocationShare', newRecord._id, location, 'respond');
     return newRecord;
   }
-
 }
 
 module.exports = EmergencyRecordController;

@@ -99,6 +99,7 @@ class Blog {
   static async validateBlogAuthor(blogId, currentUser) {
     const blog = await BlogTable.findOne({ id: blogId });
     if (blog && blog.author !== currentUser) {
+      // eslint-disable-next-line max-len
       throw new Error(`Unauthorized. Only the author can update or delete this blog. Blog author: ${blog.author}, current user: ${currentUser}`);
     }
   }

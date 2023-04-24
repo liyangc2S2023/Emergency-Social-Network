@@ -32,19 +32,19 @@ class UserController {
     return User.getUserRole(username);
   }
 
-  static async updateRole(username){
+  static async updateRole(username) {
     return User.updateRole(username);
   }
+
   static async isActive(username) {
-    var user = await User.getOne(username)
+    const user = await User.getOne(username);
     if (user) {
       return user.active;
     }
-    else{
-      return true;
-    }
+
+    return true;
   }
-  
+
   static async setActive(username) {
     return User.setActive(username);
   }
@@ -62,18 +62,17 @@ class UserController {
   }
 
   static async checkAtLeastOneAdmin(username) {
-    if((await User.getOne(username)).role === config.USER_ROLE.ADMIN){
-      var allUsers = (await User.getAll()).filter(user => user.active).filter(user => user.role === config.USER_ROLE.ADMIN);
-      if(allUsers.length === 1){
+    if ((await User.getOne(username)).role === config.USER_ROLE.ADMIN) {
+      // eslint-disable-next-line max-len
+      const allUsers = (await User.getAll()).filter((user) => user.active).filter((user) => user.role === config.USER_ROLE.ADMIN);
+      if (allUsers.length === 1) {
         return false;
       }
-      else{
-        return true;
-      }
+
+      return true;
     }
-    else{
-      return true
-    }
+
+    return true;
   }
 
   // static async updateCurrentStatus(username, status) {

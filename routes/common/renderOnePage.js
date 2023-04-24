@@ -14,21 +14,21 @@ const ExchangeController = require('../../controller/exchangeController');
 async function renderOnePage(req, res, pageView) {
   // make user online
   await userController.login(req.username);
-  var inactiveUsers = await userController.getAllInactive();
+  const inactiveUsers = await userController.getAllInactive();
 
-  var messageList = await messageController.getMessageByReceiverOrRoom('all');
+  let messageList = await messageController.getMessageByReceiverOrRoom('all');
   messageList.forEach((msg) => {
     msg.isSender = (req.username === msg.sender);
     msg.time = date2Str(new Date(msg.timestamp));
     msg.statusStyle = config.statusMap[msg.status];
   });
-  messageList = messageList.filter((msg) => !(inactiveUsers.has(msg.sender) || inactiveUsers.has(msg.receiver)))
+  messageList = messageList.filter((msg) => !(inactiveUsers.has(msg.sender) || inactiveUsers.has(msg.receiver)));
 
-  var announcementList = await announcementController.getAll();
+  let announcementList = await announcementController.getAll();
   announcementList.forEach((ancm) => {
     ancm.time = date2Str(new Date(ancm.timestamp));
   });
-  announcementList = announcementList.filter((ancm) => !(inactiveUsers.has(ancm.sender)))
+  announcementList = announcementList.filter((ancm) => !(inactiveUsers.has(ancm.sender)));
 
   const blogList = await blogController.getAllBlogs();
   blogList.forEach(async (blog) => {
@@ -37,12 +37,12 @@ async function renderOnePage(req, res, pageView) {
   });
 
   // data preparation for directory page
-  var userList = await userController.getAll();
+  let userList = await userController.getAll();
   userList.forEach((user) => {
     user.statusStyle = config.statusMap[user.status];
   });
-  if(req.role!=config.USER_ROLE.ADMIN){
-    userList = userList.filter((user) => !(inactiveUsers.has(user.username)))
+  if (req.role !== config.USER_ROLE.ADMIN) {
+    userList = userList.filter((user) => !(inactiveUsers.has(user.username)));
   }
 
   // supply list
@@ -84,7 +84,7 @@ async function renderOnePage(req, res, pageView) {
 
     announcements: announcementList,
     role,
-    powerStatus: powerStatus,
+    powerStatus,
     unfixedOrderLists: unfixedOrderList,
     supplies: supplyList,
     exchanges: exchangeList,

@@ -39,7 +39,7 @@ class database {
     this.db.once('open', async () => {
       console.log('Connected to MongoDB Atlas');
       SuspendFlag.getInstance().stopSuspend();
-      if((await User.getOne('esnadmin')) === null){
+      if ((await User.getOne('esnadmin')) === null) {
         await User.addUser('esnadmin', 'admin', config.USER_ROLE.ADMIN, config.USER_STATUS.OK);
       }
     });

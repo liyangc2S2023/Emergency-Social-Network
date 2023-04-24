@@ -1,6 +1,5 @@
 const axios = require('axios');
 // const { MongoMemoryServer } = require('mongodb-memory-server');
-const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
 const Blog = require('../model/blog');
@@ -159,6 +158,7 @@ test('can post announcement', async () => {
     content: 'test',
     sender: 'test',
   };
+  // eslint-disable-next-line max-len
   await axios.post(`${HOST}/announcements`, announcement, { headers: { authorization: coordinatorToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -171,6 +171,7 @@ test('user cannot post announcement', async () => {
     sender: 'test',
     content: 'test',
   };
+  // eslint-disable-next-line max-len
   await axios.post(`${HOST}/announcements`, announcement, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -260,6 +261,7 @@ test('can post a public message', async () => {
 });
 
 test('can get message between two user', async () => {
+  // eslint-disable-next-line max-len
   await axios.get(`${HOST}/messages/private/:${sampleUser.username}/:${smapleCoordinator.username}`, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -268,6 +270,7 @@ test('can get message between two user', async () => {
 });
 
 test('can get message by sender', async () => {
+  // eslint-disable-next-line max-len
   await axios.get(`${HOST}/messages/:${sampleUser.username}`, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -290,6 +293,7 @@ test('can post private message', async () => {
     status: USER_STATUS.OK,
     receiver: 'test2',
   };
+  // eslint-disable-next-line max-len
   await axios.post(`${HOST}/messages/private/${message.sender}/${message.receiver}`, message, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -464,6 +468,7 @@ test('cannot delete blog not by author', async () => {
 test('can update blog likes', async () => {
   const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
   const body = { likes: 10 };
+  // eslint-disable-next-line max-len
   await axios.put(`${HOST}/blogs/${blog.id}/likes`, body, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
     expect(response.data.data.likes).toBe(10);
@@ -520,6 +525,7 @@ test('can post reply to a comment', async () => {
 test('can delete comment by comment id', async () => {
   const blog = await Blog.addBlog('author', 'title', 'tag', 'content');
   const comment = await Comment.addComment(blog.id, blog.id, 'author', 'comment');
+  // eslint-disable-next-line max-len
   await axios.delete(`${HOST}/blogs/comments/${comment.id}`, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
     expect(response.data.data.acknowledged).toBe(true);
@@ -557,6 +563,7 @@ test('can get all emergency groups', async () => {
 });
 
 test('can create new emergency group', async () => {
+  // eslint-disable-next-line max-len
   axios.post(`${HOST}/emergencyGroupChat`, { username: 'test2' }, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -571,6 +578,7 @@ test('test can update user profile information by Admin', async () => {
     username: 'NICOLAS CAGE', password: '5678', role: config.USER_ROLE.COORDINATOR, active: false,
   };
   // get updated user profile
+  // eslint-disable-next-line max-len
   await axios.put(`${HOST}/users/${newUser.username}`, updatedUserProfile, { headers: { authorization: userToken } }).then((response) => {
     expect(response.status).toBe(200);
   }).catch((error) => {
@@ -581,51 +589,51 @@ test('test can update user profile information by Admin', async () => {
 test('test for updating the username that already existed ', async () => {
   // create sample users
   const newUser = await User.addUser('DWAYNE JOHNSON', '1234');
-  const user = await User.addUser('LEONARDO', '1234');
+  await User.addUser('LEONARDO', '1234');
   const updatedUserProfile = {
     username: 'LEONARDO', password: '5678', role: config.USER_ROLE.COORDINATOR, active: false,
   };
   // expect error when desired updated username is already existed
+  // eslint-disable-next-line max-len
   await axios.put(`${HOST}/users/${newUser.username}`, updatedUserProfile, { headers: { authorization: userToken } }).then(() => {
   }).catch((error) => {
     expect(error.response.status).toBe(400);
   });
 });
 
-
-test("test can return error when updating an admin user to a non-admin role if there is only one admin", async () => {
+test('test can return error when updating an admin user to a non-admin role if there is only one admin', async () => {
   // create sample users
   const newUser = await User.addUser('aaa', '1234');
-  var updatedOwnProfile = {
-    newUsername: "ANGELINA",
-    password: "5668",
+  const updatedOwnProfile = {
+    newUsername: 'ANGELINA',
+    password: '5668',
     active: true,
     role: config.USER_ROLE.ADMIN,
   };
-  const updatedUserInfo = await User.updateInfo('aaa', updatedOwnProfile.newUsername, updatedOwnProfile.password, updatedOwnProfile.active, updatedOwnProfile.role);
+  // eslint-disable-next-line max-len
   // update admin user to non-admin role
   updatedOwnProfile.role = config.USER_ROLE.COORDINATOR;
   // expect error when trying to update admin user to non-admin role
-  await axios.put(`${HOST}/users/${newUser.username}`, updatedOwnProfile, { headers: { authorization: userToken } 
-    }).catch((error) => {
-      expect(error.response.status).toBe(400);
-      expect(error.response.data.message).toBe(
-        "There must be at least one admin"
-      );
-    });
+  // eslint-disable-next-line max-len
+  await axios.put(`${HOST}/users/${newUser.username}`, updatedOwnProfile, { headers: { authorization: userToken } }).catch((error) => {
+    expect(error.response.status).toBe(400);
+    expect(error.response.data.message).toBe(
+      'There must be at least one admin',
+    );
+  });
 });
 
-
 test('test updating user info successfully with inactive status & log the user out', async () => {
-    // create sample users
-    const newUser = await User.addUser('JESSICA', '1234');
-    const updatedOwnInfo = {
-      newUsername: "JESSICAaaa",
-      password: "5668",
-      active: false,
-      role: config.USER_ROLE.COORDINATOR,
-    };
-    const updatedUserInfo = await User.updateInfo('JESSICA', updatedOwnInfo.newUsername, updatedOwnInfo.password, updatedOwnInfo.active, updatedOwnInfo.role);
+  // create sample users
+  const newUser = await User.addUser('JESSICA', '1234');
+  const updatedOwnInfo = {
+    newUsername: 'JESSICAaaa',
+    password: '5668',
+    active: false,
+    role: config.USER_ROLE.COORDINATOR,
+  };
+  // eslint-disable-next-line max-len
+  const updatedUserInfo = await User.updateInfo('JESSICA', updatedOwnInfo.newUsername, updatedOwnInfo.password, updatedOwnInfo.active, updatedOwnInfo.role);
   // make request to update user info
   await axios.put(`${HOST}/users/${newUser.username}`, updatedUserInfo, { headers: { authorization: userToken } })
     .then((response) => {
@@ -641,19 +649,17 @@ test('test for setting user active and inactive', async () => {
   const user = await User.addUser('John Doe', '1234');
 
   // set user active
+  // eslint-disable-next-line max-len
   await axios.put(`${HOST}/users/${user.username}/active`, {}, { headers: { authorization: userToken } }).then((response) => {
     expect(response.data.success).toBe(true);
-  }).catch((error) => {
-    // console.log(error);
   });
   // verify user is active
   const updatedUser = await User.getOne(user.username);
   expect(updatedUser.active).toBe(true);
   // set user inactive
+  // eslint-disable-next-line max-len
   await axios.put(`${HOST}/users/${user.username}/inactive`, {}, { headers: { authorization: userToken } }).then((response) => {
     expect(response.data.success).toBe(true);
-  }).catch((error) => {
-    
   });
   // verify user is inactive
   const updatedUserAgain = await User.getOne(user.username);

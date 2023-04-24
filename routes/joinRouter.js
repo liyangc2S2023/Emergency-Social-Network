@@ -15,9 +15,9 @@ router.post('/', async (req, res) => {
   const password = req.body.password.toLowerCase();
   // scene 1: username exists and user password verified
   // return 200 and render directory
-  if(!await userController.isActive(username)){
+  if (!await userController.isActive(username)) {
     res.status(400);
-    res.render('join', { joinErr: ["user is inactive"]});
+    res.render('join', { joinErr: ['user is inactive'] });
     return;
   }
   const loginFlag = await userController.verifyUser(username, password);

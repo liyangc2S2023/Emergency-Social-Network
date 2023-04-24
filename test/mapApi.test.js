@@ -1,6 +1,6 @@
 const axios = require('axios');
 // const { MongoMemoryServer } = require('mongodb-memory-server');
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
 // const Message = require('../model/message');
 const User = require('../model/user');
 const config = require('../config');
@@ -58,8 +58,8 @@ beforeEach(async () => {
     userToken = response.data.token;
   });
 
-  await axios.put(`${HOST}/login`, smapleCoordinator).then((response) => {
-    coordinatorToken = response.data.token;
+  await axios.put(`${HOST}/login`, smapleCoordinator).then(() => {
+    // coordinatorToken = response.data.token;
   });
 });
 
