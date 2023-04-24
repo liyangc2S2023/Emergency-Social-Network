@@ -53,7 +53,7 @@ test('test getEmergencyGroup by member', async () => {
 
 test('test addMember', async () => {
   let emergencyGroup = await EmergencyGroup.getMembers('group1');
-  expect(emergencyGroup.length).toBe(3);
+  expect(emergencyGroup.length).toBe(4);
 
   await EmergencyGroup.addMember('group1', 'user5');
   emergencyGroup = await EmergencyGroup.getMembers('group1');

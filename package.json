@@ -29,6 +29,7 @@
   },
   "scripts": {
     "test": "jest --runInBand ./test/unit/",
+    "all-test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "dev": "npx nodemon app.js",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint --fix .",
