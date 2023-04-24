@@ -55,7 +55,7 @@ function updateFixOrderStatus(sender, newStatus) {
       $('#powerStatus').text("powerStatus: " + newStatus);
       $('#showHelper').val(helper);
       $('#showHelper').text("Helper: " + helper + " done fix");
-      const itemToRemove = document.querySelector(`.active#directory-user-block-${unfixedOrder.sender}`);
+      const itemToRemove = document.querySelector(`.active#directory-power-block-${unfixedOrder.sender}`);
       itemToRemove.parentNode.removeChild(itemToRemove);
     });
   }
