@@ -289,6 +289,13 @@ displaySupply = () => {
   setActiveItem('discoverMenu');
 }
 
+displayMap = () => {
+  changeTitle("Map");
+  setCurrentPage("mapContent");
+  hideOtherDisplay("mapContent")
+  setActiveItem('discoverMenu');
+}
+
 function displayExchange() {
   changeTitle("Exchange");
   setCurrentPage("exchangeContent");
