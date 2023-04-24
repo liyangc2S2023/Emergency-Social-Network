@@ -101,7 +101,7 @@ test('test user role', async () => {
   expect((await User.getOne('testUserRole2')).role).toBe(config.USER_ROLE.ADMIN);
 });
 
-test('test update role', async() => {
+test('test update role', async () => {
   await User.addUser('Star Trek', '123456', config.USER_ROLE.USER);
   await User.addUser('John Wick', '123456', config.USER_ROLE.ELE);
   await User.addUser('Hyun Bin', '123456', config.USER_ROLE.ADMELEIN);
@@ -110,14 +110,14 @@ test('test update role', async() => {
   expect(await User.getUserRole('Hyun Bin')).toBe('electrician');
 });
 
-test('test can get user role', async() => {
+test('test can get user role', async () => {
   await User.addUser('Harry Potter', '123456', config.USER_ROLE.ELE);
-  const res = await User.getUserRole('Harry Potter')
+  const res = await User.getUserRole('Harry Potter');
   expect(res).toBe('electrician');
 });
 
-test('test can not get role of a non-exsit user', async() => {
-  const res = await User.getUserRole('app')
+test('test can not get role of a non-exsit user', async () => {
+  const res = await User.getUserRole('app');
   expect(res).toBe(null);
 });
 
@@ -192,7 +192,6 @@ test('test can set user account from "Inactive" to "Active", verse same', async 
   expect(await User.getAllInactive()).toEqual(new Set(['Bella', 'Leon']));
 });
 
-
 test('test can update user profile information', async () => {
   await User.addUser('CHRIS EVANS', '1234');
   await User.addUser('ROBERT', '1234');
@@ -204,5 +203,3 @@ test('test can update user profile information', async () => {
   expect((await User.getOne('CHRIS HEMSWORTH')).role).toBe(config.USER_ROLE.COORDINATOR);
   expect(await User.getOne('BRAD PITT')).toEqual(null);
 });
-
-

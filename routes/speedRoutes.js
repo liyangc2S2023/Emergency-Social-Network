@@ -11,16 +11,15 @@ const config = require('../config');
 // authenticate user role, can only visited by admin
 router.use(async (req, res, next) => {
   // will be enabled in iteration 5
-  const role = req.role
-  if(role != config.USER_ROLE.ADMIN){
-      next(createError(401, `${req.username} is not authorized to speed test`));
-  }
-  else{
+  const { role } = req;
+  if (role !== config.USER_ROLE.ADMIN) {
+    next(createError(401, `${req.username} is not authorized to speed test`));
+  } else {
     next();
   }
 });
 
-router.post('/', async (req, res, next) => {
+router.post('/', async (req, res) => {
   // start test
   await speedRecordController.startTest(req.body.testID);
   // response the result when test finish

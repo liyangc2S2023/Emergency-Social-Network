@@ -72,7 +72,9 @@ class User {
   }
 
   static async addUser(username, password, role = config.USER_ROLE.USER, status = config.USER_STATUS.UNDEFINED) {
-    return UserTable.create({ username, password: UserHelper.encrypt(password), role, status });
+    return UserTable.create({
+      username, password: UserHelper.encrypt(password), role, status,
+    });
   }
 
   static async getUserRole(username) {
@@ -83,8 +85,8 @@ class User {
     return null;
   }
 
-  static async updateRole(username, role){
-    return UserTable.updateOne({ username }, { $set: { role: role } });
+  static async updateRole(username, role) {
+    return UserTable.updateOne({ username }, { $set: { role } });
   }
 
   static async updateCurrentStatus(username, status) {
@@ -119,19 +121,22 @@ class User {
     return UserTable.updateOne({ username }, { $set: { active: true } });
   }
 
-  static async updateInfo(username, newUsername, password, active, role){
-    return UserTable.updateOne({ username }, { $set: { username: newUsername, password: UserHelper.encrypt(password), active, role }});
+  static async updateInfo(username, newUsername, password, active, role) {
+    return UserTable.updateOne({ username }, {
+      $set: {
+        username: newUsername, password: UserHelper.encrypt(password), active, role,
+      },
+    });
   }
 
   static async getAllInactive() {
-    var usernames = new Set();;
-    var inactiveUsers = await UserTable.find({ active: false });
+    const usernames = new Set();
+    const inactiveUsers = await UserTable.find({ active: false });
     inactiveUsers.forEach((user) => {
       usernames.add(user.username);
     });
     return usernames;
   }
-
 }
 
 module.exports = User;

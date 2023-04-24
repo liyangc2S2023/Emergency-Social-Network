@@ -17,14 +17,14 @@ afterAll(async () => {
 });
 
 test('test no fix order status', async () => {
-    expect(await FixOrder.getFixOrderStatus('app')).toBe('normal');
+  expect(await FixOrder.getFixOrderStatus('app')).toBe('normal');
 });
 
 test('test get fix order status when a new user comes', async () => {
-    // the create status should also return new status
-    const res = await FixOrder.createFixOrder('SingingintheRain', 'no power for 1 hr', ' NASA Research Park, Building 23 Moffett Field, CA 94035', 'needFix');
-    expect(res.status).toBe('needFix');
-    expect(await FixOrder.getFixOrderStatus('SingingintheRain')).toBe('needFix');
+  // the create status should also return new status
+  const res = await FixOrder.createFixOrder('SingingintheRain', 'no power for 1 hr', ' NASA Research Park, Building 23 Moffett Field, CA 94035', 'needFix');
+  expect(res.status).toBe('needFix');
+  expect(await FixOrder.getFixOrderStatus('SingingintheRain')).toBe('needFix');
 });
 
 test('test get fix order status of a old user', async () => {
@@ -41,18 +41,17 @@ test('update fix order by electrician', async () => {
   expect(await FixOrder.getFixOrderStatus('Gaya')).toBe('needFix');
   await FixOrder.updateFixOrderByElectrian('Gaya', 'Zuse', 'fixing');
   expect(await FixOrder.getFixOrderStatus('Gaya')).toBe('fixing');
-  
 });
 
 test('test get unfix order', async () => {
-    await FixOrder.createFixOrder('Star Trek', 'no power for 1 hr', ' NASA Research Park, Building 23 Moffett Field, CA 94035', 'needFix');
-    await FixOrder.createFixOrder('John Wick', 'power restore', '', 'normal');
-    await FixOrder.createFixOrder('Hyun Bin', 'power died', 'Mountain View', 'needFix');
-    await FixOrder.createFixOrder('Jennifer Lawrence', 'OMG', 'Sunnyvale', 'needFix');
-    await FixOrder.createFixOrder('James Bond', '', '', 'needFix');
-    await FixOrder.updateFixOrderByElectrian('noreen', 'tom cruise', 'fixing');
-    await FixOrder.createFixOrder('James Bond', '', '', 'normal');
-    await FixOrder.updateFixOrderByElectrian('Jennifer Lawrence', 'noreen', 'normal');
-    const res = await FixOrder.getUnfixOrders();
-    expect(res.length).toBe(5);
+  await FixOrder.createFixOrder('Star Trek', 'no power for 1 hr', ' NASA Research Park, Building 23 Moffett Field, CA 94035', 'needFix');
+  await FixOrder.createFixOrder('John Wick', 'power restore', '', 'normal');
+  await FixOrder.createFixOrder('Hyun Bin', 'power died', 'Mountain View', 'needFix');
+  await FixOrder.createFixOrder('Jennifer Lawrence', 'OMG', 'Sunnyvale', 'needFix');
+  await FixOrder.createFixOrder('James Bond', '', '', 'needFix');
+  await FixOrder.updateFixOrderByElectrian('noreen', 'tom cruise', 'fixing');
+  await FixOrder.createFixOrder('James Bond', '', '', 'normal');
+  await FixOrder.updateFixOrderByElectrian('Jennifer Lawrence', 'noreen', 'normal');
+  const res = await FixOrder.getUnfixOrders();
+  expect(res.length).toBe(5);
 });

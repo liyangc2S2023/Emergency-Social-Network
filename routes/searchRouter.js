@@ -1,8 +1,8 @@
 const express = require('express');
+const pug = require('pug');
 const Result = require('./common/result');
 
 const router = express.Router();
-const pug = require('pug');
 
 const date2Str = require('../utils/dateUtil');
 const config = require('../config');
@@ -23,10 +23,10 @@ const transformMessage = (msg) => {
 };
 
 const transformMessageList = async (msgList) => {
-  var inactiveUsers = await UserController.getAllInactive()
+  const inactiveUsers = await UserController.getAllInactive();
   const transformedList = [];
   msgList.forEach((msg) => {
-    if(!inactiveUsers.has(msg.sender) && !inactiveUsers.has(msg.receiver)){
+    if (!inactiveUsers.has(msg.sender) && !inactiveUsers.has(msg.receiver)) {
       transformedList.push(transformMessage(msg));
     }
   });
@@ -34,10 +34,10 @@ const transformMessageList = async (msgList) => {
 };
 
 const transfromUserList = async (userList) => {
-  var inactiveUsers = await UserController.getAllInactive()
+  const inactiveUsers = await UserController.getAllInactive();
   const transformedList = [];
   userList.forEach((user) => {
-    if(!inactiveUsers.has(user.username)){
+    if (!inactiveUsers.has(user.username)) {
       transformedList.push({
         username: user.username,
         statusStyle: config.statusMap[user.status],
@@ -57,7 +57,8 @@ router.get('/', async (req, res) => {
   if (context.indexOf('Message') !== -1) {
     renderedResult = pug.renderFile('./views/messageList.pug', { messages: await transformMessageList(searchResult) });
   } else if (['announcement'].includes(context)) {
-    var inactiveUsers = await UserController.getAllInactive()
+    const inactiveUsers = await UserController.getAllInactive();
+    // eslint-disable-next-line max-len
     renderedResult = pug.renderFile('./views/announcementList.pug', { announcements: searchResult.filter((ancm) => !inactiveUsers.has(ancm.sender)) });
   } else if (['username', 'status'].includes(context)) {
     renderedResult = pug.renderFile('./views/directory.pug', { users: await transfromUserList(searchResult) });
