@@ -1,6 +1,6 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const Supply = require('../model/supply');
+const Supply = require('../../model/supply');
 
 let mongoServer;
 

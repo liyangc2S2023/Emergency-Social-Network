@@ -28,7 +28,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "test": "jest --runInBand --coverage --detectOpenHandles",
+    "test": "jest --runInBand ./test/unit/",
     "dev": "npx nodemon app.js",
     "lint": "npx eslint .",
     "lint-fix": "npx eslint --fix .",

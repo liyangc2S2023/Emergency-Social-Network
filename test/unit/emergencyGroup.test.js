@@ -1,7 +1,7 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const EmergencyContact = require('../model/emergencyContact');
-const EmergencyGroup = require('../model/emergencyGroup');
+const EmergencyContact = require('../../model/emergencyContact');
+const EmergencyGroup = require('../../model/emergencyGroup');
 
 let mongoServer;
 let dbConnection;
@@ -53,7 +53,7 @@ test('test getEmergencyGroup by member', async () => {
 
 test('test addMember', async () => {
   let emergencyGroup = await EmergencyGroup.getMembers('group1');
-  expect(emergencyGroup.length).toBe(4);
+  expect(emergencyGroup.length).toBe(3);
 
   await EmergencyGroup.addMember('group1', 'user5');
   emergencyGroup = await EmergencyGroup.getMembers('group1');

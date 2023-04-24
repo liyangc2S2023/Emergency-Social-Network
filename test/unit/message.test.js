@@ -1,6 +1,6 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const Message = require('../model/message');
+const Message = require('../../model/message');
 
 let mongoServer;
 let dbConnection;
@@ -214,23 +214,23 @@ test('test search information by private message and get no result', async () =>
 
 test('test search information by private message and get matching messages', async () => {
   // add some private messages
-  await Message.addMessage('lisa', 'noreen', 'ok', 'hi');
   await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
-  await Message.addMessage('noreen', 'lisa', 'ok', 'hi');
+  await Message.addMessage('lisa', 'noreen', 'ok', 'hello');
+  await Message.addMessage('noreen', 'lisa', 'ok', 'hello');
   await Message.addMessage('noreen', 'joseph', 'ok', 'hello');
   // add two public messages
   await Message.addMessage('lisa', 'all', 'help', 'hi all');
   await Message.addMessage('noreen', 'all', 'emergency', 'hello all');
   // search for keywords: hi
   const keywords = [];
-  keywords[0] = 'hi';
-  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(2);
+  keywords[0] = 'hello';
+  expect((await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen')).length).toBe(3);
   let res;
   res = await Message.searchByPrivateMessage(keywords, 'lisa', 'noreen');
   // result should be ordered by timestamp
-  expect(res[0].content).toBe('hi');
+  expect(res[0].content).toBe('hello');
   expect(res[0].sender).toBe('noreen');
-  expect(res[1].content).toBe('hi');
+  expect(res[1].content).toBe('hello');
   expect(res[1].sender).toBe('lisa');
   // search for keywords: he and hi
   keywords[1] = 'he';

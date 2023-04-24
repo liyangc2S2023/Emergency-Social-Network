@@ -1,6 +1,6 @@
 const { MongoMemoryServer } = require('mongodb-memory-server');
 const mongoose = require('mongoose');
-const SuspendFlag = require('../routes/common/suspendFlag');
+const SuspendFlag = require('../../routes/common/suspendFlag');
 
 let mongoServer;
 
