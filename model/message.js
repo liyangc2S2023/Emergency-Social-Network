@@ -37,13 +37,14 @@ class Message {
     }).sort({ timestamp: 1 });
   }
 
-  static async addMessage(sender, receiver, status, content) {
+  static async addMessage(sender, receiver, status, content, timestamp = Date.now()) {
     return MessageTable.create(
       {
         sender,
         receiver,
         status,
         content,
+        timestamp,
       },
     );
   }

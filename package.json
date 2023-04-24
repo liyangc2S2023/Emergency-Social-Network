@@ -28,7 +28,7 @@
     "uuid": "^9.0.0"
   },
   "scripts": {
-    "test": "jest --runInBand ./test/unit/",
+    "test": "jest --runInBand --forceExit ./test/unit/",
     "all-test": "jest --runInBand --detectOpenHandles --forceExit --coverage",
     "dev": "npx nodemon app.js",
     "lint": "npx eslint .",
