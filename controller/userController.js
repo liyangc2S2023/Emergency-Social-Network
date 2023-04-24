@@ -41,7 +41,6 @@ class UserController {
     if (user) {
       return user.active;
     }
-
     return true;
   }
 

@@ -38,7 +38,7 @@ test('getEmergencyContact', async () => {
 
 test('addEmergencyContacts', async () => {
   await EmergencyContact.addEmergencyContact('user1', 'user4', Date.now() + 4000);
-  const emergencyContacts = await EmergencyContact.getEmergencyContact('user1');
+  let emergencyContacts = await EmergencyContact.getEmergencyContact('user1');
   expect(emergencyContacts.length).toBe(3);
   expect(emergencyContacts[0].username).toBe('user1');
   expect(emergencyContacts[0].contact).toBe('user4');
@@ -46,6 +46,12 @@ test('addEmergencyContacts', async () => {
   expect(emergencyContacts[1].contact).toBe('user3');
   expect(emergencyContacts[2].username).toBe('user1');
   expect(emergencyContacts[2].contact).toBe('user2');
+  await EmergencyContact.addEmergencyContact('user1', 'user1', Date.now() + 4000);
+  emergencyContacts = await EmergencyContact.getEmergencyContact('user1');
+  expect(emergencyContacts.length).toBe(3);
+  await EmergencyContact.addEmergencyContact('user1', 'user4', Date.now() + 4001);
+  emergencyContacts = await EmergencyContact.getEmergencyContact('user1');
+  expect(emergencyContacts.length).toBe(3);
 });
 
 test('deleteEmergencyContact', async () => {
