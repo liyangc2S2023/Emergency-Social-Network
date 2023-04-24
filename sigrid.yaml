@@ -1,0 +1,10 @@
+component_depth: 1
+exclude:
+  - ".*/migrations/.*"
+  - ".*/views/.*"
+  - ".*/node_modules/.*"
+  - ".*/public/.*"
+  - ".*/app[.]js"
+languages:
+  - name: ejs
+  - name: javascript
