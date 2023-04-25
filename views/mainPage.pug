@@ -31,57 +31,58 @@ html
         script(src='/javascript/map.js')
         script(src='/javascript/exchangeSupply.js')
     body
-        // header
-        include speedTestModal.pug
-        include addSupply.pug 
-        include addExchange.pug
-        include profileEditer.pug
-        include header.pug
-        // page content
-        .main-page-content
-            include announcementBox.pug
-            #currentPage(hidden)
-            #chatPrivateReceiver(hidden)
-            #currentUsername(hidden)
-            #currentUserStatus(hidden)
-            #currentUserRole(hidden)
-            #currentUserPowerStatus(hidden)
-            #searchInfo(hidden)
-            #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
-                #groupChatContent
-                    include emergencyGroup.pug 
-                include directory.pug
-            #publicChatContent(style=pageView=="Public"?"display:block":"display:none")
-                include chat.pug
-            #privateChatContent(style=pageView=="Private"?"display:block":"display:none")
-                include chatPrivate.pug  
-            #announcementContent(style=pageView=="Announcement"?"display:block":"display:none")
-                include announcementBoard.pug 
-            #powerIssueContent(style=pageView=="PowerIssue"?"display:block":"display:none")
-                include powerIssueList.pug
-            #roleContent(style=pageView=="Role"?"display:block":"display:none")
-                include roleChange.pug
-            #powerContent(style=pageView=="Power"?"display:block":"display:none")
-                include powerReport.pug
-            #statusContent(style=pageView=="Status"?"display:block":"display:none")
-                include status.pug
-            #searchContent(style=pageView=="Search"?"display:block":"display:none")
-                include search.pug
-            #discoverContent(style=pageView=="Discover"?"display:block":"display:none")
-                include discover.pug
-            #supplyContent(style=pageView=="Supply"?"display:block":"display:none")
-                include supply.pug
-            #exchangeContent(style=pageView=="Exchange"?"display:block":"display:none")
-                include exchange.pug
-            #blogContent(style=pageView=="Blog"?"display:block":"display:none")
-                include blogboard.pug
-            #editBlogContent(style=pageView=="Blog"?"display:block":"display:none")
-                include blogEdit.pug
-            #viewBlogContent(style=pageView=="Blog"?"display:block":"display:none")
-                include blogView.pug
-            #mapContent(style=pageView=="Map"?"display:block":"display:none")
-                include map.pug
-        // map bottom information
-        include mapBottomInfo.pug
-        // footer
-        include footer.pug
+        .container
+            // header
+            include speedTestModal.pug
+            include addSupply.pug 
+            include addExchange.pug
+            include profileEditer.pug
+            include header.pug
+            // page content
+            .main-page-content
+                include announcementBox.pug
+                #currentPage(hidden)
+                #chatPrivateReceiver(hidden)
+                #currentUsername(hidden)
+                #currentUserStatus(hidden)
+                #currentUserRole(hidden)
+                #currentUserPowerStatus(hidden)
+                #searchInfo(hidden)
+                #directoryContent(style=pageView=="Directory"?"display:block":"display:none")
+                    #groupChatContent
+                        include emergencyGroup.pug 
+                    include directory.pug
+                #publicChatContent(style=pageView=="Public"?"display:block":"display:none")
+                    include chat.pug
+                #privateChatContent(style=pageView=="Private"?"display:block":"display:none")
+                    include chatPrivate.pug  
+                #announcementContent(style=pageView=="Announcement"?"display:block":"display:none")
+                    include announcementBoard.pug 
+                #powerIssueContent(style=pageView=="PowerIssue"?"display:block":"display:none")
+                    include powerIssueList.pug
+                #roleContent(style=pageView=="Role"?"display:block":"display:none")
+                    include roleChange.pug
+                #powerContent(style=pageView=="Power"?"display:block":"display:none")
+                    include powerReport.pug
+                #statusContent(style=pageView=="Status"?"display:block":"display:none")
+                    include status.pug
+                #searchContent(style=pageView=="Search"?"display:block":"display:none")
+                    include search.pug
+                #discoverContent(style=pageView=="Discover"?"display:block":"display:none")
+                    include discover.pug
+                #supplyContent(style=pageView=="Supply"?"display:block":"display:none")
+                    include supply.pug
+                #exchangeContent(style=pageView=="Exchange"?"display:block":"display:none")
+                    include exchange.pug
+                #blogContent(style=pageView=="Blog"?"display:block":"display:none")
+                    include blogboard.pug
+                #editBlogContent(style=pageView=="Blog"?"display:block":"display:none")
+                    include blogEdit.pug
+                #viewBlogContent(style=pageView=="Blog"?"display:block":"display:none")
+                    include blogView.pug
+                #mapContent(style=pageView=="Map"?"display:block":"display:none")
+                    include map.pug
+            // map bottom information
+            include mapBottomInfo.pug
+            // footer
+            include footer.pug
